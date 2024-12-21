@@ -13,6 +13,7 @@ import '../../../../utils/commonWidget/common_save_and_submit_button.dart';
 import '../../../../utils/commonWidget/common_screen_content_title.dart';
 import '../../../../utils/commonWidget/common_sub_screen_app_bar.dart';
 import '../../../../utils/theme/common_color.dart';
+import '../../../auth/controller/AuthController.dart';
 import '../../../auth/services/databaseHelper.dart';
 import '../../../auth/view/screen/login_screen.dart';
 import '../../dependencies/setting_dependencies.dart';
@@ -80,15 +81,9 @@ class LanguageSettingScreen extends StatelessWidget {
               try {
                 CommonLoadingDialog.showLoadingDialog();
 
-                // Retrieve the current user's ID or identifier
-                final currentUserId = 1; // Replace with the actual logic to get the logged-in user ID
-
-                // Delete user data from the local SQLite database
-                await DatabaseHelper.instance.database.then((db) {
-                  db.delete('users', where: 'id = ?', whereArgs: [currentUserId]);
-                });
-
-                // Show logout success toast
+                final authController = Get.find<AuthController>();
+                await authController.updateLoginStatus(
+                    StudentDetails.mobile, false);
                 Fluttertoast.showToast(
                   msg: "Logged out successfully!",
                   toastLength: Toast.LENGTH_LONG,

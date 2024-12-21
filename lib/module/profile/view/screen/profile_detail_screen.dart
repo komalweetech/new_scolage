@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:new_scolage/module/auth/controller/AuthController.dart';
 import 'package:new_scolage/module/profile/view/screen/pandding_colleges.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../utils/StudentDetails.dart';
@@ -37,6 +38,7 @@ class ProfileDetailScreen extends StatefulWidget {
 
 class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
   final ProfileController profileController = ProfileController();
+  final AuthController authController = Get.find();
 
 
   @override
@@ -99,22 +101,20 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                             borderRadius: BorderRadius.circular(50),
                           ),
                           child: Obx(
-                            () => kProfileController
-                                        .selectedProfilePickLink.value != ''
-                                ? ClipRRect(
-                                    borderRadius: BorderRadius.circular(50),
-                                    child: Obx(
-                                      () => Image.file(
-                                        File(
-                                          kProfileController
-                                              .selectedProfilePickLink.value,
-                                        ),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  )
-                                : SizedBox(),
-                          ),
+                                () {
+                              if (kProfileController.selectedProfilePickLink.value.isNotEmpty) {
+                                return ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.file(
+                                    File(kProfileController.selectedProfilePickLink.value),
+                                    fit: BoxFit.cover,
+                                  ),
+                                );
+                              } else {
+                                return Icon(Icons.person, size: 70, color: Colors.grey);
+                              }
+                            },
+                          )
                         ),
                         Positioned(
                           right: 0,

@@ -134,7 +134,7 @@ class EditProfileWidget extends StatelessWidget {
                 children: [
                   Text(
                     "Personal details",
-                    style: TextStyle(fontSize: 18.sp,fontWeight: FontWeight.w700),
+                    style: TextStyle(fontSize: 20.sp,fontWeight: FontWeight.bold,fontFamily: "Poppins"),
                   ),
                   SizedBox(height: 10),
                   // NAME FIELD

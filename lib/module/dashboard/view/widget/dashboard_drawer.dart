@@ -55,6 +55,7 @@ class DashboardDrawer extends StatelessWidget {
     );
   }
 
+  
 
   @override
   Widget build(BuildContext context) {
@@ -92,16 +93,12 @@ class DashboardDrawer extends StatelessWidget {
                       //   child:
                       //       Image.asset(AssetIcons.PROFILE_ICON, height: 26.h),
                       // ),
-                      child: Obx(
-                            () => kProfileController
-                            .selectedProfilePickLink.value != ''
+                      child: Obx(() => kProfileController.selectedProfilePickLink.value != ''
                             ? ClipRRect(
                           borderRadius: BorderRadius.circular(50),
                           child: Obx(
                                 () => Image.file(
-                              File(
-                                kProfileController
-                                    .selectedProfilePickLink.value,
+                              File(kProfileController.selectedProfilePickLink.value,
                               ),
                               fit: BoxFit.cover,
                             ),

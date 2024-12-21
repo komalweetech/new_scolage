@@ -54,13 +54,13 @@ dependencies:
   firebase_analytics: ^11.3.6
   firebase_auth: ^5.3.4
   file_picker: ^8.1.6
-  path: ^1.9.0
   speech_to_text: ^7.0.0
   permission_handler: ^11.3.1
   video_player: ^2.9.2
   chewie: ^1.8.5
   shared_preferences: ^2.3.4
   sqflite: ^2.4.1
+  path: ^1.9.0
   youtube_player_flutter: ^9.1.1
   cached_network_image: ^3.4.1
   flutter_otp_text_field: ^1.2.0
@@ -70,6 +70,7 @@ dependencies:
   latlong2: ^0.9.1
   flutter_svg: ^2.0.16
   webview_flutter: ^4.10.0
+  imageview360: ^1.3.0
 
 
 
@@ -116,17 +117,18 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+  fonts:
+    - family: SegoeUI
+      fonts:
+        - asset: assets/fonts/Segoe UI.ttf
+
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/poppins/poppins_regular.ttf
+        - asset: assets/fonts/poppins/poppins_light.ttf
+        - asset: assets/fonts/poppins/poppins_semiBold.ttf
+        - asset: assets/fonts/poppins/poppins_bold.ttf
+        - asset: assets/fonts/poppins/poppins_medium.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package

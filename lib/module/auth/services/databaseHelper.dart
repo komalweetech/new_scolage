@@ -3,7 +3,6 @@ import 'package:path/path.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper instance = DatabaseHelper._init();
-
   static Database? _database;
 
   DatabaseHelper._init();
@@ -14,48 +13,64 @@ class DatabaseHelper {
     return _database!;
   }
 
-  Future<Database> _initDB(String filePath) async {
+  Future<Database> _initDB(String fileName) async {
     final dbPath = await getDatabasesPath();
-    final path = join(dbPath, filePath);
-    return openDatabase(path, version: 1, onCreate: _onCreate);
+    final path = join(dbPath, fileName);
+    return openDatabase(path, version: 1, onCreate: _createDB);
   }
 
-  Future _onCreate(Database db, int version) async {
-    const idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
-    const textType = 'TEXT NOT NULL';
-    const boolType = 'BOOLEAN NOT NULL';
-
-    await db.execute('''CREATE TABLE users (
-      id $idType,
-      role $textType,
-      name $textType,
-      gender $textType,
-      school_name $textType,
-      password $textType,
-      confirm_password $textType,
-      mobile $textType,
-      email $textType,
-      isLoggedIn $boolType 
-    )''');
+  Future _createDB(Database db, int version) async {
+    const String sql = '''
+    CREATE TABLE users (
+        user_id TEXT PRIMARY KEY,
+        role TEXT,
+        name TEXT,
+        gender TEXT,
+        school_name TEXT,
+        password TEXT,
+        confirm_password TEXT,
+        mobile TEXT UNIQUE,
+        email TEXT,
+        isLoggedIn INTEGER
+      )
+    ''';
+    await db.execute(sql);
   }
 
-  Future<void> insertUser(Map<String, dynamic> userData) async {
+  Future<int> insertUser(Map<String, dynamic> user) async {
     final db = await instance.database;
-    userData['isLoggedIn'] =  userData['isLoggedIn'] ?? false;
-    await db.insert('users', userData,conflictAlgorithm: ConflictAlgorithm.replace);
+    return await db.insert('users', user);
   }
 
-  Future<Map<String, dynamic>?> getUser(int id) async {
-    final db = await instance.database;
-    final result = await db.query('users', where: 'id = ?', whereArgs: [id]);
-    if (result.isEmpty) {
-      return null;
-    }
-    return result.first;
+  Future<Map<String, dynamic>?> getUser(String mobileNumber) async {
+    final db = await database;
+    final users = await db.query(
+      'users',
+      where: 'mobile = ?',
+      whereArgs: [mobileNumber],
+    );
+    return users.isNotEmpty ? users.first : null;
   }
 
   Future<List<Map<String, dynamic>>> getAllUsers() async {
     final db = await instance.database;
     return await db.query('users');
   }
+
+  Future<int> updateUser(Map<String, dynamic> userData, String userId) async {
+    final db = await instance.database;
+    return await db.update(
+      'users',
+      userData,
+      where: 'user_id = ?',
+      whereArgs: [userId],
+    );
+  }
+
+  Future<int> deleteUser(int id) async {
+    final db = await instance.database;
+    return await db.delete('users', where: 'id = ?', whereArgs: [id]);
+  }
+
+
 }

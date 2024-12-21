@@ -12,6 +12,8 @@ import '../../../../utils/constant/asset_icons.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../utils/theme/common_color.dart';
+import '../../controller/signUp_controller.dart';
+import '../../dependencies/auth_dependencies.dart';
 import '../../services/databaseHelper.dart';
 import '../widget/webViewPage.dart';
 import 'login_screen.dart';
@@ -24,7 +26,16 @@ class SingUpScreen extends StatefulWidget {
 }
 
 class _SingUpScreenState extends State<SingUpScreen> {
-  Map<String, TextEditingController> controllers = {};
+  Map<String, TextEditingController> controllers = {
+    'name': TextEditingController(),
+    'gender': TextEditingController(),
+    'schoolName': TextEditingController(),
+    'password': TextEditingController(),
+    'confirmPassword': TextEditingController(),
+    'mobile': TextEditingController(),
+    'email': TextEditingController(),
+  };
+
   String? selectedGender;
   List<String> genderOptions = ['Male', 'Female', 'Other'];
   bool isSelected = false;
@@ -32,40 +43,15 @@ class _SingUpScreenState extends State<SingUpScreen> {
   bool agreedToTerms2 = false;
   bool obscureText = true;
 
-  void _createTextEditingController(String fieldName) {
-    controllers[fieldName] = TextEditingController();
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-    _createTextEditingController('role');
-    _createTextEditingController('name');
-    _createTextEditingController('gender');
-    // _createTextEditingController(selectedGender!);
-    _createTextEditingController('school_name');
-    _createTextEditingController('password');
-    _createTextEditingController('confirm_password');
-    // _createTextEditingController('mobile');
-    _createTextEditingController('email');
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    controllers.forEach((key, controller) => controller.dispose());
-  }
 
   Future<void> _submitSingUpData() async {
     // Check if any of the fields are empty
-    if (controllers['name']!.text.isEmpty ||
-        controllers['gender']!.text.isEmpty ||
-        controllers['school_name']!.text.isEmpty ||
-        controllers['password']!.text.isEmpty ||
-        controllers['confirm_password']!.text.isEmpty ||
-        controllers['email']!.text.isEmpty) {
+    if (controllers['name']!.text.isEmpty  ||
+        controllers['gender']!.text.isEmpty  ||
+        controllers['schoolName']!.text.isEmpty ||
+        controllers['password']!.text.isEmpty  ||
+        controllers['confirmPassword']!.text.isEmpty  ||
+        controllers['email']!.text.isEmpty ) {
       Fluttertoast.showToast(
         msg: "Please fill in all fields",
         toastLength: Toast.LENGTH_LONG,
@@ -75,31 +61,32 @@ class _SingUpScreenState extends State<SingUpScreen> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
-      return; // Return to exit the function if any field is empty
+      return;
     }
 
     // String apiUrl = 'https://backend.scolage.com/v2/reg/students';
     String apiUrl = '${ApiBasePort.apiBaseUrl}/v2/reg/students';
     String? studentId = StudentDetails.studentId;
 
-    Map<String, dynamic> signUpData  = {
-      'role': "student",
+    Map<String, dynamic> userData = {
+      'role': 'student',
       'name': controllers['name']?.text,
       'gender': controllers['gender']?.text,
-      'school_name': controllers['school_name']?.text,
+      'school_name': controllers['schoolName']?.text,
       'password': controllers['password']?.text,
-      'confirm_password': controllers['confirm_password']?.text,
+      'confirm_password':controllers['confirmPassword']?.text,
       'mobile': StudentDetails.mobile,
       'email': controllers['email']?.text,
+      'isLoggedIn': 0,
     };
 
-    print("your student id ===== $studentId}");
-    print("your details == $signUpData ");
+    print("student id in sign up screen == ===== $studentId}");
+    print("your details == $userData ");
 
     try {
       var response = await http.post(
         Uri.parse(apiUrl),
-        body: json.encode(signUpData ),
+        body: json.encode(userData ),
         headers: {'Content-Type': 'application/json'},
       );
       print("Response ====");
@@ -109,12 +96,12 @@ class _SingUpScreenState extends State<SingUpScreen> {
 
       if (map["status"] == "success") {
         // Insert data into SQLite database
-        await DatabaseHelper.instance.insertUser(signUpData);
+        await DatabaseHelper.instance.insertUser(userData);
 
         Fluttertoast.showToast(
             msg: "Successfully Signed Up",
             toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.TOP,
+            gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 2,
             backgroundColor: kPrimaryColor,
             textColor: Colors.white,
@@ -135,6 +122,14 @@ class _SingUpScreenState extends State<SingUpScreen> {
     } catch (error) {
       print('Error submitting admission data: $error');
     }
+  }
+
+  @override
+  void dispose() {
+    controllers.forEach((key, controller) {
+      controller.dispose();
+    });
+    super.dispose();
   }
 
   @override
@@ -190,13 +185,13 @@ class _SingUpScreenState extends State<SingUpScreen> {
                     onChanged: (String? newValue) {
                       setState(() {
                         selectedGender = newValue;
-                        controllers['gender']?.text = selectedGender ?? ' ';
+                        controllers['gender']!.text = selectedGender ?? ' ';
                       });
                     },
                   ),
                   SizedBox(height: 10.h),
                   TextFormField(
-                    controller: controllers['school_name'],
+                    controller: controllers['schoolName'],
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       isDense: true,
@@ -231,7 +226,7 @@ class _SingUpScreenState extends State<SingUpScreen> {
                   SizedBox(height: 10.h),
                   TextFormField(
                     obscureText: true,
-                    controller: controllers['confirm_password'],
+                    controller: controllers['confirmPassword'],
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       isDense: true,
@@ -344,19 +339,8 @@ class _SingUpScreenState extends State<SingUpScreen> {
                     name: "Submit",
                     onTap: () async {
                       if (agreedToTerms1 && agreedToTerms2) {
-                        if (controllers['password']?.text ==
-                            controllers['confirm_password']?.text) {
+                        if (controllers['password']!.text == controllers['confirmPassword']!.text) {
                           await _submitSingUpData();
-                          // Fluttertoast.showToast(
-                          //   msg: "Succesfully SingUp",
-                          //   toastLength: Toast.LENGTH_LONG,
-                          //   gravity: ToastGravity.BOTTOM,
-                          //   timeInSecForIosWeb: 2,
-                          //   backgroundColor: Colors.red,
-                          //   textColor: Colors.white,
-                          //   fontSize: 16.0,
-                          // );
-                          // Get.to(() => LoginScreen()) ;
                         } else {
                           Fluttertoast.showToast(
                             msg: "Passwords do not match",

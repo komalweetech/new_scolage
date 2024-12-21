@@ -60,8 +60,7 @@ abstract class AssetIcons {
   static const String DRAWER_SETTING_ICON = "assets/icons/drawer_setting.png";
 
   // FAVORITE COLLEGE
-  static const String NO_FAV_YET_ICON =
-      "assets/icons/not_favorite_yet_image.png";
+  static const String NO_FAV_YET_ICON = "assets/icons/no_data_image.png";
 
   // INVITE SCREEN
   static const String INVITE_IMAGE_ICON = "assets/icons/invite_image.png";

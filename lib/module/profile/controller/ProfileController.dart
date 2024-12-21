@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../utils/StudentDetails.dart';
 import '../../../utils/commonFunction/common_image_picker.dart';
@@ -14,15 +15,42 @@ class ProfileController extends GetxController {
 
   // IMAGE PICKER METHOD
   Future<void> picProfileImage() async {
-    // PIC FILE AND GET FILE PATH
-    String? pickedImagePath = await CommonImagePicker.picImageAndGetFilePath();
-    // CROPPED IMAGE
-    if (pickedImagePath != null) {
-      CroppedFile? croppedImage =
-          await CommonImagePicker.cropImage(pickedImagePath);
-      selectedProfilePickLink.value = croppedImage?.path ?? '';
+    try {
+
+      String? pickedImagePath = await CommonImagePicker.picImageAndGetFilePath();
+      print("Picked image path: $pickedImagePath");
+      if (pickedImagePath != null && pickedImagePath.isNotEmpty) {
+
+        CroppedFile? croppedImage = await CommonImagePicker.cropImage(pickedImagePath);
+        print("Cropped image path: ${croppedImage?.path}");
+        if (croppedImage != null && croppedImage.path.isNotEmpty) {
+          selectedProfilePickLink.value = croppedImage.path;
+        } else {
+          print("Cropped image is null or empty.");
+        }
+      } else {
+        print("Picked image path is null or empty.");
+      }
+    } catch (e) {
+      print("Error while picking or cropping image: $e");
+      // Show error to user
     }
   }
+
+  Future<void> saveProfileImagePath(String path) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('profileImagePath', path);
+  }
+
+  Future<void> loadProfileImagePath() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? path = prefs.getString('profileImagePath');
+    if (path != null && path.isNotEmpty) {
+      selectedProfilePickLink.value = path;
+    }
+  }
+
+
   // PROFILE DETAIL AND EDIT DATA
   TextEditingController nameController = TextEditingController(text: StudentDetails.name);
   TextEditingController phoneNumberController = TextEditingController(text: "${StudentDetails.mobile}");

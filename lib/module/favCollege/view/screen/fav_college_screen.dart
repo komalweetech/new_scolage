@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../utils/StudentDetails.dart';
@@ -212,12 +212,13 @@ class _FavCollageScreenState extends State<FavCollageScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                SizedBox(height: 50.sp,),
-                                SvgPicture.asset(
-                                  'assets/image/noData.svg',
-                                  height: 250.sp,
-                                  width: 200.sp,
-                                ),
+                                SizedBox(height: 30.sp,),
+                                Image.asset("assets/icons/no_data_image.png",height: 300.sp,),
+                                // SvgPicture.asset(
+                                //   'assets/icons/no_data_image.svg',
+                                //   height: 250.sp,
+                                //   width: 200.sp,
+                                // ),
                                 SizedBox(height: 70.sp,),
                                Text(
                                  "No favorites yet",

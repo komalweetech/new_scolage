@@ -27,7 +27,7 @@ class NeedHelpWidget extends StatelessWidget {
               "Scolage Help Assistant",
               style: TextStyle(
                   fontWeight: FontWeight.w700,
-                  fontSize: 18.sp,
+                  fontSize: 20.sp,
                   color: Colors.black87,
                   fontFamily: "Poppins"),
             ),
@@ -37,7 +37,7 @@ class NeedHelpWidget extends StatelessWidget {
             child: Text(
               "We’re here for your queries",
               style: TextStyle(
-                fontSize: 12.sp,
+                fontSize: 14.sp,
                 fontFamily: "Poppins",
                 color: const Color.fromRGBO(128, 128, 128, 1),
               ),

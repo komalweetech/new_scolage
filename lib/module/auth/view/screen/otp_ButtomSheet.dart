@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_scolage/module/auth/view/screen/resetPasscode.dart';
 import 'package:new_scolage/module/auth/view/screen/sing_up_screen.dart';
+import 'package:new_scolage/utils/StudentDetails.dart';
 
 import '../../../../utils/commonWidget/common_sq_text_button.dart';
 import '../../../../utils/theme/common_color.dart';
@@ -52,7 +53,7 @@ class _OtpBottomSheetState extends State<OtpBottomSheet> {
     super.dispose();
   }
   void otpApi() async {
-    final mobileNumber = kAuthController.phoneNumberController.text;
+    final mobileNumber = StudentDetails.mobile;
 
     var response = await OtpApi.postApi(mobileNumber);
     print("response of login ==== $response");

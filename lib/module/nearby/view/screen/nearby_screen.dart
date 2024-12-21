@@ -258,7 +258,7 @@ class _NearbyScreenState extends State<NearbyScreen> {
                                         BoxShadow(
                                           color: Colors.grey.withOpacity(0.2),
                                           spreadRadius: 3,
-                                          blurRadius: 5,
+                                          blurRadius: 3,
                                           // spreadRadius: 1,
                                           offset: Offset(0, 2),
                                         )

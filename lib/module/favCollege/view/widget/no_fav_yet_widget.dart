@@ -40,9 +40,7 @@ class NoFavYetWidget extends StatelessWidget {
               ),
               SizedBox(height: 20.h),
               ElevatedButton(
-                onPressed: (){
-                  Get.to(const DashboardScreen());
-                },
+                onPressed: (){},
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
                   decoration: BoxDecoration(
