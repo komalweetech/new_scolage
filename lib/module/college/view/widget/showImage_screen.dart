@@ -59,10 +59,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:new_scolage/module/college/view/widget/gallery_view_screen.dart';
+import 'package:new_scolage/utils/theme/common_color.dart';
+import 'package:panorama_viewer/panorama_viewer.dart';
 
 class ShowImageScreen extends StatefulWidget {
-  const ShowImageScreen(
-      {super.key, required this.clgImageList, required this.clgId,});
+  const ShowImageScreen({
+    super.key,
+    required this.clgImageList,
+    required this.clgId,
+  });
 
   final List<dynamic> clgImageList;
   final String clgId;
@@ -73,7 +81,8 @@ class ShowImageScreen extends StatefulWidget {
 
 class _ShowImageScreenState extends State<ShowImageScreen> {
   final List<dynamic> imageList = [];
- late  String backgroundImage = '';
+  late String backgroundImage = '';
+
   // final List<dynamic> imageList = [
   //   "assets/image/junaghadh.jpg",
   //   "assets/image/kanpur.jpg",
@@ -89,6 +98,7 @@ class _ShowImageScreenState extends State<ShowImageScreen> {
       precacheImage(NetworkImage(image["imageUrl"]), context);
     }
   }
+
   @override
   void initState() {
     super.initState();
@@ -98,7 +108,6 @@ class _ShowImageScreenState extends State<ShowImageScreen> {
 
   void fetchCollegeImages() {
     List<dynamic> subList = widget.clgImageList;
-
 
     print("show image List ==== $subList}");
 
@@ -121,31 +130,32 @@ class _ShowImageScreenState extends State<ShowImageScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
         children: [
-          if(backgroundImage.isNotEmpty) ... [
-            // Panorama(
-            //   child:
-            //   // Image.asset(
-            //   //   imageList.first ,
-            //   //   // backgroundImage,
-            //   //   height: 200 * MediaQuery.of(context).devicePixelRatio,
-            //   //   fit: BoxFit.cover,
-            //   //   filterQuality: FilterQuality.high,
-            //   // ),
-            //   Image.network(
-            //     backgroundImage,
-            //     height: 200 * MediaQuery.of(context).devicePixelRatio,
-            //     fit: BoxFit.cover,
-            //     filterQuality: FilterQuality.high,
-            //   ),
-            // ),
+          if (backgroundImage.isNotEmpty) ...[
+            PanoramaViewer(
+              child: Image.network(
+                backgroundImage,
+                height: 200 * MediaQuery.of(context).devicePixelRatio,
+                fit: BoxFit.cover,
+                filterQuality: FilterQuality.high,
+              ),
+            ),
           ],
+          Positioned(
+              top: 50,
+              right: 30,
+              child: IconButton(
+                color: kPrimaryColor,
+                onPressed: () {
+                  Get.to(GalleryViewScreen(clgId: widget.clgId,));
+                },
+                icon: Icon(Icons.image_rounded,color: kPrimaryColor,size: 40,),
+              )),
           Positioned(
             bottom: 50.h,
             left: 15.w,
@@ -162,7 +172,6 @@ class _ShowImageScreenState extends State<ShowImageScreen> {
                       return buildThumbnail(imageList[index]);
                     },
                   ),
-
                 ),
               ],
             ),
@@ -179,69 +188,68 @@ class _ShowImageScreenState extends State<ShowImageScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5.0),
       child: GestureDetector(
-        onTap: () {
-          setState(() {
-            backgroundImage = imageUrl;
-          });
-        },
-        child: Container(
-          height: 95.h,
-          width: 100.w,
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-            border: Border.all(color: Colors.white),
-            color: Colors.white,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 1,
-                      blurRadius: 2,
-                      offset: const Offset(1, 3), // changes position of shadow
+          onTap: () {
+            setState(() {
+              backgroundImage = imageUrl;
+            });
+          },
+          child: Container(
+            height: 95.h,
+            width: 100.w,
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              border: Border.all(color: Colors.white),
+              color: Colors.white,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 1,
+                        blurRadius:5,
+                        offset:
+                            const Offset(1, 3), // changes position of shadow
+                      ),
+                    ],
+                  ),
+                  height: 95.h,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.network(
+                      imageUrl,
+                      width: 150.w,
+                      fit: BoxFit.cover,
+                      filterQuality: FilterQuality.high,
                     ),
-                  ],
-                ),
-                height: 95.h,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child:
-                  // Image.asset(
-                  //   imageList[index],
-                  //   width: 150.w,
-                  //   fit: BoxFit.cover,
-                  //   filterQuality: FilterQuality.high,
-                  // ),
-                  Image.network(
-                    imageUrl,
-                    width: 150.w,
-                    fit: BoxFit.cover,
-                    filterQuality: FilterQuality.high,
                   ),
                 ),
-              ),
-              // SizedBox(height: 10.h,),
-              Padding(
-                padding: const EdgeInsets.only(top: 5.0),
-                child: Container(
-                  width: 80.w ,
-                    // height: 20.h,
-                    child:  Text(imageName,overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontSize: 11,fontWeight: FontWeight.w500,color: Colors.black,
-                        fontFamily: "Poppins",),
-                    textAlign: TextAlign.center,)),
-              )
-            ],
-
-          ),
-        )
-      ),
+                // SizedBox(height: 10.h,),
+                Padding(
+                  padding: const EdgeInsets.only(top: 5.0),
+                  child: Container(
+                      width: 80.w,
+                      // height: 20.h,
+                      child: Text(
+                        imageName,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                          fontFamily: "Poppins",
+                        ),
+                        textAlign: TextAlign.center,
+                      )),
+                )
+              ],
+            ),
+          )),
     );
   }
 }

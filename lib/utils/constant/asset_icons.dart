@@ -16,8 +16,8 @@ abstract class AssetIcons {
   static const String SHARE_ICON = "assets/icons/share.png";
   static const String PROFILE_ICON = "assets/icons/profile.png";
   static const String INDIAN_FLAG_ICON = "assets/icons/indian_flag.png";
-  static const String BOTTOM_SHEET_CLOSE_ICON =
-      "assets/icons/bottom_sheet_close_icon.png";
+  static const String BOTTOM_SHEET_CLOSE_ICON = "assets/icons/bottom_sheet_close_icon.png";
+  static const String Gallery_Icon = "assets/icons/gallery_icon.png";
 
   // BOTTOM NAV BAR
   static const String HOME_ICON = "assets/icons/home.png";

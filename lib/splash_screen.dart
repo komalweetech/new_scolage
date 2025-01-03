@@ -20,12 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(Duration(seconds: 2), () async {
-      await authController.checkLoginStatus();
-      if (authController.isAuthenticated.value) {
-        Get.offAll(() => DashboardScreen());
-      } else {
-        Get.offAll(() => LoginScreen());
-      }
+      Get.offAll(() => LoginScreen());
     });
   }
   @override

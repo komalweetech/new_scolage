@@ -1,15 +1,12 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:new_scolage/module/auth/view/screen/sing_up_screen.dart';
 import '../../../../utils/StudentDetails.dart';
 import '../../../../utils/commonFunction/common_toast.dart';
 import '../../../../utils/commonWidget/common_save_and_submit_button.dart';
 import '../../../../utils/constant/asset_icons.dart';
 import '../../../../utils/enum/ui_enum.dart';
 import '../../../../utils/theme/common_color.dart';
-import '../../dependencies/auth_dependencies.dart';
-import '../../services/databaseHelper.dart';
 import '../../services/otp_Api.dart';
 import '../widget/continue_with_button.dart';
 import 'otp_ButtomSheet.dart';
@@ -30,18 +27,6 @@ class _OtpScreenState extends State<OtpScreen> {
     // TODO: implement initState
     super.initState();
     print("otp screen == ${phoneNumberController.text}");
-    _fetchAllUsers();
-  }
-
-  /// Fetch all users from the database on initialization
-  Future<void> _fetchAllUsers() async {
-    final dbHelper = DatabaseHelper.instance;
-    final users = await dbHelper.getAllUsers();
-    setState(() {
-      allUsers = users;
-    });
-
-    print("all login users == $users");
   }
 
   String? validatePhoneNumber(String? value) {

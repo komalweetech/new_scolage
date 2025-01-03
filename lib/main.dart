@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
               fontFamily: "SegoeUI",
               primarySwatch: Colors.blue,
             ),
-            home:  SplashScreen(),
+            home: SplashScreen(),
           );
         }
     );

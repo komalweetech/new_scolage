@@ -4,16 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:new_scolage/module/auth/controller/AuthController.dart';
 import '../../../../utils/StudentDetails.dart';
 import '../../../../utils/apiData/api_base_port.dart';
 import '../../../../utils/commonWidget/common_save_and_submit_button.dart';
 import '../../../../utils/commonWidget/common_sq_text_button.dart';
 import '../../../../utils/constant/asset_icons.dart';
 import 'package:http/http.dart' as http;
-
 import '../../../../utils/theme/common_color.dart';
-import '../../controller/signUp_controller.dart';
-import '../../dependencies/auth_dependencies.dart';
 import '../../services/databaseHelper.dart';
 import '../widget/webViewPage.dart';
 import 'login_screen.dart';
@@ -26,6 +24,8 @@ class SingUpScreen extends StatefulWidget {
 }
 
 class _SingUpScreenState extends State<SingUpScreen> {
+  final authController  = Get.put(AuthController());
+
   Map<String, TextEditingController> controllers = {
     'name': TextEditingController(),
     'gender': TextEditingController(),
