@@ -5,7 +5,6 @@ import 'module/auth/controller/AuthController.dart';
 import 'module/auth/view/screen/login_screen.dart';
 import 'module/dashboard/view/screen/dashboard_screen.dart';
 
-
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -19,13 +18,23 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 2), () async {
-      Get.offAll(() => LoginScreen());
-    });
+    checkLoginStatus();
   }
+
+  // check user login or new??
+  Future<void> checkLoginStatus() async {
+    await authController.checkLoginStatus();
+
+    if (authController.isAuthenticated.value) {
+      Get.offAll(() => DashboardScreen());
+    } else {
+      Get.offAll(() => LoginScreen());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       body: Center(child: CircularProgressIndicator()),
     );
   }

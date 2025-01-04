@@ -3,6 +3,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:new_scolage/module/college/view/widget/showImage_screen.dart';
 import '../../../../utils/commonFunction/common_function.dart';
 import '../../../../utils/commonWidget/common_vertical_divider.dart';
@@ -13,6 +15,8 @@ import '../../../home/view/widget/rate_in_star_widget.dart';
 import '../../services/review_api.dart';
 import '../screen/teaching_video_list_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'gallery_view_screen.dart';
 
 class CollegeImageAndShortDetailWidget extends StatelessWidget {
   const CollegeImageAndShortDetailWidget({super.key,required this.clgImage,required this.clgName, this.clgImageList,
@@ -66,6 +70,30 @@ class _CollegeImageWidgetState extends State<CollegeImageWidget> {
               return Image.network('https://images.unsplash.com/flagged/photo-1554473675-d0904f3cbf38?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGNvbGxlZ2V8ZW58MHx8MHx8fDA%3D',fit: BoxFit.cover);
             },)
         ),
+        Positioned(
+            bottom: 22.h,
+            left: 30.w,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  color: kPrimaryColor,
+                  onPressed: () {
+                    Get.to(GalleryViewScreen(clgId: widget.clgId,));
+                  },
+                  icon: Icon(Icons.image_rounded,color: kPrimaryColor,size: 40,),
+                ),
+                const SizedBox(width: 5), // Adds space between the icon and the text
+                Text(
+                  "Gallery",
+                  style: TextStyle(
+                    color: kPrimaryColor,
+                    fontSize: 14, // Adjust font size as needed
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            )),
         Positioned(
           bottom: 22.h,
           right: 30.w,

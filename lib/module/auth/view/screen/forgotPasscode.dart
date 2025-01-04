@@ -58,7 +58,8 @@ class _ForgotPassCodeState extends State<ForgotPassCode> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.r),
                 ),
-                labelText: " Mobile Number",
+                // labelText: " Mobile Number",
+                hintText: " Mobile Number",
               ),
             ),
             SizedBox(height: 12.h),
@@ -72,7 +73,8 @@ class _ForgotPassCodeState extends State<ForgotPassCode> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.r),
                 ),
-                labelText: " Email Id",
+                // labelText: " Email Id",
+                hintText: " Email Id",
 
               ),
             ),

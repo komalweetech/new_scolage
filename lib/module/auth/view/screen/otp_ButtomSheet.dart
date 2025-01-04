@@ -53,7 +53,7 @@ class _OtpBottomSheetState extends State<OtpBottomSheet> {
     super.dispose();
   }
   void otpApi() async {
-    final mobileNumber = StudentDetails.mobile;
+    final mobileNumber = kAuthController.phoneNumberController.text;
 
     var response = await OtpApi.postApi(mobileNumber);
     print("response of login ==== $response");

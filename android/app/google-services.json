@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "863032108599",
+    "project_id": "scollage-a7a19",
+    "storage_bucket": "scollage-a7a19.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:863032108599:android:b5a0016574ed8c309581b2",
+        "android_client_info": {
+          "package_name": "com.example.new_scolage"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQeqTmBBRP_9nGM23feopHvJGxbp4lXHU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

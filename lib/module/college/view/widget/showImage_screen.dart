@@ -83,16 +83,6 @@ class _ShowImageScreenState extends State<ShowImageScreen> {
   final List<dynamic> imageList = [];
   late String backgroundImage = '';
 
-  // final List<dynamic> imageList = [
-  //   "assets/image/junaghadh.jpg",
-  //   "assets/image/kanpur.jpg",
-  //   "assets/image/mumbai.jpg",
-  //   "assets/image/nashik.jpg" ,
-  //   "assets/image/raipur.jpg",
-  //   "assets/image/rajkot.jpg",
-  //   "assets/image/surat.jpg"
-  // ];
-
   void preloadImages() {
     for (var image in imageList) {
       precacheImage(NetworkImage(image["imageUrl"]), context);
@@ -146,16 +136,6 @@ class _ShowImageScreenState extends State<ShowImageScreen> {
               ),
             ),
           ],
-          Positioned(
-              top: 50,
-              right: 30,
-              child: IconButton(
-                color: kPrimaryColor,
-                onPressed: () {
-                  Get.to(GalleryViewScreen(clgId: widget.clgId,));
-                },
-                icon: Icon(Icons.image_rounded,color: kPrimaryColor,size: 40,),
-              )),
           Positioned(
             bottom: 50.h,
             left: 15.w,

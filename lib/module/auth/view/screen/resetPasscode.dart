@@ -53,7 +53,8 @@ final  TextEditingController _conformCodeController = TextEditingController();
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8.r),
                       ),
-                      labelText: " Enter New passcode",
+                      // labelText: " Enter New passcode",
+                      hintText:  " Enter New passcode",
                     ),
                   ),
                   SizedBox(height: 12.h),
@@ -68,8 +69,8 @@ final  TextEditingController _conformCodeController = TextEditingController();
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8.r),
                       ),
-                      labelText: " Confirm passcode",
-
+                      // labelText: " Confirm passcode",
+                      hintText: " Confirm passcode",
                     ),
                   ),
                   SizedBox(height: 10.h),

@@ -137,235 +137,242 @@ class _SingUpScreenState extends State<SingUpScreen> {
     return Scaffold(
       body: SafeArea(
           child: SingleChildScrollView(
-        physics: const ScrollPhysics(),
-        child: Column(
-          children: [
-            SizedBox(height: 30.h),
-            // LOGO .
-            SizedBox(
-              height: 50.h,
-              child: Image.asset(
-                AssetIcons.PRIVACY_POLICY_SCREEN_APP_LOGO_ICON,
-              ),
-            ),
-            SizedBox(height: 30.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: Column(
-                children: [
-                  TextFormField(
-                    controller: controllers['name'],
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      counter: const SizedBox(),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      labelText: " Full name",
-                    ),
+            physics: const ScrollPhysics(),
+            child: Column(
+              children: [
+                SizedBox(height: 30.h),
+                // LOGO .
+                SizedBox(
+                  height: 50.h,
+                  child: Image.asset(
+                    AssetIcons.PRIVACY_POLICY_SCREEN_APP_LOGO_ICON,
                   ),
-                  SizedBox(height: 10.h),
-                  DropdownButtonFormField<String>(
-                    value: selectedGender,
-                    items: genderOptions.map((String gender) {
-                      return DropdownMenuItem<String>(
-                        value: gender,
-                        child: Text(gender),
-                      );
-                    }).toList(),
-                    decoration: InputDecoration(
-                      isDense: true,
-                      counter: const SizedBox(),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      labelText: 'Gender',
-                    ),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedGender = newValue;
-                        controllers['gender']!.text = selectedGender ?? ' ';
-                      });
-                    },
-                  ),
-                  SizedBox(height: 10.h),
-                  TextFormField(
-                    controller: controllers['schoolName'],
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      counter: const SizedBox(),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      labelText: " Your School Name",
-                    ),
-                  ),
-                  SizedBox(height: 10.h),
-                  TextFormField(
-                    obscureText: obscureText,
-                    controller: controllers['password'],
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      counter: const SizedBox(),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      labelText: "Password",
-                      suffixIcon: IconButton(
-                          icon: Icon(obscureText ? Icons.visibility_off : Icons.visibility),
-                        onPressed: (){
-                        setState(() {
-                              obscureText = !obscureText;
-                            });
-                      }, )
-                    ),
-                  ),
-                  SizedBox(height: 10.h),
-                  TextFormField(
-                    obscureText: true,
-                    controller: controllers['confirmPassword'],
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      counter: const SizedBox(),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      labelText: "Confirm Password",
-                    ),
-                  ),
-                  SizedBox(height: 10.h),
-                  TextFormField(
-                    initialValue: StudentDetails.mobile,
-                    enabled: false,
-                    decoration: InputDecoration(
-                        isDense: true,
-                        counter: const SizedBox(),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        labelText: "PhoneNumber",
-                        suffixIcon: const Icon(
-                          Icons.check_circle_outline_outlined,
-                          color: Colors.green,
-                          size: 30,
-                        )),
-                    readOnly: true,
-                  ),
-                  SizedBox(height: 10.h),
-                  TextFormField(
-                    controller: controllers['email'],
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      counter: const SizedBox(),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      labelText: "Email address",
-                    ),
-                  ),
-                  SizedBox(height: 12.h),
-                  Row(
+                ),
+                SizedBox(height: 30.h),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: Column(
                     children: [
-                      Checkbox(
-                        value: agreedToTerms1,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            agreedToTerms1 = value ?? false;
-                          });
-                        },
-                        activeColor: Colors.black,
-                      ),
-                      const Text(
-                        'I would like to receive marketing offers and \npromotional communications \nfrom scolage.',
-                        style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w500,
-                            fontSize: 13),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 03,
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: agreedToTerms2,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            agreedToTerms2 = value ?? false;
-                          });
-                        },
-                        activeColor: Colors.black,
-                      ),
-                      const Text(
-                        'By creating an account or signing in you \nagree with our terms and conditions.',
-                        style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w500,
-                            fontSize: 13),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: 13,
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.circle,
-                          color: kPrimaryColor,
+                      TextFormField(
+                        controller: controllers['name'],
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          isDense: true,
+                          counter: const SizedBox(),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          // labelText: " Full name",
+                          hintText: " Full name",
                         ),
-                        CommonSqTextButton(
-                          name: "Terms and Condition",
-                          isSelected: true,
-                          fontSize: 15,
-                          onTap: () => WebViewPage(),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 30.h),
-                  CommonSaveAndSubmitButton(
-                    name: "Submit",
-                    onTap: () async {
-                      if (agreedToTerms1 && agreedToTerms2) {
-                        if (controllers['password']!.text == controllers['confirmPassword']!.text) {
-                          await _submitSingUpData();
-                        } else {
-                          Fluttertoast.showToast(
-                            msg: "Passwords do not match",
-                            toastLength: Toast.LENGTH_LONG,
-                            gravity: ToastGravity.BOTTOM,
-                            timeInSecForIosWeb: 2,
-                            backgroundColor: kPrimaryColor,
-                            textColor: Colors.white,
-                            fontSize: 16.0,
+                      ),
+                      SizedBox(height: 10.h),
+                      DropdownButtonFormField<String>(
+                        value: selectedGender,
+                        items: genderOptions.map((String gender) {
+                          return DropdownMenuItem<String>(
+                            value: gender,
+                            child: Text(gender),
                           );
-                        }
-                      } else {
-                        Fluttertoast.showToast(
-                          msg: "Please agree to the terms and conditions",
-                        );
-                      }
-                    },
-                    padding: EdgeInsets.zero,
+                        }).toList(),
+                        decoration: InputDecoration(
+                          isDense: true,
+                          counter: const SizedBox(),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          // labelText: 'Gender',
+                          hintText: 'Gender',
+                        ),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            selectedGender = newValue;
+                            controllers['gender']!.text = selectedGender ?? ' ';
+                          });
+                        },
+                      ),
+                      SizedBox(height: 10.h),
+                      TextFormField(
+                        controller: controllers['schoolName'],
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          isDense: true,
+                          counter: const SizedBox(),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          // labelText: " Your School Name",
+                          hintText: " Your School Name",
+                        ),
+                      ),
+                      SizedBox(height: 10.h),
+                      TextFormField(
+                        obscureText: obscureText,
+                        controller: controllers['password'],
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                            isDense: true,
+                            counter: const SizedBox(),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.r),
+                            ),
+                            // labelText: "Password",
+                            hintText: "Password",
+                            suffixIcon: IconButton(
+                              icon: Icon(obscureText ? Icons.visibility_off : Icons.visibility),
+                              onPressed: (){
+                                setState(() {
+                                  obscureText = !obscureText;
+                                });
+                              }, )
+                        ),
+                      ),
+                      SizedBox(height: 10.h),
+                      TextFormField(
+                        obscureText: true,
+                        controller: controllers['confirmPassword'],
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          isDense: true,
+                          counter: const SizedBox(),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          // labelText: "Confirm Password",
+                          hintText: "Confirm Password",
+                        ),
+                      ),
+                      SizedBox(height: 10.h),
+                      TextFormField(
+                        initialValue: StudentDetails.mobile,
+                        enabled: false,
+                        decoration: InputDecoration(
+                            isDense: true,
+                            counter: const SizedBox(),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.r),
+                            ),
+                            // labelText: "PhoneNumber",
+                            hintText: "PhoneNumber",
+                            suffixIcon: const Icon(
+                              Icons.check_circle_outline_outlined,
+                              color: Colors.green,
+                              size: 30,
+                            )),
+                        readOnly: true,
+                      ),
+                      SizedBox(height: 10.h),
+                      TextFormField(
+                        controller: controllers['email'],
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          isDense: true,
+                          counter: const SizedBox(),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          // labelText: "Email address",
+                          hintText: "Email address",
+                        ),
+                      ),
+                      SizedBox(height: 12.h),
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: agreedToTerms1,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                agreedToTerms1 = value ?? false;
+                              });
+                            },
+                            activeColor: Colors.black,
+                          ),
+                          const Text(
+                            'I would like to receive marketing offers and \npromotional communications \nfrom scolage.',
+                            style: TextStyle(
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.w500,
+                                fontSize: 13),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 03,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: agreedToTerms2,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                agreedToTerms2 = value ?? false;
+                              });
+                            },
+                            activeColor: Colors.black,
+                          ),
+                          const Text(
+                            'By creating an account or signing in you \nagree with our terms and conditions.',
+                            style: TextStyle(
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.w500,
+                                fontSize: 13),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: 13,
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.circle,
+                              color: kPrimaryColor,
+                            ),
+                            CommonSqTextButton(
+                              name: "Terms and Condition",
+                              isSelected: true,
+                              fontSize: 15,
+                              onTap: () => WebViewPage(),
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 30.h),
+                      CommonSaveAndSubmitButton(
+                        name: "Submit",
+                        onTap: () async {
+                          if (agreedToTerms1 && agreedToTerms2) {
+                            if (controllers['password']!.text == controllers['confirmPassword']!.text) {
+                              await _submitSingUpData();
+                            } else {
+                              Fluttertoast.showToast(
+                                msg: "Passwords do not match",
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 2,
+                                backgroundColor: kPrimaryColor,
+                                textColor: Colors.white,
+                                fontSize: 16.0,
+                              );
+                            }
+                          } else {
+                            Fluttertoast.showToast(
+                              msg: "Please agree to the terms and conditions",
+                            );
+                          }
+                        },
+                        padding: EdgeInsets.zero,
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
-      )),
+          )),
     );
   }
 }

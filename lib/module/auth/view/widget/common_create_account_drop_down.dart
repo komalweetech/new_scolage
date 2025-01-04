@@ -11,8 +11,9 @@ class CommonCreateAccountDropDown extends StatelessWidget {
       required this.hintText,
       required this.values,
       required this.onChanged,
-      required this.labelText});
-  final String labelText;
+      // required this.labelText
+      });
+  // final String labelText;
   final String hintText;
   final List<String> values;
   final Function(String? selected) onChanged;
@@ -22,15 +23,15 @@ class CommonCreateAccountDropDown extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: EdgeInsets.only(left: 12.w, bottom: 3.h, top: 8.h),
-          child: Text(
-            labelText,
-            style: TextStyle(
-              fontSize: 15.sp,
-            ),
-          ),
-        ),
+        // Padding(
+        //   padding: EdgeInsets.only(left: 12.w, bottom: 3.h, top: 8.h),
+        //   child: Text(
+        //     labelText,
+        //     style: TextStyle(
+        //       fontSize: 15.sp,
+        //     ),
+        //   ),
+        // ),
         DropdownButtonFormField2(
           decoration: InputDecoration(
             isDense: true,

@@ -22,6 +22,7 @@ class FavCollageScreen extends StatefulWidget {
 
 class _FavCollageScreenState extends State<FavCollageScreen> {
   List<dynamic> favoriteData = [];
+  Map<String, String> studentDetails = StudentDetails.getDetails();
   String studentId = StudentDetails.studentId;
 
   // String collegeId = CollegeData.collegeId;

@@ -27,10 +27,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.macOS:
         return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -54,29 +51,39 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAuWfTYfmTZJ0jlCGUfvXwvYY8gCBOOKD4',
-    appId: '1:892656577712:android:566f3e77e5da9df5b39f75',
-    messagingSenderId: '892656577712',
-    projectId: 'scolage-9b666',
-    storageBucket: 'scolage-9b666.firebasestorage.app',
+    apiKey: 'AIzaSyDQeqTmBBRP_9nGM23feopHvJGxbp4lXHU',
+    appId: '1:863032108599:android:b5a0016574ed8c309581b2',
+    messagingSenderId: '863032108599',
+    projectId: 'scollage-a7a19',
+    storageBucket: 'scollage-a7a19.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyD1likKEdjlFUcdeZPAmVY5cRIS1IQWyJg',
-    appId: '1:892656577712:ios:9a1b27ff2e3d3219b39f75',
-    messagingSenderId: '892656577712',
-    projectId: 'scolage-9b666',
-    storageBucket: 'scolage-9b666.firebasestorage.app',
-    iosBundleId: 'com.example.scolage',
+    apiKey: 'AIzaSyA2kiZ5rqFca6-pkEajZwPbJSciScYanZI',
+    appId: '1:863032108599:ios:8628d8e6860d00739581b2',
+    messagingSenderId: '863032108599',
+    projectId: 'scollage-a7a19',
+    storageBucket: 'scollage-a7a19.firebasestorage.app',
+    iosBundleId: 'com.example.newScolage',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyD1likKEdjlFUcdeZPAmVY5cRIS1IQWyJg',
-    appId: '1:892656577712:ios:9a1b27ff2e3d3219b39f75',
-    messagingSenderId: '892656577712',
-    projectId: 'scolage-9b666',
-    storageBucket: 'scolage-9b666.firebasestorage.app',
-    iosBundleId: 'com.example.scolage',
+    apiKey: 'AIzaSyA2kiZ5rqFca6-pkEajZwPbJSciScYanZI',
+    appId: '1:863032108599:ios:8628d8e6860d00739581b2',
+    messagingSenderId: '863032108599',
+    projectId: 'scollage-a7a19',
+    storageBucket: 'scollage-a7a19.firebasestorage.app',
+    iosBundleId: 'com.example.newScolage',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyArVkG4eCATe-mSdrIB_r8Z5ZIYdrwyPuA',
+    appId: '1:863032108599:web:1aa14325b88f47c29581b2',
+    messagingSenderId: '863032108599',
+    projectId: 'scollage-a7a19',
+    authDomain: 'scollage-a7a19.firebaseapp.com',
+    storageBucket: 'scollage-a7a19.firebasestorage.app',
+    measurementId: 'G-29FD537LX2',
   );
 
 }

@@ -139,20 +139,23 @@ class EditProfileWidget extends StatelessWidget {
                   SizedBox(height: 10),
                   // NAME FIELD
                   EditProfileTextField(
-                    labelText: "Name",
+                    // labelText: "Name",
+                    hintText: "Name",
                     controller: kProfileController.nameController,
                     textInputAction: TextInputAction.next,
                   ),
                   // PHONE NUMBER FIELD
                   EditProfileTextField(
-                    labelText: "Phone No.",
+                    // labelText: "Phone No.",
+                    hintText: "Phone No.",
                     controller: kProfileController.phoneNumberController,
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.next,
                   ),
                   // EMAIL ID FIELD
                   EditProfileTextField(
-                    labelText: "Email address",
+                    // labelText: "Email address",
+                    hintText: "Email address",
                     controller: kProfileController.emailController,
                     keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.next,
@@ -161,7 +164,8 @@ class EditProfileWidget extends StatelessWidget {
                   Obx(
                     () => EditProfileTextField(
                       textInputAction: TextInputAction.next,
-                      labelText: "Date of birth",
+                      // labelText: "Date of birth",
+                      hintText: "Date of birth",
                       readOnly: true,
                       onTap: () async {
                         kProfileController.dateOfBirth.value =
@@ -183,14 +187,16 @@ class EditProfileWidget extends StatelessWidget {
                   ),
                   // SCHOOL FIELD
                   EditProfileTextField(
-                    labelText: "School",
+                    // labelText: "School",
+                    hintText: "School",
                     controller: kProfileController.schoolNameController,
                     textInputAction: TextInputAction.next,
                   ),
                   // PA RENTS OR STUDENT FIELD
                   Obx(
                     () => EditProfileTextField(
-                      labelText: "Parent or Student",
+                      // labelText: "Parent or Student",
+                      hintText: "Parent or Student",
                       readOnly: true,
                       onTap: () async {
                         // BOTTOM SHEET

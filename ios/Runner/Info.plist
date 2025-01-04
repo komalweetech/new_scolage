@@ -32,6 +32,11 @@
     <string>Your app needs access to photos</string>
     <key>NSCameraUsageDescription</key>
     <string>Your app needs access to camera</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>We need access to the microphone for speech recognition.</string>
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>We need access to speech recognition services.</string>
+
 
 	<key>UISupportedInterfaceOrientations</key>
 	<array>

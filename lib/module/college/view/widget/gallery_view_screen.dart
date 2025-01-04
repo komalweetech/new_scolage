@@ -34,7 +34,7 @@ class _GalleryViewScreenState extends State<GalleryViewScreen> {
 
   Future<void> fetchImages() async {
     String apiUrl =
-        "http://192.168.29.70:7001/collegeImages/fetchCollegeImage/${widget.clgId}";
+        "${ApiBasePort.apiBaseUrl}/collegeImages/fetchCollegeImage/${widget.clgId}";
     print("get image url == $apiUrl");
     try {
       final response = await http.get(Uri.parse(apiUrl));

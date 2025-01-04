@@ -22,7 +22,7 @@ import '../widget/all_filter_bottom_sheet.dart';
 import '../widget/area_filter_bottom_sheet.dart';
 import '../widget/fees_filter_bottom_sheet.dart';
 import '../widget/nearby_screen_tab_widget.dart';
-import '../widget/trending_filter_bottom_sheet.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'map_screen.dart';
 
 class NearbyScreen extends StatefulWidget {
@@ -39,6 +39,9 @@ class _NearbyScreenState extends State<NearbyScreen> {
   final TextEditingController searchController = TextEditingController();
   List<dynamic> filterFees = [];
   List<dynamic> filterTrend = [];
+  late stt.SpeechToText _speech;
+  bool _isListening = false;
+  String _speechText = "";
 
 
 
@@ -50,7 +53,7 @@ class _NearbyScreenState extends State<NearbyScreen> {
     searchController.addListener(() {
       setState(() {});
     });
-
+    _speech = stt.SpeechToText();
   }
 
   @override
@@ -65,6 +68,26 @@ class _NearbyScreenState extends State<NearbyScreen> {
       collegeList.addAll(collegeBaseList);
       setState(() {});
       return;
+    }
+  }
+
+  // Function to start/stop listening
+  void _listen() async {
+    if (!_isListening && await _speech.initialize()) {
+      setState(() {
+        _isListening = true;
+      });
+
+      _speech.listen(onResult: (result) {
+        setState(() {
+          _speechText = result.recognizedWords; // Capture the recognized speech
+        });
+      });
+    } else {
+      setState(() {
+        _isListening = false;
+      });
+      _speech.stop(); // Stop listening
     }
   }
 
@@ -130,9 +153,12 @@ class _NearbyScreenState extends State<NearbyScreen> {
                   ),
                 ),
                 // MICROPHONE .
-                Image.asset(
-                  AssetIcons.MICROPHONE_ICON,
-                  height: 20,
+                GestureDetector(
+                  onTap: _listen,
+                  child: Image.asset(
+                    AssetIcons.MICROPHONE_ICON,
+                    height: 20,
+                  ),
                 ),
                 SizedBox(width: 17.w),
               ],

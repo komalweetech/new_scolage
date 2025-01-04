@@ -9,11 +9,23 @@ class StudentDetails {
 
   static void updateFromMap(Map<String, dynamic> data) {
     name = data['name'] ?? '';
-    studentId = data['student_id'] ?? '';
+    studentId = data['studentid'] ?? '';
     mobile = data['mobile'] ?? '';
     email = data['email'] ?? '';
     schoolName = data['school_name'] ?? '';
     role = data['role'] ?? '';
+  }
+
+  // Method to get student details
+  static Map<String, String> getDetails() {
+    return {
+      'studentid': studentId,
+      'name': name,
+      'mobile': mobile,
+      'email': email,
+      'school_name': schoolName,
+      'role': role,
+    };
   }
 
 }

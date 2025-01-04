@@ -48,6 +48,8 @@ class _HomeScreenState extends State<HomeScreen> {
     // TODO: implement initState
     super.initState();
     FavoriteColleges.init();
+
+    print("student id == ${StudentDetails.studentId}");
   }
 
   // for filter Duplicate subject from all subject list..

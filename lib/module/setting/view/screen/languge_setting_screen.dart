@@ -80,10 +80,6 @@ class LanguageSettingScreen extends StatelessWidget {
             onTap: () async {
               try {
                 CommonLoadingDialog.showLoadingDialog();
-
-                final authController = Get.find<AuthController>();
-                // await authController.updateLoginStatus(
-                //     StudentDetails.mobile, false);
                 Fluttertoast.showToast(
                   msg: "Logged out successfully!",
                   toastLength: Toast.LENGTH_LONG,

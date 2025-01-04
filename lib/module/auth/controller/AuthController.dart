@@ -25,7 +25,7 @@ class AuthController extends GetxController {
     const oneSec = Duration(seconds: 1);
     timerInstance = Timer.periodic(
       oneSec,
-      (Timer timer) {
+          (Timer timer) {
         if (duration.value == 0) {
           // setState(() {
           timer.cancel();
@@ -76,8 +76,13 @@ class AuthController extends GetxController {
     Map<String, dynamic>? user = await dbHelper.getUser(mobileNumber);
 
     if (user != null) {
-      user['isLoggedIn'] = status ? 1 : 0;
-      await dbHelper.updateUser(user, user['user_id']); // Ensure `user_id` is correctly referenced.
+      final updatedUser = Map<String, dynamic>.from(user);
+
+      // Update the isLoggedIn field
+      updatedUser['isLoggedIn'] = status ? 1 : 0;
+
+      // Update the user in the database
+      await dbHelper.updateUser(updatedUser, updatedUser['user_id']); // Ensure `user_id` is correctly referenced.
     }
   }
 

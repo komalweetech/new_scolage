@@ -3,8 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import '../../../../utils/StudentDetails.dart';
 import '../../../../utils/commonWidget/status_bar_theme.dart';
 import '../../../../utils/enum/ui_enum.dart';
+import '../../../auth/dependencies/auth_dependencies.dart';
 import '../../../favCollege/view/screen/fav_college_screen.dart';
 import '../../../home/view/screen/home_screen.dart';
 import '../../../need_help/view/widget/need_help_widget.dart';
@@ -20,6 +22,14 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("Student ID login Screen: ${StudentDetails.studentId}");
+    print("Name: ${StudentDetails.name}");
+    print("Mobile: ${StudentDetails.mobile}");
+    print("Email: ${StudentDetails.email}");
+    print("School: ${StudentDetails.schoolName}");
+    print("Role: ${StudentDetails.role}");
+    print("number login screen == ${kAuthController.phoneNumberController.text}");
+
     return StatusBarTheme(
       value: SystemUiOverlayStyle.light,
       child: PopScope(

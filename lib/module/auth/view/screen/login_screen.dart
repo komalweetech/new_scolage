@@ -149,7 +149,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8.r),
                       ),
-                      labelText: " Mobile Number",
+                      // labelText: " Mobile Number",
+                      hintText: " Mobile Number",
                     ),
                   ),
                   SizedBox(height: 12.h),
@@ -165,7 +166,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8.r),
                       ),
-                      labelText: " Password",
+                      // labelText: " Password",
+                      hintText: " Password",
                       suffixIcon: IconButton(
                         icon: Icon(
                           isObscure ? Icons.visibility_off : Icons.visibility,

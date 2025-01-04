@@ -1,12 +1,15 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../../../../utils/StudentDetails.dart';
 import '../../../../utils/commonFunction/common_toast.dart';
 import '../../../../utils/commonWidget/common_save_and_submit_button.dart';
 import '../../../../utils/constant/asset_icons.dart';
 import '../../../../utils/enum/ui_enum.dart';
 import '../../../../utils/theme/common_color.dart';
+import '../../dependencies/auth_dependencies.dart';
+import '../../services/databaseHelper.dart';
 import '../../services/otp_Api.dart';
 import '../widget/continue_with_button.dart';
 import 'otp_ButtomSheet.dart';
@@ -40,7 +43,7 @@ class _OtpScreenState extends State<OtpScreen> {
   }
 
   void otpApi() async {
-    final mobileNumber = phoneNumberController.text;
+    final mobileNumber = kAuthController.phoneNumberController.text;
 
     if (mobileNumber.isEmpty) {
       CommonToast.showToast('Mobile number is required', StatusType.info);
@@ -54,19 +57,26 @@ class _OtpScreenState extends State<OtpScreen> {
       return;
     }
 
-    // Check if the number exists in the user list
-    final isLoggedIn = allUsers.any(
-          (user) => user['mobile'] == mobileNumber && user['isLoggedIn'] == 1,
-    );
+// Check if the number exists and is already logged in
+    final dbHelper = DatabaseHelper.instance;
+    final user = await dbHelper.getUser(mobileNumber);
 
-    if (isLoggedIn) {
-      CommonToast.showToast('This number is already logged in.', StatusType.info);
+    if (user != null ) {
+      Fluttertoast.showToast(
+        msg: "This number is already logged in.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: kPrimaryColor,
+        textColor: Colors.white,
+        timeInSecForIosWeb: 1,
+        fontSize: 16.0,
+      );
       return;
     }
 
-    print("opt ============== $isLoggedIn");
-    // Send OTP
+    // Proceed to send OTP
     final otpResponse = await OtpApi.postApi(mobileNumber);
+
 
     if (otpResponse != null) {
       setState(() {
@@ -74,12 +84,19 @@ class _OtpScreenState extends State<OtpScreen> {
           isScrollControlled: true,
           context: context,
           builder: (BuildContext context) =>
-              const OtpBottomSheet(isFromForgotPasscode: false),
+          const OtpBottomSheet(isFromForgotPasscode: false),
         );
       });
     } else {
-      CommonToast.showToast(
-          'Failed to send OTP. Please try again later.', StatusType.error);
+      Fluttertoast.showToast(
+        msg: "Failed to send OTP. Please try again later.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: kPrimaryColor,
+        textColor: Colors.white,
+        timeInSecForIosWeb: 1,
+        fontSize: 16.0,
+      );
     }
   }
 
@@ -109,7 +126,7 @@ class _OtpScreenState extends State<OtpScreen> {
                     SizedBox(height: 20.h),
                     // MOBILE NUMBER FIELD
                     TextFormField(
-                      controller: phoneNumberController,
+                      controller: kAuthController.phoneNumberController,
                       maxLength: 10,
                       keyboardType: TextInputType.phone,
                       decoration: InputDecoration(
@@ -118,7 +135,8 @@ class _OtpScreenState extends State<OtpScreen> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8.r),
                         ),
-                        labelText: " Mobile Number",
+                        // labelText: " Mobile Number",
+                        hintText: " Mobile Number",
                       ),
                       validator: validatePhoneNumber,
                     ),
@@ -128,7 +146,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       child: CommonSaveAndSubmitButton(
                         name: "Sent Otp",
                         onTap: () {
-                          StudentDetails.mobile = phoneNumberController.text;
+                          StudentDetails.mobile = kAuthController.phoneNumberController.text;
                           otpApi();
                         },
                         padding: EdgeInsets.zero,

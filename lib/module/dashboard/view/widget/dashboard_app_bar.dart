@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
 import '../../../../utils/commonWidget/keyboard_off.dart';
 import '../../../../utils/constant/asset_icons.dart';
 import '../../../../utils/theme/common_color.dart';
 import '../../../nearby/view/screen/nearby_screen.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 class DashboardAppBar extends StatefulWidget {
   const DashboardAppBar({super.key,});
@@ -26,6 +28,9 @@ class _DashboardAppBarState extends State<DashboardAppBar> {
 
 //   Controller for the search text field
   final TextEditingController searchController = TextEditingController();
+  late stt.SpeechToText _speech;
+  bool _isListening = false;
+  String _speechText = "";
 
   @override
   void initState() {
@@ -34,6 +39,7 @@ class _DashboardAppBarState extends State<DashboardAppBar> {
     searchController.addListener(() {
       filterData();
     });
+    _speech = stt.SpeechToText();
   }
 
   // Function to filter data based on the search term
@@ -79,6 +85,27 @@ class _DashboardAppBarState extends State<DashboardAppBar> {
       }).toList();
     });
   }
+
+  // Function to start/stop listening
+  void _listen() async {
+    if (!_isListening && await _speech.initialize()) {
+      setState(() {
+        _isListening = true;
+      });
+
+      _speech.listen(onResult: (result) {
+        setState(() {
+          _speechText = result.recognizedWords; // Capture the recognized speech
+        });
+      });
+    } else {
+      setState(() {
+        _isListening = false;
+      });
+      _speech.stop(); // Stop listening
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -185,7 +212,7 @@ class _DashboardAppBarState extends State<DashboardAppBar> {
                             },
                             /*selectionControls: searchsController,*/
 
-                            keyboardType: TextInputType.numberWithOptions(signed: true),
+                            keyboardType: TextInputType.text,
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
                             ],
@@ -213,9 +240,12 @@ class _DashboardAppBarState extends State<DashboardAppBar> {
                             );
                           },
                         ),*/
-                        Image.asset(
-                          AssetIcons.MICROPHONE_ICON,
-                          height: 20,
+                        GestureDetector(
+                          onTap:  _listen,
+                          child: Image.asset(
+                            AssetIcons.MICROPHONE_ICON,
+                            height: 20,
+                          ),
                         ),
                         SizedBox(width: 17.w),
                       ],

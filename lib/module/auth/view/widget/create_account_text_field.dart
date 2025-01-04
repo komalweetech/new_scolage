@@ -10,7 +10,7 @@ class CreateAccountTextField extends StatelessWidget {
       required this.controller,
       this.prefix,
       this.suffix,
-      required this.labelText,
+      // required this.labelText,
       this.hintText,
       this.padding,
       this.inputFormatters,
@@ -27,7 +27,7 @@ class CreateAccountTextField extends StatelessWidget {
   final TextEditingController controller;
   final Widget? prefix;
   final Widget? suffix;
-  final String labelText;
+  // final String labelText;
   final String? hintText;
   final EdgeInsetsGeometry? padding;
   final List<TextInputFormatter>? inputFormatters;
@@ -48,15 +48,15 @@ class CreateAccountTextField extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: EdgeInsets.only(left: 12.w, bottom: 3.h, top: 8.h),
-              child: Text(
-                labelText,
-                style: TextStyle(
-                  fontSize: 15.sp,
-                ),
-              ),
-            ),
+            // Padding(
+            //   padding: EdgeInsets.only(left: 12.w, bottom: 3.h, top: 8.h),
+            //   child: Text(
+            //     labelText,
+            //     style: TextStyle(
+            //       fontSize: 15.sp,
+            //     ),
+            //   ),
+            // ),
             TextFormField(
               readOnly: readOnly ?? false,
               autofocus: autofocus ?? false,

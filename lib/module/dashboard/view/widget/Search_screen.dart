@@ -10,6 +10,7 @@ import '../../../../utils/theme/common_color.dart';
 import '../../../college/model/college_model.dart';
 import '../../../home/services/ClgListApi.dart';
 import '../../../home/view/widget/college_card.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 
 List<CollegeDataModel> collegeList = [];
@@ -26,8 +27,11 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController searchController = TextEditingController();
-
+  late stt.SpeechToText _speech;
+  bool _isListening = false;
+  String _speechText = "";
   bool loader = false;
+
   @override
   void initState() {
     super.initState();
@@ -35,6 +39,7 @@ class _SearchScreenState extends State<SearchScreen> {
     searchController.addListener(() {
       setState(() {});
     });
+    _speech = stt.SpeechToText();
   }
 
   @override
@@ -51,11 +56,32 @@ class _SearchScreenState extends State<SearchScreen> {
       return;
     }
   }
+
   Future<void> _refreshData() async {
     await Future.delayed(Duration(seconds: 2));
     setState(() {
       ClgListApi.getAttApi();
     });
+  }
+
+  // Function to start/stop listening
+  void _listen() async {
+    if (!_isListening && await _speech.initialize()) {
+      setState(() {
+        _isListening = true;
+      });
+
+      _speech.listen(onResult: (result) {
+        setState(() {
+          _speechText = result.recognizedWords; // Capture the recognized speech
+        });
+      });
+    } else {
+      setState(() {
+        _isListening = false;
+      });
+      _speech.stop(); // Stop listening
+    }
   }
 
   // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -170,7 +196,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               ),
                             ),
                             InkWell(
-                              onTap: (){},
+                              onTap: _listen,
                               child: Image.asset(
                                 AssetIcons.MICROPHONE_ICON,
                                 height: 20,

@@ -85,10 +85,12 @@ class _CollegeDetailScreenAppBarState extends State<CollegeDetailScreenAppBar> {
                               //  remove from favorites Colleges List
                               await FavoriteApi.deleteApi(widget.clgId, StudentDetails.studentId);
                               print("this college delete in favorite college List");
+                              print("id == ${StudentDetails.studentId}");
                             } else {
                               //  add to favorites college List
                               await FavoriteApi.postApi(widget.clgId, StudentDetails.studentId);
                               print("this college add in Favorite college List");
+                              print("id == ${StudentDetails.studentId}");
                             }
                             setState(() {
                               FavoriteColleges.toggleFavorite(widget.clgId);

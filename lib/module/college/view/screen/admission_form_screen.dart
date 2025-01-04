@@ -464,7 +464,8 @@ class _AdmissionFormState extends State<AdmissionForm> {
                         Expanded(
                           child: AdmissionFormScreenTextField(
                             controller: controllers['name']!,
-                            labelText: "Name",
+                            // labelText: "Name",
+                            hintText: "Name",
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter a name';
@@ -477,7 +478,8 @@ class _AdmissionFormState extends State<AdmissionForm> {
                         Expanded(
                           child: AdmissionFormScreenTextField(
                             controller: controllers['surname']!,
-                            labelText: "Surname",
+                            // labelText: "Surname",
+                            hintText: "Surname",
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter a surname';
@@ -494,14 +496,16 @@ class _AdmissionFormState extends State<AdmissionForm> {
                         Expanded(
                           child: AdmissionFormScreenTextField(
                             controller: controllers['nationality']!,
-                            labelText: "Nationality",
+                            // labelText: "Nationality",
+                            hintText: "Nationality",
                           ),
                         ),
                         SizedBox(width: 10.w),
                         Expanded(
                           child: AdmissionFormScreenTextField(
                             controller: controllers['mother_tongue']!,
-                            labelText: "Mother Tongue",
+                            // labelText: "Mother Tongue",
+                            hintText: "Mother Tongue",
                           ),
                         ),
                       ],
@@ -512,8 +516,8 @@ class _AdmissionFormState extends State<AdmissionForm> {
                         Expanded(
                           child: AdmissionFormScreenDropDown(
                             value: controllers['gender']!.text,
-                            labelText: "Gender",
-                            hintText: "",
+                            // labelText: "Gender",
+                            hintText: "Gender",
                             onChanged: (newValue) {
                               setState(() {
                                 controllers['gender']!.text = newValue!;
@@ -527,7 +531,8 @@ class _AdmissionFormState extends State<AdmissionForm> {
                         Expanded(
                             child: // DATE OF BIRTH FIELD
                                 AdmissionFormScreenTextField(
-                          labelText: "Date of birth",
+                          // labelText: "Date of birth",
+                          hintText: "Date of birth",
                           controller: controllers["dob"]!,
                           onTap: () async {
                             DateTime? selectDate =
@@ -572,8 +577,8 @@ class _AdmissionFormState extends State<AdmissionForm> {
                         Expanded(
                           child: AdmissionFormScreenDropDown(
                             value: controllers['blood_group']!.text,
-                            labelText: "Blood Group",
-                            hintText: "",
+                            // labelText: "Blood Group",
+                            hintText: "Blood Group",
                             onChanged: (newValue) {
                               setState(() {
                                 controllers['blood_group']!.text = newValue!;
@@ -600,8 +605,8 @@ class _AdmissionFormState extends State<AdmissionForm> {
                         Expanded(
                           child: AdmissionFormScreenDropDown(
                             value: controllers['city']!.text,
-                            labelText: "City",
-                            hintText: "",
+                            // labelText: "City",
+                            hintText: "City",
                             onChanged: (newValue) {
                               setState(() {
                                 controllers['city']!.text = newValue!;
@@ -621,8 +626,8 @@ class _AdmissionFormState extends State<AdmissionForm> {
                         Expanded(
                           child: AdmissionFormScreenDropDown(
                             value: controllers['district']!.text,
-                            labelText: "District",
-                            hintText: "",
+                            // labelText: "District",
+                            hintText: "District",
                             onChanged: (newValue) {
                               setState(() {
                                 controllers['district']!.text = newValue!;
@@ -642,8 +647,8 @@ class _AdmissionFormState extends State<AdmissionForm> {
                         Expanded(
                           child: AdmissionFormScreenDropDown(
                             value: controllers['state']!.text,
-                            labelText: "State",
-                            hintText: "",
+                            // labelText: "State",
+                            hintText: "State",
                             onChanged: (newValue) {
                               setState(() {
                                 controllers['state']!.text = newValue!;
@@ -661,8 +666,8 @@ class _AdmissionFormState extends State<AdmissionForm> {
                     ),
                     AdmissionFormScreenDropDown(
                       value: controllers['religion']!.text,
-                      labelText: "Religion",
-                      hintText: "",
+                      // labelText: "Religion",
+                      hintText: "Religion",
                       onChanged: (newValue) {
                         setState(() {
                           controllers['religion']!.text = newValue!;
@@ -683,14 +688,16 @@ class _AdmissionFormState extends State<AdmissionForm> {
                         Expanded(
                           child: AdmissionFormScreenTextField(
                             controller: controllers['caste_name']!,
-                            labelText: "Caste Name",
+                            // labelText: "Caste Name",
+                            hintText: "Caste Name",
                           ),
                         ),
                         SizedBox(width: 10.w),
                         Expanded(
                           child: AdmissionFormScreenTextField(
                             controller: controllers['sub_caste_name']!,
-                            labelText: "Sub Caste Name",
+                            // labelText: "Sub Caste Name",
+                            hintText: "Sub Caste Name",
                           ),
                         ),
                       ],
@@ -701,8 +708,8 @@ class _AdmissionFormState extends State<AdmissionForm> {
                         Expanded(
                           child: AdmissionFormScreenDropDown(
                             value: controllers['caste_category']!.text,
-                            labelText: "Caste Category",
-                            hintText: "",
+                            // labelText: "Caste Category",
+                            hintText: "Caste Category",
                             onChanged: (newValue) {
                               setState(() {
                                 controllers['caste_category']!.text = newValue!;
@@ -722,8 +729,8 @@ class _AdmissionFormState extends State<AdmissionForm> {
                         Expanded(
                           child: AdmissionFormScreenDropDown(
                             value: controllers['reservation']!.text,
-                            labelText: "Reservation",
-                            hintText: "",
+                            // labelText: "Reservation",
+                            hintText: "Reservation",
                             onChanged: (newValue) {
                               setState(() {
                                 controllers['reservation']!.text = newValue!;
@@ -737,8 +744,9 @@ class _AdmissionFormState extends State<AdmissionForm> {
                     // Examination Passed (SSC/OSSC/ specify if any other)
                     AdmissionFormScreenTextField(
                       controller: controllers['examination_passed']!,
-                      labelText:
-                          "Examination Passed (SSC/OSSC/ specify if any other)",
+                      // labelText: "Examination Passed (SSC/OSSC/ specify if any other)",
+                      hintText: "Examination Passed (SSC/OSSC/ specify if any other)",
+
                     ),
                     // School Last studied as AND Exam Year
                     Row(
@@ -747,7 +755,8 @@ class _AdmissionFormState extends State<AdmissionForm> {
                           flex: 75,
                           child: AdmissionFormScreenTextField(
                             controller: controllers['school_last_studied']!,
-                            labelText: "School Last studied",
+                            // labelText: "School Last studied",
+                            hintText: "School Last studied",
                           ),
                         ),
                         SizedBox(width: 10.w),
@@ -755,7 +764,8 @@ class _AdmissionFormState extends State<AdmissionForm> {
                           flex: 25,
                           child: AdmissionFormScreenTextField(
                             controller: controllers['exam_year']!,
-                            labelText: "Exam Year",
+                            // labelText: "Exam Year",
+                            hintText: "Exam Year",
                             keyboardType: TextInputType.number,
                           ),
                         ),
@@ -768,8 +778,8 @@ class _AdmissionFormState extends State<AdmissionForm> {
                         Expanded(
                           child: AdmissionFormScreenDropDown(
                               value: controllers['select_subject']!.text,
-                              labelText: "Select Subject",
-                              hintText: "",
+                              // labelText: "Select Subject",
+                              hintText: "Select Subject",
                               onChanged: (newValue) {
                                 controllers['select_subject']!.text = newValue!;
                                 print(
@@ -783,8 +793,8 @@ class _AdmissionFormState extends State<AdmissionForm> {
                         Expanded(
                           child: AdmissionFormScreenDropDown(
                             value: controllers['second_language']!.text,
-                            labelText: "Second Language",
-                            hintText: "",
+                            // labelText: "Second Language",
+                            hintText: "Second Language",
                             onChanged: (newValue) {
                               setState(() {
                                 controllers['second_language']!.text =
@@ -850,8 +860,8 @@ class _AdmissionFormState extends State<AdmissionForm> {
                     ),
                     AdmissionFormScreenTextField(
                       controller: controllers['name_of_father']!,
-                      labelText:
-                          "Name of Father/Guardian (As Per SSC Certificate)",
+                      // labelText: "Name of Father/Guardian (As Per SSC Certificate)",
+                      hintText: "Name of Father/Guardian (As Per SSC Certificate)",
                     ),
 
                     // Occupation and Annual Income
@@ -861,13 +871,15 @@ class _AdmissionFormState extends State<AdmissionForm> {
                         Expanded(
                           child: AdmissionFormScreenTextField(
                             controller: controllers['occupation']!,
-                            labelText: "Occupation",
+                            // labelText: "Occupation",
+                            hintText: "Occupation",
                           ),
                         ),
                         SizedBox(width: 10.w),
                         Expanded(
                           child: AdmissionFormScreenTextField(
-                            labelText: 'Annual Income',
+                            // labelText: 'Annual Income',
+                            hintText: 'Annual Income',
                             controller: controllers['annual_income']!,
                             keyboardType: TextInputType.number,
                           ),
@@ -877,7 +889,8 @@ class _AdmissionFormState extends State<AdmissionForm> {
                     // Address(Residence)
                     AdmissionFormScreenTextField(
                       controller: controllers['address_residence']!,
-                      labelText: "Address(Residence)",
+                      // labelText: "Address(Residence)",
+                      hintText:  "Address(Residence)",
                     ),
                     // City AND State Group
                     Row(
@@ -885,8 +898,8 @@ class _AdmissionFormState extends State<AdmissionForm> {
                         Expanded(
                           child: AdmissionFormScreenDropDown(
                             value: controllers['select_subject']!.text,
-                            labelText: "City",
-                            hintText: "",
+                            // labelText: "City",
+                            hintText: "City",
                             onChanged: (value) {},
                             items: const [
                               'Mumbai',
@@ -902,8 +915,8 @@ class _AdmissionFormState extends State<AdmissionForm> {
                         Expanded(
                           child: AdmissionFormScreenDropDown(
                             value: controllers['select_subject']!.text,
-                            labelText: "State",
-                            hintText: "",
+                            // labelText: "State",
+                            hintText: "State",
                             onChanged: (value) {},
                             items: const [
                               'Gujarat',
@@ -920,7 +933,8 @@ class _AdmissionFormState extends State<AdmissionForm> {
                     // Address(Residence)
                     AdmissionFormScreenTextField(
                       controller: controllers['address_permanent']!,
-                      labelText: "Address(Permanent)",
+                      // labelText: "Address(Permanent)",
+                      hintText: "Address(Permanent)",
                     ),
                     // City AND State Group
                     Row(
@@ -928,8 +942,8 @@ class _AdmissionFormState extends State<AdmissionForm> {
                         Expanded(
                           child: AdmissionFormScreenDropDown(
                             value: controllers['city']!.text,
-                            labelText: "City",
-                            hintText: "",
+                            // labelText: "City",
+                            hintText: "City",
                             onChanged: (value) {},
                             items: const [
                               'Mumbai',
@@ -945,8 +959,8 @@ class _AdmissionFormState extends State<AdmissionForm> {
                         Expanded(
                           child: AdmissionFormScreenDropDown(
                             value: controllers['state']!.text,
-                            labelText: "State",
-                            hintText: "",
+                            // labelText: "State",
+                            hintText: "State",
                             onChanged: (value) {},
                             items: const [
                               'Gujarat',
@@ -966,14 +980,16 @@ class _AdmissionFormState extends State<AdmissionForm> {
                         Expanded(
                           child: AdmissionFormScreenTextField(
                             controller: controllers["phone"]!,
-                            labelText: "Phone",
+                            // labelText: "Phone",
+                            hintText: "Phone",
                             keyboardType: TextInputType.number,
                           ),
                         ),
                         SizedBox(width: 10.w),
                         Expanded(
                           child: AdmissionFormScreenTextField(
-                            labelText: 'Email',
+                            // labelText: 'Email',
+                            hintText: 'Email',
                             controller: controllers["email"]!,
                           ),
                         ),

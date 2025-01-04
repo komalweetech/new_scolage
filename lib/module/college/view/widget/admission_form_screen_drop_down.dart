@@ -10,9 +10,10 @@ class AdmissionFormScreenDropDown extends StatelessWidget {
         required this.value,
         required this.items,
         required this.onChanged,
-        required this.labelText});
+        // required this.labelText
+      });
 
-  final String labelText;
+  // final String labelText;
   final String value;
   final String hintText;
   final List<String> items;
@@ -25,15 +26,15 @@ class AdmissionFormScreenDropDown extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: EdgeInsets.only(left: 6.w, bottom: 3.h, top: 10.h),
-          child: Text(
-            labelText,
-            style: TextStyle(
-              fontSize: 15.sp,
-            ),
-          ),
-        ),
+        // Padding(
+        //   padding: EdgeInsets.only(left: 6.w, bottom: 3.h, top: 10.h),
+        //   child: Text(
+        //     labelText,
+        //     style: TextStyle(
+        //       fontSize: 15.sp,
+        //     ),
+        //   ),
+        // ),
         SizedBox(
           height: 38,
           // decoration: BoxDecoration(
