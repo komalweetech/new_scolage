@@ -11,6 +11,7 @@ import '../services/databaseHelper.dart';
 
 class AuthController extends GetxController {
   var isAuthenticated = false.obs;
+  final DatabaseHelper dbHelper = DatabaseHelper.instance;
 
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController passwordController =  TextEditingController();
@@ -55,7 +56,6 @@ class AuthController extends GetxController {
 
   // Check if a user is logged in
   Future<void> checkLoginStatus() async {
-    final dbHelper = DatabaseHelper.instance;
     List<Map<String, dynamic>> users = await dbHelper.getAllUsers();
 
     // Find a user marked as logged in
@@ -86,11 +86,27 @@ class AuthController extends GetxController {
     }
   }
 
-  void setUserData(Map<String, dynamic> data) {
-    userData.value = data;
+  // void setUserData(Map<String, dynamic> data) {
+  //   userData.value = data;
+  // }
+  //
+  // void updateUserDataLocally(Map<String, dynamic> updatedData) {
+  //   userData.value = updatedData;
+  // }
+  Future<void> login(String mobile, String password) async {
+    final user = await dbHelper.getUser(mobile);
+
+    if (user != null && user['password'] == password) {
+      await dbHelper.setLoggedInStatus(mobile, 1); // Set user as logged in
+      isAuthenticated.value = true;
+    } else {
+      isAuthenticated.value = false;
+      throw Exception('Invalid credentials');
+    }
   }
 
-  void updateUserDataLocally(Map<String, dynamic> updatedData) {
-    userData.value = updatedData;
+  Future<void> logout(String mobile) async {
+    await dbHelper.setLoggedInStatus(mobile, 0); // Set user as logged out
+    isAuthenticated.value = false;
   }
 }

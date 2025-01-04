@@ -86,7 +86,6 @@ class _LoginScreenState extends State<LoginScreen> {
     print("Users from database: $users");
 
     // get user.
-    final dbHelper = DatabaseHelper.instance;
     final user = await DatabaseHelper.instance.getUser(mobile);
 
     if (user != null && user['password'] == password) {
@@ -102,8 +101,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
       Get.offAll(() => DashboardScreen());
       await authController.updateLoginStatus(mobile, true);
-
-
       return;
     } else {
       Fluttertoast.showToast(

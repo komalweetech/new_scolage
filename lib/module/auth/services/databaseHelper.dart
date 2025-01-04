@@ -71,6 +71,16 @@ class DatabaseHelper {
     final db = await instance.database;
     return await db.delete('users', where: 'id = ?', whereArgs: [id]);
   }
+  Future<int> setLoggedInStatus(String mobile, int status) async {
+    final db = await instance.database;
+    return await db.update(
+      'users',
+      {'isLoggedIn': status},
+      where: 'mobile = ?',
+      whereArgs: [mobile],
+    );
+  }
+
 
 
 }
