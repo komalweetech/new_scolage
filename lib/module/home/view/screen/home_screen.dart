@@ -25,6 +25,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
   Future<void> _refreshData() async {
     await Future.delayed(Duration(seconds: 2));
     setState(() {
@@ -48,7 +49,6 @@ class _HomeScreenState extends State<HomeScreen> {
     // TODO: implement initState
     super.initState();
     FavoriteColleges.init();
-
     print("student id == ${StudentDetails.studentId}");
   }
 
@@ -135,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         CommonFunction.kNavigatorPush(
                                             context,
                                             NearbyScreen(
-                                              cityName: "Nearby",
+                                              collegeCode: "Nearby",
                                             ));
                                       },
                                       child: Column(
@@ -243,6 +243,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             totalArea: collegeList[index]["college_area"].toString(),
                             clgCode: collegeList[index]["college_code"].toString(),
                             location: collegeList[index]["location"].toString(),
+                            collegeStatus: collegeList[index]['collegeStatus']?? "N/A" ,
                           );
                         },
                         separatorBuilder: (context, index) =>

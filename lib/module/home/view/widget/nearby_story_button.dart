@@ -15,7 +15,7 @@ class NearbyStoryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        CommonFunction.kNavigatorPush(context, NearbyScreen(cityName: cityName,));
+        CommonFunction.kNavigatorPush(context, NearbyScreen(collegeCode: cityName,));
       },
       child: Column(
         children: [

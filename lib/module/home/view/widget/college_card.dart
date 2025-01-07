@@ -9,7 +9,7 @@ class CollegeCard extends StatefulWidget {
     this.clgImage, this.clgName,this.clgId,this.clgAdd,this.clgDetails,this.policy, this.eligibility, this.feeTerms,this.safety,
   this.subjectName,this.staffList,this.socialMedia,this.open,this.close,this.days,
     this.clgType,this.systemType,this.academicType,this.affiliated,this.classType,this.classrooms,this.totalSeats,this.totalFloors,this.totalArea,this.clgCode,
-    this.clgImageList,this.videoList,this.webSiteLink,this.location,this.description,this.more_info,this.history,
+    this.clgImageList,this.videoList,this.webSiteLink,this.location,this.description,this.more_info,this.history, this.collegeStatus
   });
   final int index;
   final double? height;
@@ -48,6 +48,7 @@ class CollegeCard extends StatefulWidget {
   final String? totalArea;
   final String? clgCode;
   final String? location;
+  final String? collegeStatus;
 
   @override
   State<CollegeCard> createState() => _CollegeCardState();
@@ -108,6 +109,7 @@ class _CollegeCardState extends State<CollegeCard> {
               totalFloors: widget.totalFloors,
               totalArea: widget.totalArea,
               clgCode: widget.clgCode,
+              collegeStatus: widget.collegeStatus,
             ));
           },
           child: Stack(

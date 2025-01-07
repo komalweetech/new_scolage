@@ -207,7 +207,7 @@ class _DashboardAppBarState extends State<DashboardAppBar> {
                                Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => NearbyScreen(cityName: "",)),
+                                    builder: (context) => NearbyScreen(collegeCode: "",)),
                               );
                             },
                             /*selectionControls: searchsController,*/

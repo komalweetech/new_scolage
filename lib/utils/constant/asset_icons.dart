@@ -117,6 +117,7 @@ abstract class AssetIcons {
   static const String TAKE_A_TOUR_ICON = "assets/icons/take_a_tour.png";
   static const String SMALL_LOCATION_ICON = "assets/icons/small_location.png";
   static const String PLAY_LIST_ICON = "assets/icons/play_list.png";
+  static const String VIDEO_IMAGE = "assets/icons/video_image.jpg";
   static const String DETAIL_OFF_ICON = "assets/icons/detail_off_icon.png";
   static const String DETAIL_ON_ICON = "assets/icons/detail_on_icon.png";
 

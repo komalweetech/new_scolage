@@ -7,8 +7,14 @@ import 'area_list_widget.dart';
 import 'clear_and_apply_button_row.dart';
 
 class AreaFilterBottomSheet extends StatefulWidget {
-  const AreaFilterBottomSheet({super.key,this.onCitySelected});
-  final void Function(String)? onCitySelected;
+  final List<String> areas;
+  final Function(String) onAreaSelected;
+
+  const AreaFilterBottomSheet({
+    super.key,
+    required this.areas,
+    required this.onAreaSelected,});
+
 
   @override
   State<AreaFilterBottomSheet> createState() => _AreaFilterBottomSheetState();
@@ -43,7 +49,7 @@ class _AreaFilterBottomSheetState extends State<AreaFilterBottomSheet> {
                     child: SingleChildScrollView(
                       child: AreaListWidget(
                         onCitySelected: (selectedCity) {
-                            widget.onCitySelected?.call(selectedCity);
+                            widget.onAreaSelected.call(selectedCity);
                         },
                       ),
                     ),
@@ -57,8 +63,8 @@ class _AreaFilterBottomSheetState extends State<AreaFilterBottomSheet> {
                     onApplyButtonTap: () {
                       kNearbyController.reloadCollegesData();
                       Navigator.pop(context);
-                      if (widget.onCitySelected != null) {
-                        widget.onCitySelected!(kNearbyController.selectedArea.value);
+                      if (widget.onAreaSelected == null) {
+                        widget.onAreaSelected(kNearbyController.selectedArea.value);
                       }
                     },
                   ),

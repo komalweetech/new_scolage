@@ -12,13 +12,32 @@ import '../../home/model/college_data.dart';
 import '../../home/model/college_model.dart';
 import '../dependencies/nearby_dependencies.dart';
 import '../model/infrastructure_model.dart';
+import '../service/collage_area.dart';
 
 class NearbyController extends GetxController {
+  final CollageArea collageAreaService = CollageArea();
+
   // CHECK VALUE SELECTED OR NOT IN CHIP LIST
   bool isThisValueSelected(
       {required String value, required List<dynamic> list}) {
     return list.contains(value);
   }
+
+  // get clg area list from api
+  RxList<String> collegeAreas = <String>[].obs;
+
+  // Get college area list from API
+  Future<void> loadCollegeAreas() async {
+    try {
+      final areas = await collageAreaService.fetchCollegeAreas();
+      print("Fetched college areas: $areas");
+      collegeAreas.value = areas;
+    } catch (e) {
+      print("Error loading college areas: $e");
+    }
+  }
+
+
 
   //! SORT BY
   Rx<SortByEnum?> selectedSortBy = Rx(null);
@@ -117,7 +136,9 @@ final feesList = AllCollegeData.collegeDataList["subject"] ?? [];
     "assets/image/raipur.jpg",
   ];
   // LISTS .
-  RxList<String> displayAreaList = <String>[].obs;
+  RxList<String>
+
+  displayAreaList = <String>[].obs;
   List<String> selectedAreaList = [];
   RxString selectedArea = "".obs;
   RxBool displayAllAreaList = false.obs;
@@ -280,7 +301,22 @@ final feesList = AllCollegeData.collegeDataList["subject"] ?? [];
     return filteredColleges;
   }
 
-   reloadCollegesData() {
+   reloadCollegesData() async {
+     print('Reload colleges with filters');
+
+     try {
+       // Fetch the college areas before reloading
+       final areas = await collageAreaService.fetchCollegeAreas();
+       print("Fetched college areas: $areas");
+
+       // Update the observable list
+       collegeAreas.value = areas;
+
+       // Use the fetched areas in your logic (if needed)
+       print("College areas updated: ${collegeAreas.value}");
+     } catch (e) {
+       print("Error loading college areas: $e");
+     }
     update(); // Trigger a rebuild
   }
 

@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../../../utils/commonFunction/common_bottom_sheet_function.dart';
@@ -26,9 +27,10 @@ import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'map_screen.dart';
 
 class NearbyScreen extends StatefulWidget {
-  NearbyScreen({super.key, required this.cityName,});
+  NearbyScreen({super.key, required this.collegeCode,});
 
-  final String cityName;
+  final String collegeCode;
+
 
   @override
   State<NearbyScreen> createState() => _NearbyScreenState();
@@ -49,7 +51,7 @@ class _NearbyScreenState extends State<NearbyScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    searchController.text = widget.cityName;
+    searchController.text = widget.collegeCode;
     searchController.addListener(() {
       setState(() {});
     });
@@ -132,7 +134,7 @@ class _NearbyScreenState extends State<NearbyScreen> {
                     ),
                   ),
                 ),
-                // TEXTFIELD .
+
                 Expanded(
                   child: TextFormField(
                     onChanged: (value) {
@@ -191,19 +193,27 @@ class _NearbyScreenState extends State<NearbyScreen> {
                             name: NearbyScreenTabEnum.values[index].displayName,
                             onTap: () async {
                               // kNearbyController.isAllFilter.value = false;
-                              nearbyController.selectedFees.value =
-                                  NearbyScreenTabEnum.values[index].displayName;
+                              nearbyController.selectedFees.value = NearbyScreenTabEnum.values[index].displayName;
                               switch (NearbyScreenTabEnum.values[index]) {
                                 case NearbyScreenTabEnum.area:
+                                  await nearbyController.loadCollegeAreas();
                                   await commonBottomSheetFunction(
-                                      context: context,
-                                      child: AreaFilterBottomSheet(
-                                        onCitySelected: (selectedCity) {
-                                          searchController.text = selectedCity;
-                                          kNearbyController.reloadCollegesData();
-                                          print("select area for filter == $selectedCity");
+                                    context: context,
+                                    child: Obx(() {
+                                      final areas = nearbyController.collegeAreas;
+                                      if (areas.isEmpty) {
+                                        return Center(child: CircularProgressIndicator());
+                                      }
+                                      return AreaFilterBottomSheet(
+                                        areas: areas,
+                                        onAreaSelected: (selectedArea) {
+                                          searchController.text = selectedArea;
+                                          nearbyController.reloadCollegesData();
+                                          print("Selected area for filter: $selectedArea");
                                         },
-                                      ));
+                                      );
+                                    }),
+                                  );
                                   break;
                                 case NearbyScreenTabEnum.fees:
                                   await commonBottomSheetFunction(
@@ -339,7 +349,8 @@ class _NearbyScreenState extends State<NearbyScreen> {
                     log("${snapshot.error}");
                     print("college filter throw error :: ${snapshot.error}");
                     return Center(child: Text("Error : ${snapshot.error}"));
-                  } else if (snapshot.hasData && snapshot.data!.college!.isNotEmpty) {
+                  }
+                  else if (snapshot.hasData && snapshot.data!.college!.isNotEmpty) {
                     CollegeData collegeData = snapshot.data!;
                     print("all college Data == $collegeData");
 
@@ -456,12 +467,15 @@ class _NearbyScreenState extends State<NearbyScreen> {
                           final collegeName = collegeData.college?[index].collegename;
                           final collegeAddress = collegeData.college?[index].address;
                           final collegeArea = collegeData.college?[index].collegeArea;
+                          final collegeCode = collegeData.college?[index].collegeCode;
 
                           final searchTerm = searchController.text.toLowerCase();
 
-                          final collegeMatchesSearchTerm = collegeName!.toLowerCase().contains(searchTerm) ||
+                          final collegeMatchesSearchTerm =
+                                collegeName!.toLowerCase().contains(searchTerm)    ||
                                 collegeAddress!.toLowerCase().contains(searchTerm) ||
-                                collegeArea!.toLowerCase().contains(searchTerm) ;
+                                collegeArea!.toLowerCase().contains(searchTerm)    ||
+                                    collegeCode!.toLowerCase().contains(searchTerm);
 
                           // filter clgImage ;
                           final clgImageForCurrentCollege = clgImageInfoList.where((imageInfo) =>
@@ -559,10 +573,10 @@ class _NearbyScreenState extends State<NearbyScreen> {
                   } else {
                     print("not match any college college..");
                     return Center(
-                        child: Text(
-                      "No Colleges Found",
-                      style: TextStyle(color: Colors.black, fontSize: 20),
-                    ));
+                        child: SvgPicture.asset('assets/icons/no_data_image.svg',
+                          height: 250.sp,
+                          width: 200.sp,)
+                    );
                   }
                 },
               ),

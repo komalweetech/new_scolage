@@ -815,17 +815,18 @@ class _AdmissionFormState extends State<AdmissionForm> {
                     // Hall Ticket No:
                     Row(
                       children: [
-                        Text(
-                          "Hall Ticket No:",
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontFamily: "Poppins",
-                          ),
-                        ),
+                        // Text(
+                        //   "Hall Ticket No:",
+                        //   style: TextStyle(
+                        //     fontSize: 16.sp,
+                        //     fontFamily: "Poppins",
+                        //   ),
+                        // ),
                         SizedBox(width: 10.w),
                         Expanded(
                           child: AdmissionFormScreenTextField(
                             controller: controllers['hall_ticket_no']!,
+                            hintText: "Hall Ticket No:",
                           ),
                         ),
                       ],
@@ -833,18 +834,19 @@ class _AdmissionFormState extends State<AdmissionForm> {
                     // Aadhar No:
                     Row(
                       children: [
-                        Text(
-                          "Aadhar No:",
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontFamily: "Poppins",
-                          ),
-                        ),
+                        // Text(
+                        //   "Aadhar No:",
+                        //   style: TextStyle(
+                        //     fontSize: 16.sp,
+                        //     fontFamily: "Poppins",
+                        //   ),
+                        // ),
                         SizedBox(width: 10.w),
                         Expanded(
                           child: AdmissionFormScreenTextField(
                             controller: controllers['aadhar_no']!,
                             keyboardType: TextInputType.number,
+                            hintText: "Aadhar No:",
                           ),
                         ),
                       ],

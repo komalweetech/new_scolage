@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -19,8 +18,19 @@ import 'package:url_launcher/url_launcher.dart';
 import 'gallery_view_screen.dart';
 
 class CollegeImageAndShortDetailWidget extends StatelessWidget {
-  const CollegeImageAndShortDetailWidget({super.key,required this.clgImage,required this.clgName, this.clgImageList,
-    required this.clgId,required this.videoList,this.clgAdd,this.clgType,this.clgCode,this.location});
+  const CollegeImageAndShortDetailWidget(
+      {super.key,
+      required this.clgImage,
+      required this.clgName,
+      this.clgImageList,
+      required this.clgId,
+      required this.videoList,
+      this.clgAdd,
+      this.clgType,
+      this.clgCode,
+      this.location,
+      this.collegeStatus,});
+
   final String clgImage;
   final String clgName;
   final List<dynamic>? clgImageList;
@@ -30,69 +40,87 @@ class CollegeImageAndShortDetailWidget extends StatelessWidget {
   final String? clgCode;
   final List<dynamic> videoList;
   final String? location;
+  final String? collegeStatus;
 
   @override
   Widget build(BuildContext context) {
     print("current location == $location");
     log("current college location $location");
-    return  Column(
+    return Column(
       children: [
-        CollegeImageWidget(clgImage: clgImage,clgImageList: clgImageList!,clgId:clgId),
-        CollegeBasicDetailWidget(clgName: clgName,clgId: clgId,clgAdd: clgAdd! ,clgType: clgType!,clgCode: clgCode!,location: location!),
-        PlayListWidget(clgId:clgId,videoList:videoList),
+        CollegeImageWidget(
+            clgImage: clgImage, clgImageList: clgImageList!, clgId: clgId),
+        CollegeBasicDetailWidget(
+            clgName: clgName,
+            clgId: clgId,
+            clgAdd: clgAdd!,
+            clgType: clgType!,
+            clgCode: clgCode!,
+            location: location!,
+        collegeStatus: collegeStatus!,),
+        PlayListWidget(clgId: clgId, videoList: videoList),
       ],
     );
   }
 }
 
 class CollegeImageWidget extends StatefulWidget {
-  const CollegeImageWidget({super.key,required this.clgImage,required this.clgImageList,required this.clgId,});
+  const CollegeImageWidget({
+    super.key,
+    required this.clgImage,
+    required this.clgImageList,
+    required this.clgId,
+  });
+
   final String clgImage;
   final List<dynamic> clgImageList;
   final String clgId;
-
-
 
   @override
   State<CollegeImageWidget> createState() => _CollegeImageWidgetState();
 }
 
 class _CollegeImageWidgetState extends State<CollegeImageWidget> {
-
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         SizedBox(
-          height: 330,
-          width: kScreenWidth(context),
-            child: Image.network(widget.clgImage,fit: BoxFit.cover,errorBuilder: (context,error,stackTrace) {
-              return Image.network('https://images.unsplash.com/flagged/photo-1554473675-d0904f3cbf38?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGNvbGxlZ2V8ZW58MHx8MHx8fDA%3D',fit: BoxFit.cover);
-            },)
-        ),
+            height: 330,
+            width: kScreenWidth(context),
+            child: Image.network(
+              widget.clgImage,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Image.network(
+                    'https://images.unsplash.com/flagged/photo-1554473675-d0904f3cbf38?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGNvbGxlZ2V8ZW58MHx8MHx8fDA%3D',
+                    fit: BoxFit.cover);
+              },
+            )),
         Positioned(
-            bottom: 22.h,
+            bottom: 13.h,
             left: 30.w,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  color: kPrimaryColor,
-                  onPressed: () {
-                    Get.to(GalleryViewScreen(clgId: widget.clgId,));
-                  },
-                  icon: Icon(Icons.image_rounded,color: kPrimaryColor,size: 40,),
+            child: GestureDetector(
+              onTap: () {
+                Get.to(GalleryViewScreen(
+                  clgId: widget.clgId,
+                ));
+              },
+              child: Container(
+                child: Column(
+                  children: [
+                    Icon(Icons.image_rounded,color: Colors.white,size: 30,),
+                    Text(
+                      "Gallery",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12, // Adjust font size as needed
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 5), // Adds space between the icon and the text
-                Text(
-                  "Gallery",
-                  style: TextStyle(
-                    color: kPrimaryColor,
-                    fontSize: 14, // Adjust font size as needed
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
+              ),
             )),
         Positioned(
           bottom: 22.h,
@@ -104,7 +132,9 @@ class _CollegeImageWidgetState extends State<CollegeImageWidget> {
               borderRadius: BorderRadius.circular(100),
               onTap: () {
                 CommonFunction.kNavigatorPush(
-                  context, ShowImageScreen(clgId: widget.clgId,clgImageList: widget.clgImageList),
+                  context,
+                  ShowImageScreen(
+                      clgId: widget.clgId, clgImageList: widget.clgImageList),
                 );
               },
               child: Container(
@@ -118,7 +148,11 @@ class _CollegeImageWidgetState extends State<CollegeImageWidget> {
                     SizedBox(width: 6.w),
                     Text(
                       "Take a Tour",
-                      style: TextStyle(color: grey128Color, fontSize: 11.sp,fontFamily: "Poppins",),
+                      style: TextStyle(
+                        color: grey128Color,
+                        fontSize: 11.sp,
+                        fontFamily: "Poppins",
+                      ),
                     )
                   ],
                 ),
@@ -130,29 +164,39 @@ class _CollegeImageWidgetState extends State<CollegeImageWidget> {
     );
   }
 
-  // @override
-  // void dispose() {
-  //   Future.delayed(Duration.zero, () {
-  //     kCollegeController.showTabBar.value = true;
-  //   });
-  //   log(name: "123", kCollegeController.showTabBar.value.toString());
+// @override
+// void dispose() {
+//   Future.delayed(Duration.zero, () {
+//     kCollegeController.showTabBar.value = true;
+//   });
+//   log(name: "123", kCollegeController.showTabBar.value.toString());
 
-  //   super.dispose();
-  // }
+//   super.dispose();
+// }
 }
 
 class CollegeBasicDetailWidget extends StatefulWidget {
-  const CollegeBasicDetailWidget({super.key,required this.clgName,required this.clgId,required this.clgType,
-    required this.clgAdd, required this.clgCode,required this.location});
+  const CollegeBasicDetailWidget(
+      {super.key,
+      required this.clgName,
+      required this.clgId,
+      required this.clgType,
+      required this.clgAdd,
+      required this.clgCode,
+      required this.location,
+      required this.collegeStatus});
+
   final String clgName;
   final String clgId;
   final String clgType;
   final String clgAdd;
   final String clgCode;
   final String location;
+  final String collegeStatus;
 
   @override
-  State<CollegeBasicDetailWidget> createState() => _CollegeBasicDetailWidgetState();
+  State<CollegeBasicDetailWidget> createState() =>
+      _CollegeBasicDetailWidgetState();
 }
 
 class _CollegeBasicDetailWidgetState extends State<CollegeBasicDetailWidget> {
@@ -164,12 +208,12 @@ class _CollegeBasicDetailWidgetState extends State<CollegeBasicDetailWidget> {
     }
     double totalStars = 0.0;
     for (var review in reviewStar) {
-
       totalStars += double.parse(review["data"]["reviewStar"].toString());
     }
     return totalStars / reviewStar.length;
   }
-   // for find current location in map...
+
+  // for find current location in map...
   void _openLocationInMaps() async {
     if (await canLaunch(widget.location)) {
       await launch(widget.location);
@@ -182,11 +226,13 @@ class _CollegeBasicDetailWidgetState extends State<CollegeBasicDetailWidget> {
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: ReviewsApi.getReviewsApi(widget.clgId),
-        builder: (context,snapshot) {
-          if(snapshot.connectionState == ConnectionState.done) {
-            if(snapshot.hasError) {
-              return const Center(child: Text("This is am error:"),);
-            } else if(snapshot.hasData) {
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return const Center(
+                child: Text("This is am error:"),
+              );
+            } else if (snapshot.hasData) {
               reviewStar = snapshot.data!;
               // print("review star data == $reviewStar");
               // print("total rating == ${reviewStar[0]["totalReview"]}");
@@ -211,7 +257,8 @@ class _CollegeBasicDetailWidgetState extends State<CollegeBasicDetailWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 1.5.h, horizontal: 5.5.w),
+                    padding: EdgeInsets.symmetric(
+                        vertical: 1.5.h, horizontal: 5.5.w),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(100),
@@ -219,37 +266,58 @@ class _CollegeBasicDetailWidgetState extends State<CollegeBasicDetailWidget> {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Image.asset(AssetIcons.PROTECT_GREEN_ICON, height: 10.h),
+                        Image.asset(AssetIcons.PROTECT_GREEN_ICON,
+                            height: 10.h),
                         SizedBox(width: 1.5.h),
                         Text(
-                          "Veryfied",
-                          style: TextStyle(color: Colors.green, fontSize: 9.sp,fontFamily: "Poppins",),
+                          widget.collegeStatus,
+                          style: TextStyle(
+                            color: Colors.green,
+                            fontSize: 9.sp,
+                            fontFamily: "Poppins",
+                          ),
                         ),
                       ],
                     ),
                   ),
                   SizedBox(height: 4.h),
-                  Text(widget.clgName,
+                  Text(
+                    widget.clgName,
                     // "Sindhu Womens College",
-                    style: TextStyle(color: Colors.white, fontSize: 18.sp,fontFamily: "Poppins",fontWeight: FontWeight.w700),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18.sp,
+                        fontFamily: "Poppins",
+                        fontWeight: FontWeight.w700),
                   ),
                   SizedBox(height: 4.h),
                   Row(
                     children: [
-                      RateInStarWidget(iconSize: 20,reviewStar: calculateAverageReviewStar().toString() ,),
+                      RateInStarWidget(
+                        iconSize: 20,
+                        reviewStar: calculateAverageReviewStar().toString(),
+                      ),
                       Text(
                         " ${calculateAverageReviewStar().toStringAsFixed(1)} (${reviewStar.length.toString()} ratings)",
-                        style: TextStyle(color: Colors.white, fontSize: 10.sp,fontFamily: "Poppins",fontWeight: FontWeight.w500),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10.sp,
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w500),
                       ),
                       const Spacer(),
                       Text(
                         "Admissions",
-                        style: TextStyle(color: Colors.white, fontSize: 10.sp,fontFamily: "Poppins",fontWeight: FontWeight.w500),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10.sp,
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w500),
                       ),
                       SizedBox(width: 10.w),
                       Container(
-                        padding:
-                        EdgeInsets.symmetric(vertical: 1.h, horizontal: 5.5.w),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 1.h, horizontal: 5.5.w),
                         decoration: BoxDecoration(
                           color: Colors.green,
                           borderRadius: BorderRadius.circular(4.5),
@@ -259,7 +327,11 @@ class _CollegeBasicDetailWidgetState extends State<CollegeBasicDetailWidget> {
                           children: [
                             Text(
                               "Open",
-                              style: TextStyle(color: Colors.white, fontSize: 10.sp,fontFamily: "Poppins",fontWeight: FontWeight.w500),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10.sp,
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.w500),
                             ),
                           ],
                         ),
@@ -271,12 +343,20 @@ class _CollegeBasicDetailWidgetState extends State<CollegeBasicDetailWidget> {
                     children: [
                       Text(
                         "${widget.clgType} college",
-                        style: TextStyle(color: Colors.white, fontSize: 10.sp,fontFamily: "Poppins",fontWeight: FontWeight.w500),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10.sp,
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w500),
                       ),
                       const Spacer(),
                       Text(
                         "SC code- ${widget.clgCode}",
-                        style: TextStyle(color: Colors.white, fontSize: 10.sp,fontFamily: "Poppins",fontWeight: FontWeight.w500),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10.sp,
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w500),
                       ),
                     ],
                   ),
@@ -286,7 +366,11 @@ class _CollegeBasicDetailWidgetState extends State<CollegeBasicDetailWidget> {
                   Text(
                     // "Pillar no-254, Rethibowli, Mehdipatnam",
                     widget.clgAdd,
-                    style: TextStyle(color: Colors.white, fontSize: 10.sp,fontFamily: "Poppins",fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 10.sp,
+                        fontFamily: "Poppins",
+                        fontWeight: FontWeight.w500),
                   ),
                   SizedBox(height: 4.h),
                   Row(
@@ -295,14 +379,23 @@ class _CollegeBasicDetailWidgetState extends State<CollegeBasicDetailWidget> {
                       SizedBox(width: 2.w),
                       Text(
                         "05 km",
-                        style: TextStyle(color: Colors.white, fontSize: 10.sp,fontFamily: "Poppins",fontWeight: FontWeight.w500),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10.sp,
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w500),
                       ),
                       SizedBox(width: 10.w),
                       InkWell(
                         onTap: _openLocationInMaps,
                         child: Text(
                           "View on map",
-                          style: TextStyle(color: Colors.white, fontSize: 10.sp,fontWeight: FontWeight.w500,fontFamily: "Poppins",),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: "Poppins",
+                          ),
                         ),
                       ),
                     ],
@@ -312,13 +405,13 @@ class _CollegeBasicDetailWidgetState extends State<CollegeBasicDetailWidget> {
             ),
           );
         });
-
-
   }
 }
 
 class PlayListWidget extends StatelessWidget {
-  const PlayListWidget({super.key,required this.clgId,required this.videoList});
+  const PlayListWidget(
+      {super.key, required this.clgId, required this.videoList});
+
   final String clgId;
   final List<dynamic> videoList;
 
@@ -330,7 +423,7 @@ class PlayListWidget extends StatelessWidget {
         onTap: () {
           CommonFunction.kNavigatorPush(
             context,
-             TeachingVideoListScreen(clgId: clgId,videoList: videoList),
+            TeachingVideoListScreen(clgId: clgId, videoList: videoList),
           );
         },
         child: Row(
@@ -342,14 +435,19 @@ class PlayListWidget extends StatelessWidget {
                   Text(
                     "A Word from Management",
                     style: TextStyle(
-                      fontSize: 16.sp,fontFamily: "Poppins",fontWeight: FontWeight.w700
-                    ),
+                        fontSize: 16.sp,
+                        fontFamily: "Poppins",
+                        fontWeight: FontWeight.w700),
                   ),
                   SizedBox(
                     height: 20.h,
                     child: Row(
                       children: [
-                        Text("& ", style: TextStyle(fontSize: 10.sp,fontFamily: "Poppins",fontWeight: FontWeight.w500)),
+                        Text("& ",
+                            style: TextStyle(
+                                fontSize: 10.sp,
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.w500)),
                         const Expanded(child: CommonDivider()),
                       ],
                     ),
@@ -357,14 +455,15 @@ class PlayListWidget extends StatelessWidget {
                   Text(
                     "Teaching Demo Videos",
                     style: TextStyle(
-                      fontSize: 16.sp,fontFamily: "Poppins",fontWeight: FontWeight.w700
-                    ),
+                        fontSize: 16.sp,
+                        fontFamily: "Poppins",
+                        fontWeight: FontWeight.w700),
                   ),
                 ],
               ),
             ),
             SizedBox(width: 30.w),
-            Image.asset(AssetIcons.PLAY_LIST_ICON, height: 100.h),
+            Image.asset(AssetIcons.VIDEO_IMAGE, height: 100.h),
             SizedBox(width: 30.w),
           ],
         ),

@@ -82,7 +82,7 @@ class AuthController extends GetxController {
       updatedUser['isLoggedIn'] = status ? 1 : 0;
 
       // Update the user in the database
-      await dbHelper.updateUser(updatedUser, updatedUser['user_id']); // Ensure `user_id` is correctly referenced.
+      await dbHelper.updateUser(updatedUser, updatedUser['studentid']); // Ensure `user_id` is correctly referenced.
     }
   }
 

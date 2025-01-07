@@ -27,7 +27,7 @@ class CollegeDetailScreen extends StatefulWidget {
     required this.clgId,this.safety, this.courseDetails,this.staffList,this.socialDetails,this.open,this.close,this.days,
     this.clgType,this.systemType,this.academicType,this.affiliated,this.classType,this.classrooms,this.totalSeats,this.totalFloors,this.totalArea,this.clgCode,
     this.clgImageList,this.videoList,this.webSiteLink,this.clgAdd,this.location,this.description,this.more_info,this.history,
-    this.feeTerms,
+    this.feeTerms,this.collegeStatus,
   });
 
   final List<dynamic>? clgDetails;
@@ -64,6 +64,7 @@ class CollegeDetailScreen extends StatefulWidget {
   final String? totalArea;
   final String? clgCode;
   final String? location;
+  final String? collegeStatus;
 
 
   @override
@@ -118,7 +119,8 @@ class _CollegeDetailScreenState extends State<CollegeDetailScreen> {
                 // IMAGE AND BASIC DETAIL
                  CollegeImageAndShortDetailWidget(clgImage: widget.clgImage,clgName: widget.clgName,
                    clgImageList:widget.clgImageList!,clgId: widget.clgId,videoList:widget.videoList!,
-                    clgType:widget.clgType ,clgAdd:widget.clgAdd ,clgCode: widget.clgCode,location: widget.location,),
+                    clgType:widget.clgType ,clgAdd:widget.clgAdd ,clgCode: widget.clgCode,location: widget.location,
+                 collegeStatus: widget.collegeStatus,),
 
                 // COLLEGE DETAIL
                 Visibility(

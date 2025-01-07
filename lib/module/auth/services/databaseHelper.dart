@@ -16,13 +16,13 @@ class DatabaseHelper {
   Future<Database> _initDB(String fileName) async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, fileName);
-    return openDatabase(path, version: 1, onCreate: _createDB);
+    return openDatabase(path, version: 2, onCreate: _createDB, onUpgrade: _upgradeDB);
   }
 
   Future _createDB(Database db, int version) async {
     const String sql = '''
     CREATE TABLE users (
-        user_id TEXT PRIMARY KEY,
+        studentid TEXT PRIMARY KEY,
         role TEXT,
         name TEXT,
         gender TEXT,
@@ -36,11 +36,31 @@ class DatabaseHelper {
     ''';
     await db.execute(sql);
   }
+  Future<void> _upgradeDB(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2) {
+      await db.execute('ALTER TABLE users ADD COLUMN studentid TEXT');
+    }
+  }
 
   Future<int> insertUser(Map<String, dynamic> user) async {
     final db = await instance.database;
+
+    // Check if the user already exists
+    final existingUser = await getUser(user['mobile']);
+    if (existingUser != null) {
+      // Update the existing user
+      return await db.update(
+        'users',
+        user,
+        where: 'mobile = ?',
+        whereArgs: [user['mobile']],
+      );
+    }
+
+    // Insert the new user
     return await db.insert('users', user);
   }
+
 
   Future<Map<String, dynamic>?> getUser(String mobileNumber) async {
     final db = await database;
@@ -62,7 +82,7 @@ class DatabaseHelper {
     return await db.update(
       'users',
       userData,
-      where: 'user_id = ?',
+      where: 'studentid = ?',
       whereArgs: [userId],
     );
   }
@@ -71,6 +91,7 @@ class DatabaseHelper {
     final db = await instance.database;
     return await db.delete('users', where: 'id = ?', whereArgs: [id]);
   }
+
   Future<int> setLoggedInStatus(String mobile, int status) async {
     final db = await instance.database;
     return await db.update(
@@ -80,7 +101,5 @@ class DatabaseHelper {
       whereArgs: [mobile],
     );
   }
-
-
 
 }

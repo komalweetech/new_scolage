@@ -18,6 +18,7 @@ import '../../controller/AuthController.dart';
 import '../../dependencies/auth_dependencies.dart';
 import '../../services/databaseHelper.dart';
 import '../../services/preflogin.dart';
+import '../../services/student_login_Api.dart';
 import '../widget/continue_with_button.dart';
 import 'forgotPasscode.dart';
 import 'otp_screen.dart';
@@ -69,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
     String mobile = phoneController.text.trim();
     String password = passwordController.text.trim();
 
-    if (password.isEmpty) {
+    if (mobile.isEmpty || password.isEmpty) {
       Fluttertoast.showToast(
         msg: "Please enter both phone and password",
         toastLength: Toast.LENGTH_SHORT,
@@ -81,30 +82,70 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    // get all login users
-    final users = await DatabaseHelper.instance.getAllUsers();
-    print("Users from database: $users");
+    try {
+      var response = await StudentLoginApi.postApi(mobile, password);
+      print("API Response: $response");
 
-    // get user.
-    final user = await DatabaseHelper.instance.getUser(mobile);
+      if (response['data'] != null && response['message'] == "Login successfully") {
+        var userData = response['data'];
+        print("Parsed Data: ${response['data']}");
 
-    if (user != null && user['password'] == password) {
+        // Save user data in the local database
+        // Save user data in the local database
+        await DatabaseHelper.instance.insertUser({
+          'studentid': userData['studentid'],
+          'role': userData['role'],
+          'name': userData['name'],
+          'gender': userData['gender'],
+          'school_name': userData['school_name'],
+          'password': password,
+          'confirm_password': password,
+          'mobile': mobile,
+          'email': userData['email'],
+          'isLoggedIn': 1,
+        });
+
+        // Update StudentDetails
+        StudentDetails.updateFromMap({
+          'name': userData['name'],
+          'studentid': userData['studentid'],
+          'mobile': mobile,
+          'email': userData['email'],
+          'school_name': userData['school_name'],
+          'role': userData['role'],
+        });
+
+        // Show success toast
+        Fluttertoast.showToast(
+          msg: "Login Successful",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: kPrimaryColor,
+          textColor: Colors.white,
+          timeInSecForIosWeb: 1,
+          fontSize: 16.0,
+        );
+
+        // Navigate to the DashboardScreen
+        print("Navigating to DashboardScreen...");
+        Get.offAll(() => DashboardScreen());
+
+      }else {
+        print("Invalid credentials");
+         // Handle login failure
+        Fluttertoast.showToast(
+          msg: response['message'] ?? "Invalid credentials",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+      }
+    } catch (e) {
+      print("Login Error: $e");
       Fluttertoast.showToast(
-        msg: "Login Successful",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: kPrimaryColor,
-        textColor: Colors.white,
-        timeInSecForIosWeb: 1,
-        fontSize: 16.0,
-      );
-
-      Get.offAll(() => DashboardScreen());
-      await authController.updateLoginStatus(mobile, true);
-      return;
-    } else {
-      Fluttertoast.showToast(
-        msg: "Invalid credentials",
+        msg: "An error occurred during login. Please try again.",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.red,
@@ -113,6 +154,7 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -156,7 +198,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     keyboardType: TextInputType.text,
                     obscureText: isObscure,
                     controller: passwordController,
-                    maxLength: 10,
                     decoration: InputDecoration(
                       isDense: true,
                       counter: const SizedBox(),

@@ -32,49 +32,49 @@ class LanguageSettingScreen extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const CommonScreenContentTitle(title: "Change Language"),
-          SizedBox(height: 70..h),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: Obx(
-              () => TextFormField(
-                readOnly: true,
-                onTap: () async {
-                  // BOTTOM SHEET
-                  await commonBottomSheetFunction(
-                    context: context,
-                    child: const SelectLanguageBottomSheet(),
-                  );
-                },
-                controller: TextEditingController(
-                  text: kSettingController.selectedLanguage.value.displayName,
-                ),
-                decoration: InputDecoration(
-                  isDense: true,
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: Colors.black)),
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-                  suffixIcon: const Icon(
-                    Icons.keyboard_arrow_down_rounded,
-                    color: Color.fromRGBO(77, 77, 77, 1),
-                    size: 30,
-                  ),
-                  labelText: "Language",
-                  alignLabelWithHint: true,
-                ),
-              ),
-            ),
-          ),
+          // const CommonScreenContentTitle(title: "Change Language"),
+          // SizedBox(height: 70..h),
+          // Padding(
+          //   padding: EdgeInsets.symmetric(horizontal: 20.w),
+          //   child: Obx(
+          //     () => TextFormField(
+          //       readOnly: true,
+          //       onTap: () async {
+          //         // BOTTOM SHEET
+          //         await commonBottomSheetFunction(
+          //           context: context,
+          //           child: const SelectLanguageBottomSheet(),
+          //         );
+          //       },
+          //       controller: TextEditingController(
+          //         text: kSettingController.selectedLanguage.value.displayName,
+          //       ),
+          //       decoration: InputDecoration(
+          //         isDense: true,
+          //         border: OutlineInputBorder(
+          //             borderRadius: BorderRadius.circular(8),
+          //             borderSide: const BorderSide(color: Colors.black)),
+          //         contentPadding:
+          //             EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+          //         suffixIcon: const Icon(
+          //           Icons.keyboard_arrow_down_rounded,
+          //           color: Color.fromRGBO(77, 77, 77, 1),
+          //           size: 30,
+          //         ),
+          //         labelText: "Language",
+          //         alignLabelWithHint: true,
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          // SizedBox(height: 30),
+          // CommonSaveAndSubmitButton(
+          //   name: "Save",
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //     },
+          // ),
           SizedBox(height: 30),
-          CommonSaveAndSubmitButton(
-            name: "Save",
-            onTap: () {
-              Navigator.pop(context);
-              },
-          ),
-          SizedBox(height: 20),
           CommonSaveAndSubmitButton(
             name: "Log out",
             onTap: () async {

@@ -53,7 +53,7 @@ class AdmissionFormScreenDropDown extends StatelessWidget {
 
             isExpanded: true,
             hint: Text(
-              '',
+              hintText,
               style: TextStyle(
                   fontSize: 16.sp,
                   color: const Color.fromRGBO(159, 159, 159, 1)),
