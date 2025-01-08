@@ -23,20 +23,6 @@ class NearbyController extends GetxController {
     return list.contains(value);
   }
 
-  // get clg area list from api
-  RxList<String> collegeAreas = <String>[].obs;
-
-  // Get college area list from API
-  Future<void> loadCollegeAreas() async {
-    try {
-      final areas = await collageAreaService.fetchCollegeAreas();
-      print("Fetched college areas: $areas");
-      collegeAreas.value = areas;
-    } catch (e) {
-      print("Error loading college areas: $e");
-    }
-  }
-
 
 
   //! SORT BY
@@ -83,6 +69,7 @@ class NearbyController extends GetxController {
     feesRangeStartValue.value = 10000.0;
     feesRangeEndValue.value = 30000.0;
   }
+
 final feesList = AllCollegeData.collegeDataList["subject"] ?? [];
   // final String baseUrl = 'https://test1.scolage.com/';
 
@@ -102,22 +89,22 @@ final feesList = AllCollegeData.collegeDataList["subject"] ?? [];
 
   // ! AREA
   //TODO : Change area list data this is only for testing
-  List<String> areaList = [
-    // "NearBy",
-    "Surat",
-    "Mumbai",
-    "Rajkot",
-    "Junagadh",
-    "Goa",
-    "Bhavnagar",
-    "Ahmedabad",
-    "Bangalore",
-    "Kanpur",
-    "Bhopal",
-    "Nashik",
-    "Gwalior",
-    "Raipur",
-  ];
+  // List<String> areaList = [
+  //   // "NearBy",
+  //   "Surat",
+  //   "Mumbai",
+  //   "Rajkot",
+  //   "Junagadh",
+  //   "Goa",
+  //   "Bhavnagar",
+  //   "Ahmedabad",
+  //   "Bangalore",
+  //   "Kanpur",
+  //   "Bhopal",
+  //   "Nashik",
+  //   "Gwalior",
+  //   "Raipur",
+  // ];
 
   List<String> areaClgImage = [
     // AssetIcons.NEARBY_ICON,
@@ -139,21 +126,42 @@ final feesList = AllCollegeData.collegeDataList["subject"] ?? [];
   RxList<String>
 
   displayAreaList = <String>[].obs;
+  RxList<String> areaList = <String>[].obs;
   List<String> selectedAreaList = [];
   RxString selectedArea = "".obs;
   RxBool displayAllAreaList = false.obs;
+
+
+  @override
+  void onInit() {
+    super.onInit();
+    loadCollegeAreas();
+  }
+
+  // Get college area list from API
+  Future<void> loadCollegeAreas() async {
+    try {
+      final areas = await collageAreaService.fetchCollegeAreas();
+      print("Fetched college areas: $areas");
+      areaList.clear();
+      areaList.addAll(areas); // Update areaList with API response
+      addTop5AreaInDisplayList(); // Call this to add top 5 areas if required
+      update(); // Trigger a rebuild to reflect changes
+    } catch (e) {
+      print("Error loading college areas: $e");
+    }
+  }
 
   // INSERT DATA TOP 5 INTO DISPLAY LIST
   void addTop5AreaInDisplayList() {
     displayAreaList.clear();
     if (areaList.length > 5) {
       for (int i = 0; i < 5; i++) {
-        displayAreaList.add(
-          areaList[i],
-        );
+        displayAreaList.add(areaList[i]);
       }
     }
   }
+
 
   // INSERT ALL DATA INTO DISPLAY LIST
   void addAllAreaIntoDisplayAreaList() {
@@ -310,10 +318,10 @@ final feesList = AllCollegeData.collegeDataList["subject"] ?? [];
        print("Fetched college areas: $areas");
 
        // Update the observable list
-       collegeAreas.value = areas;
+       areaList.value = areas;
 
        // Use the fetched areas in your logic (if needed)
-       print("College areas updated: ${collegeAreas.value}");
+       print("College areas updated: ${areaList.value}");
      } catch (e) {
        print("Error loading college areas: $e");
      }
@@ -326,6 +334,7 @@ final feesList = AllCollegeData.collegeDataList["subject"] ?? [];
         .where((college) => college.location == selectedAddress)
         .toList();
   }
+
 
   List<CollegeModel> filterCollegesByFeeRange(
       List<CollegeModel> colleges,

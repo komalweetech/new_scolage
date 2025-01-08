@@ -200,7 +200,7 @@ class _NearbyScreenState extends State<NearbyScreen> {
                                   await commonBottomSheetFunction(
                                     context: context,
                                     child: Obx(() {
-                                      final areas = nearbyController.collegeAreas;
+                                      final areas = nearbyController.areaList;
                                       if (areas.isEmpty) {
                                         return Center(child: CircularProgressIndicator());
                                       }

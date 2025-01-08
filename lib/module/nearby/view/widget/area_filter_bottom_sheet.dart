@@ -21,13 +21,13 @@ class AreaFilterBottomSheet extends StatefulWidget {
 }
 
 class _AreaFilterBottomSheetState extends State<AreaFilterBottomSheet> {
-  @override
-  void initState() {
-    if (kNearbyController.displayAllAreaList.value == false) {
-      kNearbyController.addTop5AreaInDisplayList();
-    }
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   if (kNearbyController.displayAllAreaList.value == false) {
+  //     kNearbyController.addTop5AreaInDisplayList();
+  //   }
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +61,7 @@ class _AreaFilterBottomSheetState extends State<AreaFilterBottomSheet> {
                       setState(() {});
                     },
                     onApplyButtonTap: () {
-                      kNearbyController.reloadCollegesData();
+                      kNearbyController.loadCollegeAreas();
                       Navigator.pop(context);
                       if (widget.onAreaSelected == null) {
                         widget.onAreaSelected(kNearbyController.selectedArea.value);

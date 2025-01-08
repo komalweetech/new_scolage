@@ -15,7 +15,10 @@ class AreaListWidget extends StatefulWidget {
   State<AreaListWidget> createState() => _AreaListWidgetState();
 }
 
+
 class _AreaListWidgetState extends State<AreaListWidget> {
+
+
   @override
   Widget build(BuildContext context) {
     return Obx(
