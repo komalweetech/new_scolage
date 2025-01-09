@@ -59,8 +59,7 @@ abstract class AssetIcons {
   static const String INVITE_FRIEND_ICON = "assets/icons/invite_friend.png";
   static const String DRAWER_SETTING_ICON = "assets/icons/drawer_setting.png";
 
-  // FAVORITE COLLEGE
-  static const String NO_FAV_YET_ICON = "assets/icons/no_data_image.png";
+
 
   // INVITE SCREEN
   static const String INVITE_IMAGE_ICON = "assets/icons/invite_image.png";
@@ -141,5 +140,6 @@ abstract class AssetIcons {
   static const String ImptyReview =  "assets/image/imptyReview.png";
 
   // no any data
-  static const String NoAnyData = "assets/image/noData.svg";
+  static const String NoAnyDataSVG = "assets/image/noData.svg";
+  static const String NoAnyDataPNG = "assets/icons/no_data_image.png";
 }

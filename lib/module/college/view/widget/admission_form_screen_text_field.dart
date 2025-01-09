@@ -49,17 +49,17 @@ class AdmissionFormScreenTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // labelText != null
-        //     ? Padding(
-        //         padding: EdgeInsets.only(left: 6.w, bottom: 3.h, top: 10.h),
-        //         child: Text(
-        //           labelText ?? '',
-        //           style: TextStyle(
-        //             fontSize: 14.sp,fontFamily: "Poppins",
-        //           ),
-        //         ),
-        //       )
-        //     :
+        labelText != null
+            ? Padding(
+                padding: EdgeInsets.only(left: 6.w, bottom: 3.h, top: 10.h),
+                child: Text(
+                  labelText ?? '',
+                  style: TextStyle(
+                    fontSize: 14.sp,fontFamily: "Poppins",
+                  ),
+                ),
+              )
+            :
         SizedBox(height: 15.h),
         TextFormField(
           readOnly: readOnly ?? false,

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import '../../../../utils/StudentDetails.dart';
 import '../../../../utils/commonFunction/common_function.dart';
 import '../../../../utils/commonWidget/keyboard_off.dart';
@@ -35,14 +36,14 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  // void navigateToNearbyScreen(BuildContext context, String selectedCity) {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => NearbyScreen(cityName: selectedCity),
-  //     ),
-  //   );
-  // }
+  void navigateToNearbyScreen(BuildContext context, String selectedCity) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => NearbyScreen(collegeCode: selectedCity),
+      ),
+    );
+  }
 
   @override
   void initState() {
@@ -50,6 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     FavoriteColleges.init();
     print("student id == ${StudentDetails.studentId}");
+    kNearbyController.fetchCollegeAreas();
   }
 
   // for filter Duplicate subject from all subject list..
@@ -84,6 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Text("there is an error for home screen"),
                 );
               } else if (snapshot.hasData.toString().isEmpty) {
+                Center(child:Image.asset("assets/icons/no_data_image.png",height: 300.sp,));
                 print("Any college not found.");
               } else if (snapshot.hasData) {
                 var data = snapshot.data as Map<dynamic, dynamic>;
@@ -118,62 +121,73 @@ class _HomeScreenState extends State<HomeScreen> {
                             alignment: Alignment.topLeft,
                             child: SizedBox(
                               height: 80.h,
-                              child: ListView.separated(
-                                shrinkWrap: true,
-                                itemCount: kNearbyController.areaList.length,
-                                // itemCount: collegeList.length,
-                                scrollDirection: Axis.horizontal,
-                                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                                itemBuilder: (context, index) {
-                                  if (index == 0) {
-                                    // return NearbyStoryButton(
-                                    //   cityimage:AssetIcons.NEARBY_ICON,
-                                    //   backgroundColor: Colors.white,
-                                    //   cityName: "NearBy",                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       );
-                                    return InkWell(
-                                      onTap: () {
-                                        CommonFunction.kNavigatorPush(
-                                            context,
-                                            NearbyScreen(
-                                              collegeCode: "Nearby",
-                                            ));
-                                      },
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            padding: const EdgeInsets.all(13),
-                                            decoration: BoxDecoration(
-                                              color: Colors.black,
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
+                              child: Obx(() {
+                                if (kNearbyController.areaList.isEmpty) {
+                                  return Center(child: CircularProgressIndicator());
+                                }
+                                print("area length == ${kNearbyController.areaList}");
+                                return ListView.separated(
+                                  shrinkWrap: true,
+                                  itemCount: kNearbyController.areaList.length + 1,
+                                  // itemCount: collegeList.length,
+                                  scrollDirection: Axis.horizontal,
+                                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                                  itemBuilder: (context, index) {
+                                    if (index == 0) {
+                                      // return NearbyStoryButton(
+                                      //   cityimage:AssetIcons.NEARBY_ICON,
+                                      //   backgroundColor: Colors.white,
+                                      //   cityName: "NearBy",                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       );
+                                      return InkWell(
+                                        onTap: () {
+                                          CommonFunction.kNavigatorPush(
+                                              context,
+                                              NearbyScreen(
+                                                collegeCode: "Nearby",
+                                              ));
+                                        },
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              padding: const EdgeInsets.all(13),
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
+                                                borderRadius:
+                                                BorderRadius.circular(100),
+                                              ),
+                                              child: Image.asset(
+                                                AssetIcons.NEARBY_ICON,
+                                                height: 23.h,
+                                                width: 23.w,
+                                              ),
                                             ),
-                                            child: Image.asset(
-                                              AssetIcons.NEARBY_ICON,
-                                              height: 23.h,
-                                              width: 23.w,
+                                            SizedBox(height: 5.h),
+                                            Text(
+                                              "Nearby",
+                                              style: TextStyle(
+                                                  fontSize: 11.sp,fontFamily: "Poppins",fontWeight: FontWeight.w500
+                                              ),
                                             ),
-                                          ),
-                                          SizedBox(height: 5.h),
-                                          Text(
-                                            "Nearby",
-                                            style: TextStyle(
-                                              fontSize: 11.sp,fontFamily: "Poppins",fontWeight: FontWeight.w500
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  } else {
-                                    return NearbyStoryButton(
-                                      cityimage:
-                                          kNearbyController.areaClgImage[index],
-                                      cityName:
-                                          kNearbyController.areaList[index],
-                                    );
-                                  }
-                                },
-                                separatorBuilder: (context, index) =>
-                                    SizedBox(width: 17.w),
+                                          ],
+                                        ),
+                                      );
+                                    } else {
+                                      final adjustedIndex = index - 1;
+                                      return NearbyStoryButton(
+                                        // cityimage: kNearbyController.areaClgImage[index],
+                                        // cityName: kNearbyController.areaList[index],
+                                        cityimage: kNearbyController.areaClgImage.isNotEmpty
+                                            ? kNearbyController.areaClgImage[adjustedIndex % kNearbyController.areaClgImage.length]
+                                            : "assets/image/default.jpg", // Fallback image
+                                        cityName: kNearbyController.areaList[adjustedIndex],
+                                      );
+                                    }
+                                  },
+                                  separatorBuilder: (context, index) =>
+                                      SizedBox(width: 17.w),
+                                );
+                              }
+
                               ),
                             ),
                           ),

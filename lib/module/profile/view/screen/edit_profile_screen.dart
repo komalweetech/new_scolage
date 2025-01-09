@@ -139,14 +139,14 @@ class EditProfileWidget extends StatelessWidget {
                   SizedBox(height: 10),
                   // NAME FIELD
                   EditProfileTextField(
-                    // labelText: "Name",
+                    labelText: "",
                     hintText: "Name",
                     controller: kProfileController.nameController,
                     textInputAction: TextInputAction.next,
                   ),
                   // PHONE NUMBER FIELD
                   EditProfileTextField(
-                    // labelText: "Phone No.",
+                    labelText: " ",
                     hintText: "Phone No.",
                     controller: kProfileController.phoneNumberController,
                     keyboardType: TextInputType.number,
@@ -154,7 +154,7 @@ class EditProfileWidget extends StatelessWidget {
                   ),
                   // EMAIL ID FIELD
                   EditProfileTextField(
-                    // labelText: "Email address",
+                    labelText: " ",
                     hintText: "Email address",
                     controller: kProfileController.emailController,
                     keyboardType: TextInputType.emailAddress,
@@ -164,7 +164,7 @@ class EditProfileWidget extends StatelessWidget {
                   Obx(
                     () => EditProfileTextField(
                       textInputAction: TextInputAction.next,
-                      // labelText: "Date of birth",
+                      labelText: " ",
                       hintText: "Date of birth",
                       readOnly: true,
                       onTap: () async {
@@ -187,7 +187,7 @@ class EditProfileWidget extends StatelessWidget {
                   ),
                   // SCHOOL FIELD
                   EditProfileTextField(
-                    // labelText: "School",
+                    labelText: "",
                     hintText: "School",
                     controller: kProfileController.schoolNameController,
                     textInputAction: TextInputAction.next,
@@ -195,7 +195,7 @@ class EditProfileWidget extends StatelessWidget {
                   // PA RENTS OR STUDENT FIELD
                   Obx(
                     () => EditProfileTextField(
-                      // labelText: "Parent or Student",
+                      labelText: "",
                       hintText: "Parent or Student",
                       readOnly: true,
                       onTap: () async {

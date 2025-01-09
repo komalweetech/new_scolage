@@ -47,7 +47,8 @@ class _PanddingCollegesState extends State<PanddingColleges> {
 
               if (pendingData.isEmpty) {
                 return Center(
-                  child: Text("No pending  colleges found"),
+                  child:Image.asset("assets/icons/no_data_image.png",height: 300.sp,),
+                  // Text("No pending  colleges found"),
                 );
               }
               print("only show pendding data == $pendingData");

@@ -9,7 +9,7 @@ class EditProfileTextField extends StatelessWidget {
     Key? key,
     required this.controller,
     this.prefix,
-    // required this.labelText,
+    required this.labelText,
     this.enabled,
     this.padding,
     this.inputFormatters,
@@ -28,7 +28,7 @@ class EditProfileTextField extends StatelessWidget {
   final TextEditingController controller;
   final Widget? prefix;
   final Widget? suffix;
-  // final String labelText;
+  final String labelText;
   final String? hintText;
   final EdgeInsetsGeometry? padding;
   final List<TextInputFormatter>? inputFormatters;
@@ -47,15 +47,15 @@ class EditProfileTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Padding(
-        //   padding: EdgeInsets.only(left: 16.w, bottom: 6.h, top: 14.h),
-        //   child: Text(
-        //     labelText,
-        //     style: TextStyle(
-        //       fontSize: 15.sp,fontFamily: "Poppins",fontWeight: FontWeight.w600
-        //     ),
-        //   ),
-        // ),
+        Padding(
+          padding: EdgeInsets.only(left: 16.w, bottom: 6.h, top: 10.h),
+          child: Text(
+            labelText,
+            style: TextStyle(
+              fontSize: 15.sp,fontFamily: "Poppins",fontWeight: FontWeight.w600
+            ),
+          ),
+        ),
         TextFormField(
           readOnly: readOnly ?? false,
           autofocus: autofocus ?? false,

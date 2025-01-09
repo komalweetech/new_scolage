@@ -18,7 +18,7 @@ class NoFavYetWidget extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 80.w),
           child: Center(
-            child: Image.asset(AssetIcons.NO_FAV_YET_ICON),
+            child: Image.asset(AssetIcons.NoAnyDataPNG),
           ),
         ),
         SizedBox(height: 100.h),

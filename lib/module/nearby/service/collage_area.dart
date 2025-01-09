@@ -8,7 +8,7 @@ import '../../../utils/apiData/api_base_port.dart';
 class CollageArea {
 
   Future<List<String>> fetchCollegeAreas() async {
-    final url = Uri.parse('http://192.168.29.140:7000/v2/getCollegeAreas');
+    final url = Uri.parse('${ApiBasePort.apiBaseUrl}/v2/getCollegeAreas');
     print("get clg area list url == $url");
 
     try {

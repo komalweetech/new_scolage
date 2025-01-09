@@ -26,15 +26,15 @@ class AdmissionFormScreenDropDown extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Padding(
-        //   padding: EdgeInsets.only(left: 6.w, bottom: 3.h, top: 10.h),
-        //   child: Text(
-        //     labelText,
-        //     style: TextStyle(
-        //       fontSize: 15.sp,
-        //     ),
-        //   ),
-        // ),
+        Padding(
+          padding: EdgeInsets.only(left: 6.w, bottom: 3.h, top: 10.h),
+          // child: Text(
+          //   labelText,
+          //   style: TextStyle(
+          //     fontSize: 15.sp,
+          //   ),
+          // ),
+        ),
         SizedBox(
           height: 38,
           // decoration: BoxDecoration(
@@ -55,8 +55,10 @@ class AdmissionFormScreenDropDown extends StatelessWidget {
             hint: Text(
               hintText,
               style: TextStyle(
-                  fontSize: 16.sp,
-                  color: const Color.fromRGBO(159, 159, 159, 1)),
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w400,
+                color: Colors.black87,fontFamily: "Poppins",
+              ),
             ),
             items: items
                 .map<DropdownMenuItem<String>>((String value) => DropdownMenuItem<String>(
@@ -64,8 +66,8 @@ class AdmissionFormScreenDropDown extends StatelessWidget {
                       child: Text(
                         value,
                         style: TextStyle(
-                            fontSize: 15.sp,
-                            color: const Color.fromRGBO(159, 159, 159, 1)),
+                            fontSize: 14.h,
+                            color: const Color.fromRGBO(159, 159, 159, 5),fontFamily: "Poppins",fontWeight: FontWeight.w500),
                       ),
                     ))
                 .toList(),

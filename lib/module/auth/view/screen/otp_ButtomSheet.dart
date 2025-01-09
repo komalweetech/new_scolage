@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:new_scolage/module/auth/view/screen/resetPasscode.dart';
 import 'package:new_scolage/module/auth/view/screen/sing_up_screen.dart';
@@ -118,7 +120,7 @@ class _OtpBottomSheetState extends State<OtpBottomSheet> {
                    //   overflow: TextOverflow.ellipsis,
                    // ),
                   TextButton(
-                      onPressed: () {}, 
+                      onPressed: () {},
                       child: Text.rich(
                         TextSpan(
                           children: [
@@ -158,26 +160,119 @@ class _OtpBottomSheetState extends State<OtpBottomSheet> {
                     onCodeChanged: (String code) {
                       //handle validation or checks here if necessary
                     },
+                    // onSubmit: (String verificationCode) {
+                    //   setState(() {
+                    //     verificationOtp = verificationCode;
+                    //   });
+                    //   Future.delayed(Duration(seconds: 3),() async{
+                    //     final verifyNumber = kAuthController.phoneNumberController.text;
+                    //     final verifyOtp = verificationOtp;
+                    //     print("verify otp is = $verifyOtp");
+                    //
+                    //     var response = await VerifyOtp.postApi(verifyNumber,verifyOtp);
+                    //     print("response of login ==== ${response}");
+                    //
+                    //     if(widget.isFromForgotPasscode){
+                    //       Get.to(const ResetPassCode());
+                    //     }else {
+                    //       Get.to(const SingUpScreen());
+                    //     }
+                    //   });
+                    //
+                    // },
                     onSubmit: (String verificationCode) {
                       setState(() {
                         verificationOtp = verificationCode;
                       });
-                      Future.delayed(Duration(seconds: 3),() async{
+
+                      Future.delayed(Duration(seconds: 3), () async {
                         final verifyNumber = kAuthController.phoneNumberController.text;
                         final verifyOtp = verificationOtp;
-                        print("verify otp is = $verifyOtp");
 
-                        var response = await VerifyOtp.postApi(verifyNumber,verifyOtp);
-                        print("response of login ==== ${response}");
+                        print("Verify OTP is = $verifyOtp");
 
-                        if(widget.isFromForgotPasscode){
-                          Get.to(const ResetPassCode());
-                        }else {
-                          Get.to(const SingUpScreen());
+                        try {
+                          // Make the API call
+                          var response = await VerifyOtp.postApi(verifyNumber, verifyOtp);
+
+                          if (response == null) {
+                            Fluttertoast.showToast(
+                              msg: 'Failed to connect to the server. Please try again.',
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0,
+                            );
+                            return;
+                          }
+
+                          // Validate the HTTP status code
+                          if (response['statusCode'] == 200) {
+                            if (response['status'] == 'success') {
+                              // Navigate to the appropriate screen
+                              if (widget.isFromForgotPasscode) {
+                                Get.to(const ResetPassCode());
+                              } else {
+                                Get.to(const SingUpScreen());
+                              }
+                            } else {
+                              final errorMessage = response['error'] ?? 'OTP validation failed';
+                              Fluttertoast.showToast(
+                                msg: errorMessage,
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0,
+                              );
+                            }
+                          } else if (response['statusCode'] == 401) {
+                            // Unauthorized or invalid OTP
+                            Fluttertoast.showToast(
+                              msg: 'Invalid OTP. Please try again.',
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              backgroundColor: Colors.orange,
+                              textColor: Colors.white,
+                              fontSize: 16.0,
+                            );
+                          } else if (response['statusCode'] == 500) {
+                            // Internal server error
+                            Fluttertoast.showToast(
+                              msg: 'Server error. Please try again later.',
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0,
+                            );
+                          } else {
+                            // Generic error handling for other status codes
+                            Fluttertoast.showToast(
+                              msg: 'Unexpected error occurred. Status code: ${response['statusCode']}',
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0,
+                            );
+                          }
+                        } catch (e) {
+                          print("Error occurred: $e");
+                          Fluttertoast.showToast(
+                            msg: 'Something went wrong. Please try again.',
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0,
+                          );
                         }
                       });
-
                     },
+
+
                   ),
                   const SizedBox(height: 20),
                   // Padding(

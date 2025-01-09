@@ -7,27 +7,24 @@ import 'area_list_widget.dart';
 import 'clear_and_apply_button_row.dart';
 
 class AreaFilterBottomSheet extends StatefulWidget {
-  final List<String> areas;
-  final Function(String) onAreaSelected;
+  final Function(String)? onCitySelected;
 
-  const AreaFilterBottomSheet({
-    super.key,
-    required this.areas,
-    required this.onAreaSelected,});
 
+  const AreaFilterBottomSheet(
+      {super.key, this.onCitySelected});
 
   @override
   State<AreaFilterBottomSheet> createState() => _AreaFilterBottomSheetState();
 }
 
 class _AreaFilterBottomSheetState extends State<AreaFilterBottomSheet> {
-  // @override
-  // void initState() {
-  //   if (kNearbyController.displayAllAreaList.value == false) {
-  //     kNearbyController.addTop5AreaInDisplayList();
-  //   }
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    if (kNearbyController.displayAllAreaList.value == false) {
+      kNearbyController.addTop5AreaInDisplayList();
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,11 +42,11 @@ class _AreaFilterBottomSheetState extends State<AreaFilterBottomSheet> {
                 children: [
                   SizedBox(height: 5.h),
                   // AREA LIST
-                    Expanded(
+                  Expanded(
                     child: SingleChildScrollView(
                       child: AreaListWidget(
                         onCitySelected: (selectedCity) {
-                            widget.onAreaSelected.call(selectedCity);
+                          widget.onCitySelected?.call(selectedCity);
                         },
                       ),
                     ),
@@ -61,10 +58,11 @@ class _AreaFilterBottomSheetState extends State<AreaFilterBottomSheet> {
                       setState(() {});
                     },
                     onApplyButtonTap: () {
-                      kNearbyController.loadCollegeAreas();
+                      kNearbyController.reloadCollegesData();
                       Navigator.pop(context);
-                      if (widget.onAreaSelected == null) {
-                        widget.onAreaSelected(kNearbyController.selectedArea.value);
+                      if (widget.onCitySelected == null) {
+                        widget.onCitySelected!(
+                            kNearbyController.selectedArea.value);
                       }
                     },
                   ),

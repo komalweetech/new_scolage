@@ -48,8 +48,9 @@ class _ApprovedRejectedClgState extends State<ApprovedRejectedClg> {
                 }
               });
               if (acceptedData.isEmpty) {
-                return const Center(
-                  child: Text("Not accepted  any form for colleges "),
+                return  Center(
+                  child:Image.asset("assets/icons/no_data_image.png",height: 300.sp,),
+                  // Text("Not accepted  any form for colleges "),
                 );
               }
               print("only show accepted data == $acceptedData");
@@ -61,8 +62,9 @@ class _ApprovedRejectedClgState extends State<ApprovedRejectedClg> {
                 }
               });
               if (rejectedData.isEmpty) {
-                return const Center(
-                  child: Text("Not rejectedany form for colleges "),
+                return  Center(
+                  child: Image.asset("assets/icons/no_data_image.png",height: 300.sp,),
+                  // Text("Not rejectedany form for colleges "),
                 );
               }
 

@@ -107,14 +107,21 @@ class _CollegeImageWidgetState extends State<CollegeImageWidget> {
                 ));
               },
               child: Container(
+                height: 45,
+                width: 45,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white
+                ),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.image_rounded,color: Colors.white,size: 30,),
+                    Icon(Icons.image_rounded,color:grey128Color,size: 25,),
                     Text(
                       "Gallery",
                       style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12, // Adjust font size as needed
+                        color: grey128Color,
+                        fontSize: 10, // Adjust font size as needed
                         fontWeight: FontWeight.w500,
                       ),
                     ),

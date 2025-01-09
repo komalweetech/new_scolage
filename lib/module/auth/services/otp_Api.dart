@@ -42,7 +42,7 @@ class OtpApi {
   }
 }
 class VerifyOtp {
-  static postApi(String mobile,String otp) async  {
+  static Future<Map<String, dynamic>?> postApi(String mobile, String otp) async {
     try {
       print("Verify Mobile number is  === $mobile");
 
@@ -51,31 +51,67 @@ class VerifyOtp {
         "otp": otp,
       });
 
-      print(" Verify Request body: $body");
+      print("Verify Request body: $body");
 
-      log("api is not calling");
-      // var response = await http.post(Uri.parse("https://backend.scolage.com/v2/verifyOtp"),
-      var response = await http.post(Uri.parse("${ApiBasePort.apiBaseUrl}/v2/verifyOtp"),
-
+      // Call the API
+      var response = await http.post(
+        Uri.parse("${ApiBasePort.apiBaseUrl}/v2/verifyOtp"),
         body: body,
         headers: {'Content-Type': 'application/json'},
       );
 
-      log("api is fail.");
-      print("Verify  status code: ${response.statusCode}");
-      print("otp json Verify response === ${response.body}");
+      print("Verify status code: ${response.statusCode}");
+      print("OTP JSON Verify response === ${response.body}");
 
+      // Decode the JSON response
+      final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
 
-      var json = jsonEncode(response.body);
-      print(json);
+      // Add the status code to the response map
+      jsonResponse['statusCode'] = response.statusCode;
 
-      // print("==================$jsonData");
-      print("--------------------------->>>>>${response.statusCode}");
-
-      return json;
+      return jsonResponse;
     } catch (e) {
       print("Error: $e");
       return null;
     }
   }
 }
+
+// class VerifyOtp {
+//   static postApi(String mobile,String otp) async  {
+//     try {
+//       print("Verify Mobile number is  === $mobile");
+//
+//       var body = jsonEncode(<String, String>{
+//         "mobile": mobile,
+//         "otp": otp,
+//       });
+//
+//       print(" Verify Request body: $body");
+//
+//       log("api is not calling");
+//       // var response = await http.post(Uri.parse("https://backend.scolage.com/v2/verifyOtp"),
+//       var response = await http.post(Uri.parse("${ApiBasePort.apiBaseUrl}/v2/verifyOtp"),
+//
+//         body: body,
+//         headers: {'Content-Type': 'application/json'},
+//       );
+//
+//       log("api is fail.");
+//       print("Verify  status code: ${response.statusCode}");
+//       print("otp json Verify response === ${response.body}");
+//
+//
+//       var json = jsonEncode(response.body);
+//       print(json);
+//
+//       // print("==================$jsonData");
+//       print("--------------------------->>>>>${response.statusCode}");
+//
+//       return json;
+//     } catch (e) {
+//       print("Error: $e");
+//       return null;
+//     }
+//   }
+// }

@@ -15,7 +15,6 @@ import '../model/infrastructure_model.dart';
 import '../service/collage_area.dart';
 
 class NearbyController extends GetxController {
-  final CollageArea collageAreaService = CollageArea();
 
   // CHECK VALUE SELECTED OR NOT IN CHIP LIST
   bool isThisValueSelected(
@@ -88,7 +87,7 @@ final feesList = AllCollegeData.collegeDataList["subject"] ?? [];
   }
 
   // ! AREA
-  //TODO : Change area list data this is only for testing
+  // TODO : Change area list data this is only for testing
   // List<String> areaList = [
   //   // "NearBy",
   //   "Surat",
@@ -106,6 +105,7 @@ final feesList = AllCollegeData.collegeDataList["subject"] ?? [];
   //   "Raipur",
   // ];
 
+
   List<String> areaClgImage = [
     // AssetIcons.NEARBY_ICON,
     "assets/image/surat.jpg",
@@ -122,41 +122,36 @@ final feesList = AllCollegeData.collegeDataList["subject"] ?? [];
     "assets/image/gwalior.jpg",
     "assets/image/raipur.jpg",
   ];
-  // LISTS .
-  RxList<String>
+  // Fetch Areas from API
+  Future<void> fetchCollegeAreas() async {
+    try {
+      final response = await http.get(Uri.parse('${ApiBasePort.apiBaseUrl}/v2/getCollegeAreas'));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['status'] == true && data['collegeAreas'] != null) {
+          areaList.assignAll(List<String>.from(data['collegeAreas']));
+        }
+      } else {
+        print("Failed to load college areas");
+      }
+    } catch (e) {
+      print("Error fetching college areas: $e");
+    }
+  }
 
-  displayAreaList = <String>[].obs;
+  // LISTS .
   RxList<String> areaList = <String>[].obs;
+  RxList<String> displayAreaList = <String>[].obs;
   List<String> selectedAreaList = [];
   RxString selectedArea = "".obs;
   RxBool displayAllAreaList = false.obs;
 
 
-  @override
-  void onInit() {
-    super.onInit();
-    loadCollegeAreas();
-  }
-
-  // Get college area list from API
-  Future<void> loadCollegeAreas() async {
-    try {
-      final areas = await collageAreaService.fetchCollegeAreas();
-      print("Fetched college areas: $areas");
-      areaList.clear();
-      areaList.addAll(areas); // Update areaList with API response
-      addTop5AreaInDisplayList(); // Call this to add top 5 areas if required
-      update(); // Trigger a rebuild to reflect changes
-    } catch (e) {
-      print("Error loading college areas: $e");
-    }
-  }
-
   // INSERT DATA TOP 5 INTO DISPLAY LIST
   void addTop5AreaInDisplayList() {
     displayAreaList.clear();
-    if (areaList.length > 5) {
-      for (int i = 0; i < 5; i++) {
+    if (areaList.length > 3) {
+      for (int i = 0; i < 3; i++) {
         displayAreaList.add(areaList[i]);
       }
     }
@@ -310,21 +305,6 @@ final feesList = AllCollegeData.collegeDataList["subject"] ?? [];
   }
 
    reloadCollegesData() async {
-     print('Reload colleges with filters');
-
-     try {
-       // Fetch the college areas before reloading
-       final areas = await collageAreaService.fetchCollegeAreas();
-       print("Fetched college areas: $areas");
-
-       // Update the observable list
-       areaList.value = areas;
-
-       // Use the fetched areas in your logic (if needed)
-       print("College areas updated: ${areaList.value}");
-     } catch (e) {
-       print("Error loading college areas: $e");
-     }
     update(); // Trigger a rebuild
   }
 

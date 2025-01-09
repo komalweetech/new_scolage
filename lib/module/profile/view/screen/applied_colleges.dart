@@ -51,11 +51,7 @@ class _AppliedCollegesState extends State<AppliedColleges> {
             if (data.isEmpty) {
               // const Center(child: Text("Student not Applied any Colleges"),);
               Center(
-                child: SvgPicture.asset(
-                  'assets/image/noData.svg',
-                  height: 250.sp,
-                  width: 200.sp,
-                ),
+                child:Image.asset("assets/icons/no_data_image.png",height: 300.sp,),
               );
             }
             return ListView(
@@ -131,6 +127,10 @@ class _AppliedCollegesState extends State<AppliedColleges> {
                   ),
                 ),
               ],
+            );
+          }else {
+            Center(
+              child:Image.asset("assets/icons/no_data_image.png",height: 300.sp,),
             );
           }
 

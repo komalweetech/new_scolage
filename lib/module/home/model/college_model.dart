@@ -19,6 +19,8 @@ class CollegeModel {
   String? classType;
   String? collegeCode;
   String? collegeArea;
+  String? area;
+  String? city;
   String? noOfFloors;
   List<Timings>? timings;
   String? moreInfo;
@@ -47,6 +49,8 @@ class CollegeModel {
         this.classType,
         this.collegeCode,
         this.collegeArea,
+        this.area,
+        this.city,
         this.noOfFloors,
         this.timings,
         this.moreInfo,
@@ -81,6 +85,8 @@ class CollegeModel {
     classType = json['class_type'];
     collegeCode = json['college_code'];
     collegeArea = json['college_area'];
+    area        = json['area'];
+    city        = json['city'];
     noOfFloors = json['no_of_floors'];
     if (json['timings'] != null) {
       if (json['timings'] is List) {
@@ -120,6 +126,8 @@ class CollegeModel {
     data['class_type'] = this.classType;
     data['college_code'] = this.collegeCode;
     data['college_area'] = this.collegeArea;
+    data['area']         = this.area;
+    data['city']         = this.city;
     data['no_of_floors'] = this.noOfFloors;
     if (this.timings != null) {
       data['timings'] = this.timings!.map((v) => v.toJson()).toList();

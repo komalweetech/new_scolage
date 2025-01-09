@@ -28,7 +28,6 @@ import 'map_screen.dart';
 
 class NearbyScreen extends StatefulWidget {
   NearbyScreen({super.key, required this.collegeCode,});
-
   final String collegeCode;
 
 
@@ -64,13 +63,16 @@ class _NearbyScreenState extends State<NearbyScreen> {
     super.dispose();
   }
 
-  void searchData({String? value}) {
+  void searchData({ required String value}) {
     collegeList.clear();
-    if (value!.trim().isEmpty) {
+    if (value.trim().isEmpty) {
       collegeList.addAll(collegeBaseList);
       setState(() {});
       return;
     }
+    kNearbyController.displayAreaList.assignAll(
+      kNearbyController.areaList.where((area) => area.toLowerCase().contains(value.toLowerCase())).toList(),
+    );
   }
 
   // Function to start/stop listening
@@ -196,24 +198,15 @@ class _NearbyScreenState extends State<NearbyScreen> {
                               nearbyController.selectedFees.value = NearbyScreenTabEnum.values[index].displayName;
                               switch (NearbyScreenTabEnum.values[index]) {
                                 case NearbyScreenTabEnum.area:
-                                  await nearbyController.loadCollegeAreas();
                                   await commonBottomSheetFunction(
-                                    context: context,
-                                    child: Obx(() {
-                                      final areas = nearbyController.areaList;
-                                      if (areas.isEmpty) {
-                                        return Center(child: CircularProgressIndicator());
-                                      }
-                                      return AreaFilterBottomSheet(
-                                        areas: areas,
-                                        onAreaSelected: (selectedArea) {
-                                          searchController.text = selectedArea;
-                                          nearbyController.reloadCollegesData();
-                                          print("Selected area for filter: $selectedArea");
+                                      context: context,
+                                      child: AreaFilterBottomSheet(
+                                        onCitySelected: (selectedCity) {
+                                          searchController.text = selectedCity;
+                                          kNearbyController.reloadCollegesData();
+                                          print("select area for filter == $selectedCity");
                                         },
-                                      );
-                                    }),
-                                  );
+                                      ));
                                   break;
                                 case NearbyScreenTabEnum.fees:
                                   await commonBottomSheetFunction(
@@ -267,7 +260,7 @@ class _NearbyScreenState extends State<NearbyScreen> {
                     ),
                     // ALL FILTER BUTTON
                     FutureBuilder(
-                      future: kNearbyController.fetchCollegesData(),
+                      future: kNearbyController. fetchCollegesData(),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.waiting) {
                           return SizedBox(
@@ -466,7 +459,7 @@ class _NearbyScreenState extends State<NearbyScreen> {
                         itemBuilder: (context, index) {
                           final collegeName = collegeData.college?[index].collegename;
                           final collegeAddress = collegeData.college?[index].address;
-                          final collegeArea = collegeData.college?[index].collegeArea;
+                          final collegeArea = collegeData.college?[index].area;
                           final collegeCode = collegeData.college?[index].collegeCode;
 
                           final searchTerm = searchController.text.toLowerCase();
@@ -540,7 +533,14 @@ class _NearbyScreenState extends State<NearbyScreen> {
                             );
                           } else {
                             print("not match Data Data Data.. in filter screen");
-                            return SizedBox.shrink();
+                            return  Center(
+                              child:Image.asset("assets/icons/no_data_image.png",height: 300.sp,),
+                              // SvgPicture.asset(
+                              //   'assets/image/noData.svg',
+                              //   height: 250.sp,
+                              //   width: 200.sp,
+                              // ),
+                            );
                           }
                         },
                         separatorBuilder: (context, index) => SizedBox(height: 30.0),
@@ -573,9 +573,12 @@ class _NearbyScreenState extends State<NearbyScreen> {
                   } else {
                     print("not match any college college..");
                     return Center(
-                        child: SvgPicture.asset('assets/icons/no_data_image.svg',
-                          height: 250.sp,
-                          width: 200.sp,)
+                      child:Image.asset("assets/icons/no_data_image.png",height: 300.sp,),
+                      // SvgPicture.asset(
+                      //   'assets/image/noData.svg',
+                      //   height: 250.sp,
+                      //   width: 200.sp,
+                      // ),
                     );
                   }
                 },
