@@ -5,16 +5,26 @@ import '../../../../utils/theme/common_color.dart';
 import '../../../home/view/widget/rate_in_star_widget.dart';
 
 class ReviewListTile extends StatelessWidget {
-  const ReviewListTile({super.key, required this.name,required this.reviewText, required this.reviewStar,});
+  const ReviewListTile({
+    super.key,
+    required this.name,
+    required this.reviewText,
+    required this.reviewStar,
+  });
+
   final String name;
   final String reviewText;
   final String reviewStar;
+
   // final String? collegeName;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
+        SizedBox(
+          height: 30,
+        ),
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -22,8 +32,12 @@ class ReviewListTile extends StatelessWidget {
               height: 38.h,
               width: 38.h,
               decoration: BoxDecoration(
-                color: Colors.black,
+                // color: Colors.black,
                 borderRadius: BorderRadius.circular(100),
+              ),
+              child: Icon(
+                Icons.arrow_forward,
+                color: Colors.black,
               ),
             ),
             SizedBox(width: 10.w),
@@ -33,9 +47,26 @@ class ReviewListTile extends StatelessWidget {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(left: 4.w),
-                    child: Text(name,style: TextStyle(fontFamily: "Poppins",fontWeight: FontWeight.w600),),
+                    child: Container(
+                      width: 80,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: kPrimaryColor,
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        child: Center(
+                          child: Text(
+                            name,
+                            style: TextStyle(
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                                fontSize: 18),
+                          ),
+                        )),
                   ),
-                  SizedBox(height: 5.h),
+                  SizedBox(height: 10.h),
                   // Padding(
                   //   padding: EdgeInsets.only(left: 4.w),
                   //   child: Text("College Name: ${collegeName}"),
@@ -43,37 +74,50 @@ class ReviewListTile extends StatelessWidget {
                   // SizedBox(height: 3.h),
                   Row(
                     children: [
-                     // RatingBar.builder(
-                     //   initialRating: double.parse(reviewStar),
-                     //     minRating: 3,
-                     //     direction: Axis.horizontal,
-                     //     allowHalfRating: true,
-                     //     itemCount: 5,
-                     //     itemSize: 20,
-                     //     // itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                     //     itemBuilder: (context,_)  =>
-                     //            const Icon(Icons.star_rate_rounded,
-                     //           color: Color.fromRGBO(255, 214, 0, 1),),
-                     //     onRatingUpdate: (rating) {
-                     //     print(rating);
-                     //     }),
-                      RateInStarWidget(iconSize: 20,reviewStar: reviewStar,),
+                      // RatingBar.builder(
+                      //   initialRating: double.parse(reviewStar),
+                      //     minRating: 3,
+                      //     direction: Axis.horizontal,
+                      //     allowHalfRating: true,
+                      //     itemCount: 5,
+                      //     itemSize: 20,
+                      //     // itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                      //     itemBuilder: (context,_)  =>
+                      //            const Icon(Icons.star_rate_rounded,
+                      //           color: Color.fromRGBO(255, 214, 0, 1),),
+                      //     onRatingUpdate: (rating) {
+                      //     print(rating);
+                      //     }),
+                      RateInStarWidget(
+                        iconSize: 25,
+                        reviewStar: reviewStar,
+                      ),
                       SizedBox(width: 4.h),
                       const Expanded(
                         child: Text(
                           "   1 days ago",
-                          style: TextStyle(color: grey128Color,fontFamily: "Poppins",fontWeight: FontWeight.w400),
+                          style: TextStyle(
+                              color: grey128Color,
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 10.h,),
+                  SizedBox(
+                    height: 10.h,
+                  ),
                   Padding(
-                    padding:  EdgeInsets.only(left: 08.w),
+                    padding: EdgeInsets.only(left: 08.w),
                     child: Text(
                       reviewText,
                       // "Best place for tuitions. Service counselor Sushmitha M) is very friendly speaking. Each and every one at learning centre are good at their services. Student will feel fun while they learn through Byju's.",
-                      style: TextStyle(color: grey102Color, fontSize: 12.5.sp,fontFamily: "Poppins",fontWeight: FontWeight.w400),
+                      style: TextStyle(
+                          color: grey102Color,
+                          fontSize: 14.5.sp,
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w400),
                     ),
                   )
                 ],

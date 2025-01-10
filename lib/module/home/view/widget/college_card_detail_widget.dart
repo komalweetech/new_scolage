@@ -7,12 +7,13 @@ import '../../../../utils/constant/asset_icons.dart';
 import '../../../college/services/review_api.dart';
 
 class CollegeCardDetail extends StatefulWidget {
-  CollegeCardDetail({super.key, this.clgName, this.clgAdd,required this.clgId,this.systemType});
+  CollegeCardDetail({super.key, this.clgName, this.clgAdd,required this.clgId,this.systemType,this.collegeStatus});
 
   final String? clgName;
   final String? clgAdd;
   final String clgId;
   final String? systemType;
+  final String? collegeStatus;
 
   @override
   State<CollegeCardDetail> createState() => _CollegeCardDetailState();
@@ -88,8 +89,8 @@ class _CollegeCardDetailState extends State<CollegeCardDetail> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Image.asset(
-                        AssetIcons.PROTECT_RED_ICON,
+                      Image.asset(widget.collegeStatus == "Not Verified" ?
+                        AssetIcons.PROTECT_RED_ICON  : AssetIcons.PROTECT_GREEN_ICON ,
                         height: 14.h,
                       ),
                       SizedBox(width: 3.w),

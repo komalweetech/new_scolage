@@ -86,7 +86,51 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Text("there is an error for home screen"),
                 );
               } else if (snapshot.hasData.toString().isEmpty) {
-                Center(child:Image.asset("assets/icons/no_data_image.png",height: 300.sp,));
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding:  EdgeInsets.symmetric(horizontal: 30.w,vertical: 20.h),
+                        child: Image.asset(AssetIcons.NoAnyDataPNG,),
+                      ),
+                      SizedBox(height: 20.h,),
+                      Text(
+                        "No favorites yet",
+                        style: TextStyle(
+                          fontSize: 25.sp,
+                        ),
+                      ),
+                      Text(
+                        "Start searching for colleges now",
+                        style: TextStyle(
+                            fontSize: 12.sp,
+                            color: const Color.fromRGBO(
+                                128, 128, 128, 1)),
+                      ),
+                      SizedBox(height: 20.h),
+                      GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 25.w, vertical: 10.h),
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(6.r),
+                          ),
+                          child: Text(
+                            "Explore junior colleges",
+                            style: TextStyle(
+                              fontSize: 13.sp,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
                 print("Any college not found.");
               } else if (snapshot.hasData) {
                 var data = snapshot.data as Map<dynamic, dynamic>;

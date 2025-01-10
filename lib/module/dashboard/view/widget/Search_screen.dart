@@ -301,6 +301,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               totalFloors: collegeList[index]["no_of_floors"].toString(),
                               totalArea: collegeList[index]["college_area"].toString(),
                               clgCode: collegeList[index]["college_code"].toString(),
+                              collegeStatus: collegeList[index]["collegeStatus"].toString(),
                             );
                           } else {
                             return Container();

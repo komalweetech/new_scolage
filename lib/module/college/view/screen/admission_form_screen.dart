@@ -31,11 +31,14 @@ class AdmissionForm extends StatefulWidget {
       required this.collegeName,
       required this.collegeId,
       this.subjectName,
-      required this.collegeImage});
+      required this.collegeImage,
+        required this.clgCode,
+      });
 
   final String collegeImage;
   final String collegeName;
   final String collegeId;
+  final String clgCode;
   final List<dynamic>? subjectName;
 
   @override
@@ -163,7 +166,7 @@ class _AdmissionFormState extends State<AdmissionForm> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     String subjectID = "";
-    String? studentId = prefs.getString("studentId");
+    String? studentId = StudentDetails.studentId;
 
     for (int i = 0; i < perSubOfCollegeList.length; i++) {
       if (perSubOfCollegeList[i]["subjectname"] ==
@@ -172,7 +175,7 @@ class _AdmissionFormState extends State<AdmissionForm> {
         break;
       }
     }
-    print("your student id ===== ${prefs.getString("studentId")}");
+    print("your student id ===== ${StudentDetails.studentId}");
     print("your subject id ===== ${subjectID}");
     print("your student = ${StudentDetails.studentId}");
     print("current college id === ${widget.collegeId}");
@@ -425,7 +428,7 @@ class _AdmissionFormState extends State<AdmissionForm> {
                                   fontWeight: FontWeight.w700),
                             ),
                             Text(
-                              "SC code-0083",
+                              "SC code-${widget.clgCode}",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 10.sp,

@@ -201,6 +201,8 @@ class _FavCollageScreenState extends State<FavCollageScreen> {
                               location: favoriteData[index]["clgdetail"][0]
                               ["location"] ??
                                   "N/A",
+                              collegeStatus: favoriteData[index]["clgdetail"][0]
+                              ["collegeStatus"] ?? "N/A",
                             );
                           },
                           separatorBuilder: (context, index) =>

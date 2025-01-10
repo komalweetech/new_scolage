@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 import '../../../../utils/constant/asset_icons.dart';
 import '../../../../utils/theme/common_color.dart';
+import '../../../dashboard/view/screen/dashboard_screen.dart';
 import '../../../dashboard/view/widget/simple_common_appbar.dart';
 import '../../services/AppliedCollegesApi.dart';
 
@@ -28,8 +31,7 @@ class _AppliedCollegesState extends State<AppliedColleges> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
-                child:
-                    CircularProgressIndicator()); // Show loading while fetching data
+                child: CircularProgressIndicator()); // Show loading while fetching data
           }
 
           // Handle errors
@@ -47,11 +49,56 @@ class _AppliedCollegesState extends State<AppliedColleges> {
           }
           if (snapshot.hasData) {
             var data = snapshot.data as List<dynamic>;
+            print("applied data == $data");
 
             if (data.isEmpty) {
-              // const Center(child: Text("Student not Applied any Colleges"),);
-              Center(
-                child:Image.asset("assets/icons/no_data_image.png",height: 300.sp,),
+              // Show the empty image when no data is present
+              return  Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding:  EdgeInsets.symmetric(horizontal: 30.w,vertical: 20.h),
+                      child: Image.asset(AssetIcons.NoAnyDataPNG,),
+                    ),
+                    SizedBox(height: 20.h,),
+                    Text(
+                      "No favorites yet",
+                      style: TextStyle(
+                        fontSize: 25.sp,
+                      ),
+                    ),
+                    Text(
+                      "Start searching for colleges now",
+                      style: TextStyle(
+                          fontSize: 12.sp,
+                          color: const Color.fromRGBO(
+                              128, 128, 128, 1)),
+                    ),
+                    SizedBox(height: 20.h),
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(DashboardScreen());
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 25.w, vertical: 10.h),
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(6.r),
+                        ),
+                        child: Text(
+                          "Explore junior colleges",
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               );
             }
             return ListView(
@@ -63,7 +110,6 @@ class _AppliedCollegesState extends State<AppliedColleges> {
                     shrinkWrap: true,
                     padding: EdgeInsets.symmetric(horizontal: 25.w),
                     scrollDirection: Axis.vertical,
-                    // itemCount: 1,
                     itemCount: data.length,
                     itemBuilder: (context, index) => Card(
                       color: kSecondPrimaryColor,
@@ -71,7 +117,7 @@ class _AppliedCollegesState extends State<AppliedColleges> {
                       // Elevation adds a shadow below the card
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(
-                            15.0), // Rounded corners for the card
+                            15.0),
                       ),
                       child: Padding(
                         padding: const EdgeInsets.only(
@@ -130,7 +176,51 @@ class _AppliedCollegesState extends State<AppliedColleges> {
             );
           }else {
             Center(
-              child:Image.asset("assets/icons/no_data_image.png",height: 300.sp,),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding:  EdgeInsets.symmetric(horizontal: 30.w,vertical: 20.h),
+                    child: Image.asset(AssetIcons.NoAnyDataPNG,),
+                  ),
+                  SizedBox(height: 20.h,),
+                  Text(
+                    "No favorites yet",
+                    style: TextStyle(
+                      fontSize: 25.sp,
+                    ),
+                  ),
+                  Text(
+                    "Start searching for colleges now",
+                    style: TextStyle(
+                        fontSize: 12.sp,
+                        color: const Color.fromRGBO(
+                            128, 128, 128, 1)),
+                  ),
+                  SizedBox(height: 20.h),
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(DashboardScreen());
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 25.w, vertical: 10.h),
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(6.r),
+                      ),
+                      child: Text(
+                        "Explore junior colleges",
+                        style: TextStyle(
+                          fontSize: 13.sp,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             );
           }
 

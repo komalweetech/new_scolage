@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
+import '../../../../utils/constant/asset_icons.dart';
 import '../../../../utils/theme/common_color.dart';
+import '../../../dashboard/view/screen/dashboard_screen.dart';
 import '../../../dashboard/view/widget/simple_common_appbar.dart';
 import '../../services/AppliedCollegesApi.dart';
 
@@ -48,9 +52,52 @@ class _ApprovedRejectedClgState extends State<ApprovedRejectedClg> {
                 }
               });
               if (acceptedData.isEmpty) {
-                return  Center(
-                  child:Image.asset("assets/icons/no_data_image.png",height: 300.sp,),
-                  // Text("Not accepted  any form for colleges "),
+                return   Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding:  EdgeInsets.symmetric(horizontal: 30.w,vertical: 20.h),
+                        child: Image.asset(AssetIcons.NoAnyDataPNG,),
+                      ),
+                      SizedBox(height: 20.h,),
+                      Text(
+                        "No favorites yet",
+                        style: TextStyle(
+                          fontSize: 25.sp,
+                        ),
+                      ),
+                      Text(
+                        "Start searching for colleges now",
+                        style: TextStyle(
+                            fontSize: 12.sp,
+                            color: const Color.fromRGBO(
+                                128, 128, 128, 1)),
+                      ),
+                      SizedBox(height: 20.h),
+                      GestureDetector(
+                        onTap: () {
+                          Get.to(DashboardScreen());
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 25.w, vertical: 10.h),
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(6.r),
+                          ),
+                          child: Text(
+                            "Explore junior colleges",
+                            style: TextStyle(
+                              fontSize: 13.sp,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 );
               }
               print("only show accepted data == $acceptedData");
@@ -62,9 +109,52 @@ class _ApprovedRejectedClgState extends State<ApprovedRejectedClg> {
                 }
               });
               if (rejectedData.isEmpty) {
-                return  Center(
-                  child: Image.asset("assets/icons/no_data_image.png",height: 300.sp,),
-                  // Text("Not rejectedany form for colleges "),
+                return   Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding:  EdgeInsets.symmetric(horizontal: 30.w,vertical: 20.h),
+                        child: Image.asset(AssetIcons.NoAnyDataPNG,),
+                      ),
+                      SizedBox(height: 20.h,),
+                      Text(
+                        "No favorites yet",
+                        style: TextStyle(
+                          fontSize: 25.sp,
+                        ),
+                      ),
+                      Text(
+                        "Start searching for colleges now",
+                        style: TextStyle(
+                            fontSize: 12.sp,
+                            color: const Color.fromRGBO(
+                                128, 128, 128, 1)),
+                      ),
+                      SizedBox(height: 20.h),
+                      GestureDetector(
+                        onTap: () {
+                          Get.to(DashboardScreen());
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 25.w, vertical: 10.h),
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(6.r),
+                          ),
+                          child: Text(
+                            "Explore junior colleges",
+                            style: TextStyle(
+                              fontSize: 13.sp,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 );
               }
 

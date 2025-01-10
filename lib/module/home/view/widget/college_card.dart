@@ -5,12 +5,45 @@ import '../../../college/view/screen/college_detail_screen.dart';
 import 'college_card_detail_widget.dart';
 
 class CollegeCard extends StatefulWidget {
-  const CollegeCard({super.key, required this.index, this.height, this.width,
-    this.clgImage, this.clgName,this.clgId,this.clgAdd,this.clgDetails,this.policy, this.eligibility, this.feeTerms,this.safety,
-  this.subjectName,this.staffList,this.socialMedia,this.open,this.close,this.days,
-    this.clgType,this.systemType,this.academicType,this.affiliated,this.classType,this.classrooms,this.totalSeats,this.totalFloors,this.totalArea,this.clgCode,
-    this.clgImageList,this.videoList,this.webSiteLink,this.location,this.description,this.more_info,this.history, this.collegeStatus
-  });
+  const CollegeCard(
+      {super.key,
+      required this.index,
+      this.height,
+      this.width,
+      this.clgImage,
+      this.clgName,
+      this.clgId,
+      this.clgAdd,
+      this.clgDetails,
+      this.policy,
+      this.eligibility,
+      this.feeTerms,
+      this.safety,
+      this.subjectName,
+      this.staffList,
+      this.socialMedia,
+      this.open,
+      this.close,
+      this.days,
+      this.clgType,
+      this.systemType,
+      this.academicType,
+      this.affiliated,
+      this.classType,
+      this.classrooms,
+      this.totalSeats,
+      this.totalFloors,
+      this.totalArea,
+      this.clgCode,
+      this.clgImageList,
+      this.videoList,
+      this.webSiteLink,
+      this.location,
+      this.description,
+      this.more_info,
+      this.history,
+      this.collegeStatus});
+
   final int index;
   final double? height;
   final double? width;
@@ -26,7 +59,7 @@ class CollegeCard extends StatefulWidget {
   final String? feeTerms;
   final List<dynamic>? staffList;
   final String? safety;
-  final List< dynamic>? subjectName;
+  final List<dynamic>? subjectName;
   final String? open;
   final String? close;
   final String? days;
@@ -54,7 +87,6 @@ class CollegeCard extends StatefulWidget {
   State<CollegeCard> createState() => _CollegeCardState();
 }
 
-
 class _CollegeCardState extends State<CollegeCard> {
   @override
   Widget build(BuildContext context) {
@@ -74,43 +106,45 @@ class _CollegeCardState extends State<CollegeCard> {
         child: InkWell(
           borderRadius: BorderRadius.circular(7.r),
           onTap: () {
-            CommonFunction.kNavigatorPush(context, CollegeDetailScreen(
-              clgDetails: widget.clgDetails,
-              policy: widget.policy!,
-              eligibility: widget.eligibility!,
-              feeTerms: widget.feeTerms,
-              clgImage: widget.clgImage!,
-              clgName: widget.clgName!,
-              clgId: widget.clgId!,
-              clgAdd: widget.clgAdd,
-              safety: widget.safety!,
-              courseDetails: widget.subjectName,
-              staffList: widget.staffList!,
-              socialDetails: widget.socialMedia,
-              open: widget.open,
-              close: widget.close,
-              days: widget.days,
-              description : widget.description,
-              history: widget.history,
-              more_info: widget.more_info,
-              clgImageList: widget.clgImageList!,
-              videoList: widget.videoList,
-              webSiteLink: widget.webSiteLink,
-              location: widget.location,
+            CommonFunction.kNavigatorPush(
+                context,
+                CollegeDetailScreen(
+                  clgDetails: widget.clgDetails,
+                  policy: widget.policy!,
+                  eligibility: widget.eligibility!,
+                  feeTerms: widget.feeTerms,
+                  clgImage: widget.clgImage!,
+                  clgName: widget.clgName!,
+                  clgId: widget.clgId!,
+                  clgAdd: widget.clgAdd,
+                  safety: widget.safety!,
+                  courseDetails: widget.subjectName,
+                  staffList: widget.staffList!,
+                  socialDetails: widget.socialMedia,
+                  open: widget.open,
+                  close: widget.close,
+                  days: widget.days,
+                  description: widget.description,
+                  history: widget.history,
+                  more_info: widget.more_info,
+                  clgImageList: widget.clgImageList!,
+                  videoList: widget.videoList,
+                  webSiteLink: widget.webSiteLink,
+                  location: widget.location,
 
-              // all for College Details.......
-              clgType: widget.clgType,
-              systemType: widget.systemType,
-              academicType: widget.academicType,
-              affiliated: widget.affiliated,
-              classType: widget.classType,
-              classrooms: widget.classrooms,
-              totalSeats: widget.totalSeats,
-              totalFloors: widget.totalFloors,
-              totalArea: widget.totalArea,
-              clgCode: widget.clgCode,
-              collegeStatus: widget.collegeStatus,
-            ));
+                  // all for College Details.......
+                  clgType: widget.clgType,
+                  systemType: widget.systemType,
+                  academicType: widget.academicType,
+                  affiliated: widget.affiliated,
+                  classType: widget.classType,
+                  classrooms: widget.classrooms,
+                  totalSeats: widget.totalSeats,
+                  totalFloors: widget.totalFloors,
+                  totalArea: widget.totalArea,
+                  clgCode: widget.clgCode,
+                  collegeStatus: widget.collegeStatus,
+                ));
           },
           child: Stack(
             children: [
@@ -122,8 +156,11 @@ class _CollegeCardState extends State<CollegeCard> {
                   // child: Image.network(widget.clgImage!,fit: BoxFit.cover,errorBuilder: (context,error,stackTrace) {
                   //   return Image.network('https://images.unsplash.com/flagged/photo-1554473675-d0904f3cbf38?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGNvbGxlZ2V8ZW58MHx8MHx8fDA%3D',fit: BoxFit.cover);
                   // },)
-                  child: Image.network(widget.clgImage!,fit: BoxFit.cover,),
-                  ) ,
+                  child: Image.network(
+                    widget.clgImage!,
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
               // Positioned(
               //     right: 10,
@@ -139,12 +176,17 @@ class _CollegeCardState extends State<CollegeCard> {
               //         height: 11.5.h,
               //       ),
               //     )),
-               Positioned(
+              Positioned(
                 bottom: 10,
                 left: 10,
                 right: 10,
-                child: CollegeCardDetail(clgName: widget.clgName,clgAdd: widget.clgAdd,clgId: widget.clgId!,systemType: widget.systemType,),
-
+                child: CollegeCardDetail(
+                  clgName: widget.clgName,
+                  clgAdd: widget.clgAdd,
+                  clgId: widget.clgId!,
+                  systemType: widget.systemType,
+                  collegeStatus: widget.collegeStatus,
+                ),
               )
             ],
           ),
@@ -152,5 +194,4 @@ class _CollegeCardState extends State<CollegeCard> {
       ),
     );
   }
-
 }

@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:new_scolage/module/college/view/widget/showImage_screen.dart';
+import 'package:new_scolage/module/college/view/widget/youtube_Image_widget.dart';
 import '../../../../utils/commonFunction/common_function.dart';
 import '../../../../utils/commonWidget/common_vertical_divider.dart';
 import '../../../../utils/constant/asset_icons.dart';
@@ -273,13 +274,14 @@ class _CollegeBasicDetailWidgetState extends State<CollegeBasicDetailWidget> {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Image.asset(AssetIcons.PROTECT_GREEN_ICON,
+                        Image.asset(widget.collegeStatus ==  "Verified" ?
+                            AssetIcons.PROTECT_GREEN_ICON  : AssetIcons.PROTECT_RED_ICON,
                             height: 10.h),
-                        SizedBox(width: 1.5.h),
+                        SizedBox(width: 3.h),
                         Text(
                           widget.collegeStatus,
                           style: TextStyle(
-                            color: Colors.green,
+                            color: widget.collegeStatus ==  "Verified" ? Colors.green : Colors.red,
                             fontSize: 9.sp,
                             fontFamily: "Poppins",
                           ),
@@ -470,7 +472,8 @@ class PlayListWidget extends StatelessWidget {
               ),
             ),
             SizedBox(width: 30.w),
-            Image.asset(AssetIcons.VIDEO_IMAGE, height: 100.h),
+            // Image.asset(AssetIcons.VIDEO_IMAGE, height: 100.h),
+            YoutubeImageWidget(),
             SizedBox(width: 30.w),
           ],
         ),

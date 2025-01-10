@@ -149,7 +149,6 @@ class _ApplicationFormState extends State<ApplicationForm>  {
                            Expanded(
                              child: AdmissionFormScreenTextField(
                                controller: controllers['name']!,
-                               labelText: "name",
                                hintText: snapshot.data?["name"],
                                validator: (value) {
                                  if(value == null || value.isEmpty){
@@ -163,7 +162,6 @@ class _ApplicationFormState extends State<ApplicationForm>  {
                            Expanded(
                              child: AdmissionFormScreenTextField(
                                controller: controllers['surname']!,
-                               labelText: "surname",
                                hintText: snapshot.data?["surname"],
                                validator: (value) {
                                  if (value == null || value.isEmpty) {
@@ -181,7 +179,6 @@ class _ApplicationFormState extends State<ApplicationForm>  {
                            Expanded(
                              child: AdmissionFormScreenTextField(
                                controller: controllers['nationality']!,
-                               labelText: "nationality",
                                hintText:snapshot.data?["nationality"],
                              ),
                            ),
@@ -189,7 +186,6 @@ class _ApplicationFormState extends State<ApplicationForm>  {
                            Expanded(
                              child: AdmissionFormScreenTextField(
                                controller: controllers['mother_tongue']!,
-                               labelText: "mother_tongue",
                                hintText: snapshot.data?["mother_tongue"],
                              ),
                            ),
@@ -201,14 +197,12 @@ class _ApplicationFormState extends State<ApplicationForm>  {
                            Expanded(
                              child: AdmissionFormScreenTextField(
                                controller: controllers['caste_name']!,
-                               labelText: "Caste Name",
                              ),
                            ),
                            SizedBox(width: 10.w),
                            Expanded(
                              child: AdmissionFormScreenTextField(
                                controller: controllers['sub_caste_name']!,
-                               labelText: "Sub Caste Name",
                              ),
                            ),
                          ],
@@ -216,8 +210,6 @@ class _ApplicationFormState extends State<ApplicationForm>  {
                        // Examination Passed (SSC/OSSC/ specify if any other)
                        AdmissionFormScreenTextField(
                          controller: controllers['examination_passed']!,
-                         labelText:
-                         "Examination Passed (SSC/OSSC/ specify if any other)",
                        ),
                        // School Last studied as AND Exam Year
                        Row(
@@ -226,7 +218,6 @@ class _ApplicationFormState extends State<ApplicationForm>  {
                              flex: 75,
                              child: AdmissionFormScreenTextField(
                                controller: controllers['school_last_studied']!,
-                               labelText: "School Last studied",
                              ),
                            ),
                            SizedBox(width: 10.w),
@@ -234,43 +225,21 @@ class _ApplicationFormState extends State<ApplicationForm>  {
                              flex: 25,
                              child: AdmissionFormScreenTextField(
                                controller: controllers['exam_year']!,
-                               labelText: "Exam Year",
                                keyboardType: TextInputType.number,
                              ),
                            ),
                          ],
                        ),
                        // Hall Ticket No:
-                       Row(
-                         children: [
-                           Text(
-                             "Hall Ticket No:",
-                             style: TextStyle(fontSize: 16.sp),
-                           ),
-                           SizedBox(width: 10.w),
-                           Expanded(
-                             child: AdmissionFormScreenTextField(
-                               controller: controllers['hall_ticket_no']!,
-                             ),
-                           ),
-                         ],
+                       SizedBox(width: 10.w),
+                       AdmissionFormScreenTextField(
+                         controller: controllers['hall_ticket_no']!,
                        ),
                        // Aadhar No:
-                       Row(
-                         children: [
-                           Text(
-                             "Aadhar No:",
-                             style: TextStyle(fontSize: 16.sp),
-                           ),
-                           SizedBox(width: 10.w),
-                           Expanded(
-                             child: AdmissionFormScreenTextField(
-                               controller: controllers['aadhar_no']!,
-                               keyboardType: TextInputType.number,
-                             ),
-                           ),
-
-                         ],
+                       SizedBox(width: 10.w),
+                       AdmissionFormScreenTextField(
+                         controller: controllers['aadhar_no']!,
+                         keyboardType: TextInputType.number,
                        ),
                      SizedBox(height: 50.h,),
                      CommonSaveAndSubmitButton(

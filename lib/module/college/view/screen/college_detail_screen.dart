@@ -23,11 +23,41 @@ import 'admission_form_screen.dart';
 import 'fee_deatil_screen.dart';
 
 class CollegeDetailScreen extends StatefulWidget {
-  const CollegeDetailScreen({super.key,this.clgDetails, this.policy, this.eligibility, required this.clgImage,required this.clgName,
-    required this.clgId,this.safety, this.courseDetails,this.staffList,this.socialDetails,this.open,this.close,this.days,
-    this.clgType,this.systemType,this.academicType,this.affiliated,this.classType,this.classrooms,this.totalSeats,this.totalFloors,this.totalArea,this.clgCode,
-    this.clgImageList,this.videoList,this.webSiteLink,this.clgAdd,this.location,this.description,this.more_info,this.history,
-    this.feeTerms,this.collegeStatus,
+  const CollegeDetailScreen({
+    super.key,
+    this.clgDetails,
+    this.policy,
+    this.eligibility,
+    required this.clgImage,
+    required this.clgName,
+    required this.clgId,
+    this.safety,
+    this.courseDetails,
+    this.staffList,
+    this.socialDetails,
+    this.open,
+    this.close,
+    this.days,
+    this.clgType,
+    this.systemType,
+    this.academicType,
+    this.affiliated,
+    this.classType,
+    this.classrooms,
+    this.totalSeats,
+    this.totalFloors,
+    this.totalArea,
+    this.clgCode,
+    this.clgImageList,
+    this.videoList,
+    this.webSiteLink,
+    this.clgAdd,
+    this.location,
+    this.description,
+    this.more_info,
+    this.history,
+    this.feeTerms,
+    this.collegeStatus,
   });
 
   final List<dynamic>? clgDetails;
@@ -66,7 +96,6 @@ class CollegeDetailScreen extends StatefulWidget {
   final String? location;
   final String? collegeStatus;
 
-
   @override
   State<CollegeDetailScreen> createState() => _CollegeDetailScreenState();
 }
@@ -75,16 +104,14 @@ class _CollegeDetailScreenState extends State<CollegeDetailScreen> {
   final scrollDirection = Axis.vertical;
   late AutoScrollController controller;
 
-
   @override
   void initState() {
     super.initState();
     print("222222 = ${widget.clgId}");
     print("222222 = ${widget.clgName}");
 
-    print("student id ==== ${StudentDetails.studentId }");
+    print("student id ==== ${StudentDetails.studentId}");
     print("location from college detail screen == ${widget.location}");
-
 
     // LIST .
     controller = AutoScrollController(
@@ -117,14 +144,23 @@ class _CollegeDetailScreenState extends State<CollegeDetailScreen> {
               controller: controller,
               children: [
                 // IMAGE AND BASIC DETAIL
-                 CollegeImageAndShortDetailWidget(clgImage: widget.clgImage,clgName: widget.clgName,
-                   clgImageList:widget.clgImageList!,clgId: widget.clgId,videoList:widget.videoList!,
-                    clgType:widget.clgType ,clgAdd:widget.clgAdd ,clgCode: widget.clgCode,location: widget.location,
-                 collegeStatus: widget.collegeStatus,),
+                CollegeImageAndShortDetailWidget(
+                  clgImage: widget.clgImage,
+                  clgName: widget.clgName,
+                  clgImageList: widget.clgImageList!,
+                  clgId: widget.clgId,
+                  videoList: widget.videoList!,
+                  clgType: widget.clgType,
+                  clgAdd: widget.clgAdd,
+                  clgCode: widget.clgCode,
+                  location: widget.location,
+                  collegeStatus: widget.collegeStatus,
+                ),
 
                 // COLLEGE DETAIL
                 Visibility(
-                  visible: widget.clgDetails != null && widget.clgDetails!.isNotEmpty,
+                  visible: widget.clgDetails != null &&
+                      widget.clgDetails!.isNotEmpty,
                   child: AutoScrollTag(
                     key: const ValueKey(0),
                     controller: controller,
@@ -147,7 +183,8 @@ class _CollegeDetailScreenState extends State<CollegeDetailScreen> {
                       totalFloors: widget.totalFloors,
                       totalArea: widget.totalArea,
                       clgCode: widget.clgCode,
-                    index: 0,),
+                      index: 0,
+                    ),
                   ),
                 ),
                 // INFRASTRUCTURE LIST
@@ -155,54 +192,76 @@ class _CollegeDetailScreenState extends State<CollegeDetailScreen> {
                   key: const ValueKey(1),
                   controller: controller,
                   index: 1,
-                  child: InfrastructureListWidget(CollegeId: widget.clgId,index: 1),
+                  child: InfrastructureListWidget(
+                      CollegeId: widget.clgId, index: 1),
                 ),
                 // HIGHLIGHTS DETAIL
                 AutoScrollTag(
                   key: const ValueKey(2),
                   controller: controller,
                   index: 2,
-                  child:  CollegeHighlightWidget(clgId:  widget.clgId,index:2),
+                  child: CollegeHighlightWidget(clgId: widget.clgId, index: 2),
                 ),
                 // SAFETY AND SECURITY DETAIL
                 AutoScrollTag(
                   key: const ValueKey(3),
                   controller: controller,
                   index: 3,
-                  child: CollegeSafetyAndSecurityWidget(safety:widget.safety!,index: 3,),
+                  child: CollegeSafetyAndSecurityWidget(
+                    safety: widget.safety!,
+                    index: 3,
+                  ),
                 ),
                 // MANAGEMENT & STAFF
                 AutoScrollTag(
                   key: const ValueKey(4),
                   controller: controller,
                   index: 4,
-                  child:  CollegeManagementAndStaffWidget(collegeId: widget.clgId, staffList: widget.staffList!,index: 4),
+                  child: CollegeManagementAndStaffWidget(
+                      collegeId: widget.clgId,
+                      staffList: widget.staffList!,
+                      index: 4),
                 ),
                 // SUBJECT .
                 AutoScrollTag(
                   key: const ValueKey(5),
                   controller: controller,
                   index: 5,
-                  child:  CollegeSubjectsWidget(eligibility: widget.eligibility!,subjectList: widget.courseDetails,collegeId: widget.clgId,index:5),
+                  child: CollegeSubjectsWidget(
+                      eligibility: widget.eligibility!,
+                      subjectList: widget.courseDetails,
+                      collegeId: widget.clgId,
+                      index: 5),
                 ),
                 // SOCIAL MEDIA
                 AutoScrollTag(
                   key: const ValueKey(6),
                   controller: controller,
                   index: 6,
-                  child:  CollegeSocialMediaWidget(socialDetails: widget.socialDetails,collegeId: widget.clgId,index:6),
+                  child: CollegeSocialMediaWidget(
+                      socialDetails: widget.socialDetails,
+                      collegeId: widget.clgId,
+                      index: 6),
                 ),
                 // POLICY .
                 AutoScrollTag(
                   key: const ValueKey(7),
                   controller: controller,
                   index: 7,
-                  child:  CollegePolicyWidget(policy: widget.policy!,collegeId: widget.clgId,index:7),
+                  child: CollegePolicyWidget(
+                      policy: widget.policy!,
+                      collegeId: widget.clgId,
+                      index: 7),
                 ),
               ],
             ),
             // APPBAR .
-            CollegeDetailScreenAppBar(controller: controller,clgList: widget.clgDetails!,clgId: widget.clgId,webSiteLink: widget.webSiteLink,),
+            CollegeDetailScreenAppBar(
+              controller: controller,
+              clgList: widget.clgDetails!,
+              clgId: widget.clgId,
+              webSiteLink: widget.webSiteLink,
+            ),
           ],
         ),
         bottomNavigationBar: SafeArea(
@@ -222,25 +281,37 @@ class _CollegeDetailScreenState extends State<CollegeDetailScreen> {
                         children: [
                           Text(
                             "Fee’s",
-                            style: TextStyle(fontSize: 12.sp,fontFamily: "Poppins",),
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              fontFamily: "Poppins",
+                            ),
                           ),
                           InkWell(
                             onTap: () {
                               CommonFunction.kNavigatorPush(
-                                  context,  FeeDetailScreen(eligibility: widget.eligibility,feeTerms: widget.feeTerms ,clgId: widget.clgId,));
+                                  context,
+                                  FeeDetailScreen(
+                                    eligibility: widget.eligibility,
+                                    feeTerms: widget.feeTerms,
+                                    clgId: widget.clgId,
+                                  ));
                             },
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   "10,000 to 35,000 INRv",
-                                  style: TextStyle(fontSize: 14.sp,fontFamily: "Poppins",fontWeight: FontWeight.w600),
+                                  style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.w600),
                                 ),
                                 Text(
                                   "For More Details ",
                                   style: TextStyle(
                                       color: kPrimaryColor,
-                                      fontSize: 10.sp,fontFamily: "Poppins",
+                                      fontSize: 10.sp,
+                                      fontFamily: "Poppins",
                                       decoration: TextDecoration.underline,
                                       decorationColor: kPrimaryColor),
                                 ),
@@ -253,8 +324,15 @@ class _CollegeDetailScreenState extends State<CollegeDetailScreen> {
                     InkWell(
                       borderRadius: BorderRadius.circular(8.r),
                       onTap: () {
-                        CommonFunction.kNavigatorPush(context,
-                            AdmissionForm(collegeName: widget.clgName,subjectName: widget.courseDetails!, collegeId: widget.clgId,collegeImage: widget.clgImage,));
+                        CommonFunction.kNavigatorPush(
+                            context,
+                            AdmissionForm(
+                              collegeName: widget.clgName,
+                              subjectName: widget.courseDetails!,
+                              collegeId: widget.clgId,
+                              collegeImage: widget.clgImage,
+                              clgCode: widget.clgCode!,
+                            ));
                       },
                       child: Container(
                         padding: EdgeInsets.fromLTRB(10.w, 8.h, 10.w, 10.h),
@@ -273,7 +351,10 @@ class _CollegeDetailScreenState extends State<CollegeDetailScreen> {
                         child: Text(
                           "APPLY NOW",
                           style: TextStyle(
-                              color: commonYellowColor, fontSize: 14.sp,fontFamily: "Poppins",fontWeight: FontWeight.w700),
+                              color: commonYellowColor,
+                              fontSize: 14.sp,
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w700),
                         ),
                       ),
                     )

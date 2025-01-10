@@ -8,7 +8,7 @@ import '../widget/college_detail_screen_title_and_description_widget.dart';
 import '../widget/fees_list_widgets.dart';
 
 class FeeDetailScreen extends StatefulWidget {
-  const FeeDetailScreen({super.key,this.eligibility,this.feeTerms,required this.clgId});
+  const FeeDetailScreen({super.key,this.eligibility,this.feeTerms,required this.clgId,});
   final String? feeTerms;
   final String? eligibility;
   final String clgId;

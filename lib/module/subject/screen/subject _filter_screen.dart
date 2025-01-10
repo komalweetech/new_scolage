@@ -263,6 +263,7 @@ class _SubjectFilterScreenState extends State<SubjectFilterScreen> {
                         totalArea: college["college_area"].toString(),
                         clgCode: college["college_code"].toString(),
                         location: college["location"].toString(),
+                        collegeStatus: college["collegeStatus"].toString(),
 
                       );
 

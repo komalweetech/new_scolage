@@ -19,6 +19,7 @@ class CollegeModel {
   String? classType;
   String? collegeCode;
   String? collegeArea;
+  String? collegeStatus;
   String? area;
   String? city;
   String? noOfFloors;
@@ -49,6 +50,7 @@ class CollegeModel {
         this.classType,
         this.collegeCode,
         this.collegeArea,
+        this.collegeStatus,
         this.area,
         this.city,
         this.noOfFloors,
@@ -85,6 +87,7 @@ class CollegeModel {
     classType = json['class_type'];
     collegeCode = json['college_code'];
     collegeArea = json['college_area'];
+    collegeStatus = json['collegeStatus'];
     area        = json['area'];
     city        = json['city'];
     noOfFloors = json['no_of_floors'];
@@ -126,6 +129,7 @@ class CollegeModel {
     data['class_type'] = this.classType;
     data['college_code'] = this.collegeCode;
     data['college_area'] = this.collegeArea;
+    data['collegeStatus'] = this.collegeStatus;
     data['area']         = this.area;
     data['city']         = this.city;
     data['no_of_floors'] = this.noOfFloors;

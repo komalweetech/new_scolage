@@ -14,6 +14,7 @@ import '../../../../utils/commonWidget/keyboard_off.dart';
 import '../../../../utils/constant/asset_icons.dart';
 import '../../../../utils/enum/nearby_screen_enum.dart';
 import '../../../../utils/theme/common_color.dart';
+import '../../../dashboard/view/screen/dashboard_screen.dart';
 import '../../../dashboard/view/widget/Search_screen.dart';
 import '../../../home/model/college_data.dart';
 import '../../../home/view/widget/college_card.dart';
@@ -343,9 +344,76 @@ class _NearbyScreenState extends State<NearbyScreen> {
                     print("college filter throw error :: ${snapshot.error}");
                     return Center(child: Text("Error : ${snapshot.error}"));
                   }
-                  else if (snapshot.hasData && snapshot.data!.college!.isNotEmpty) {
+                  else if (snapshot.hasData) {
                     CollegeData collegeData = snapshot.data!;
                     print("all college Data == $collegeData");
+
+                    // Extract and process data here...
+                    final colleges = collegeData.college;
+                    final searchTerm = searchController.text.toLowerCase();
+
+                    // Filtered list logic
+                    final filteredColleges = colleges?.where((college) {
+                      final collegeName = college.collegename?.toLowerCase() ?? '';
+                      final collegeAddress = college.address?.toLowerCase() ?? '';
+                      final collegeArea = college.area?.toLowerCase() ?? '';
+                      final collegeCode = college.collegeCode?.toLowerCase() ?? '';
+
+                      return collegeName.contains(searchTerm) ||
+                          collegeAddress.contains(searchTerm) ||
+                          collegeArea.contains(searchTerm) ||
+                          collegeCode.contains(searchTerm);
+                    }).toList();
+
+                    if (filteredColleges == null || filteredColleges.isEmpty) {
+                      return  Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding:  EdgeInsets.symmetric(horizontal: 30.w,vertical: 20.h),
+                              child: Image.asset(AssetIcons.NoAnyDataPNG,),
+                            ),
+                            SizedBox(height: 20.h,),
+                            Text(
+                              "No favorites yet",
+                              style: TextStyle(
+                                fontSize: 25.sp,
+                              ),
+                            ),
+                            Text(
+                              "Start searching for colleges now",
+                              style: TextStyle(
+                                  fontSize: 12.sp,
+                                  color: const Color.fromRGBO(
+                                      128, 128, 128, 1)),
+                            ),
+                            SizedBox(height: 20.h),
+                            GestureDetector(
+                              onTap: () {
+                                Get.to(DashboardScreen());
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 25.w, vertical: 10.h),
+                                decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.circular(6.r),
+                                ),
+                                child: Text(
+                                  "Explore junior colleges",
+                                  style: TextStyle(
+                                    fontSize: 13.sp,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
 
                     // set Intense of collegeData.managementStaff to a List type and fetch a data value...
                     List<ManagementStaff>? staffList = collegeData.managementStaff;
@@ -455,20 +523,20 @@ class _NearbyScreenState extends State<NearbyScreen> {
                       padding: EdgeInsets.only(top: 25.h),
                       child: ListView.separated(
                         padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0, bottom: 20.0),
-                        itemCount: collegeData.college!.length,
+                        itemCount: filteredColleges.length,
                         itemBuilder: (context, index) {
-                          final collegeName = collegeData.college?[index].collegename;
-                          final collegeAddress = collegeData.college?[index].address;
-                          final collegeArea = collegeData.college?[index].area;
-                          final collegeCode = collegeData.college?[index].collegeCode;
+                          // final collegeName = collegeData.college?[index].collegename;
+                          // final collegeAddress = collegeData.college?[index].address;
+                          // final collegeArea = collegeData.college?[index].area;
+                          // final collegeCode = collegeData.college?[index].collegeCode;
+                          //
+                          // final searchTerm = searchController.text.toLowerCase();
 
-                          final searchTerm = searchController.text.toLowerCase();
-
-                          final collegeMatchesSearchTerm =
-                                collegeName!.toLowerCase().contains(searchTerm)    ||
-                                collegeAddress!.toLowerCase().contains(searchTerm) ||
-                                collegeArea!.toLowerCase().contains(searchTerm)    ||
-                                    collegeCode!.toLowerCase().contains(searchTerm);
+                          // final collegeMatchesSearchTerm =
+                          //       collegeName!.toLowerCase().contains(searchTerm)    ||
+                          //       collegeAddress!.toLowerCase().contains(searchTerm) ||
+                          //       collegeArea!.toLowerCase().contains(searchTerm)    ||
+                          //           collegeCode!.toLowerCase().contains(searchTerm);
 
                           // filter clgImage ;
                           final clgImageForCurrentCollege = clgImageInfoList.where((imageInfo) =>
@@ -491,60 +559,51 @@ class _NearbyScreenState extends State<NearbyScreen> {
                           print("nearBy screen trend List = ${filterTrend}");
                           log("near by screen fees filter lungth = ${filterTrend.length}");
 
-                          if (collegeMatchesSearchTerm || isCollegeInFilterFees || isCollegeInFilterTrend) {
-                            return CollegeCard(
-                              index: index,
-                              height: 200.h,
-                              width: double.infinity,
-                              clgId: collegeData.college?[index].collegeid,
-                              clgImage: clgImageForCurrentCollegeUrl,
-                              clgName: collegeData.college?[index].collegename,
-                              clgAdd: collegeData.college?[index].address,
-                              clgDetails: collegeData.college,
-                              policy: collegeData.clgpolicySocialMedia?[index].termsCondition,
-                              eligibility: collegeData.feeStructure?[index].eligibilityCriteria,
-                              feeTerms: collegeData.feeStructure?[index].feeTerms,
-                              // feeStructure: collegeData.feeStructure?.toList(),
-                              safety: collegeData.highlight?[index].safetySecurity,
-                              open: collegeData.college?[index].timings![0].open.toString(),
-                              close: collegeData.college?[index].timings![0].close.toString(),
-                              days: collegeData.college?[index].timings![0].monToSat.toString(),
-                              history: collegeData.college?[index].history_achievements,
-                              more_info: collegeData.college?[index].moreInfo,
-                              description: collegeData.college?[index].description,
-                              location: collegeData.college?[index].location,
-                              webSiteLink: collegeData.clgpolicySocialMedia?[index].website,
-                              staffList: nearbyStaffList,
-                              subjectName: subjectInfoList,
-                              socialMedia: socialMediaInfoList,
-                              clgImageList: clgImageInfoList,
-                              videoList: videoUrlInfoList,
+                          final college = filteredColleges[index];
+                          return CollegeCard(
+                            index: index,
+                            height: 200.h,
+                            width: double.infinity,
+                            clgId: collegeData.college?[index].collegeid,
+                            clgImage: clgImageForCurrentCollegeUrl,
+                            clgName: collegeData.college?[index].collegename,
+                            clgAdd: collegeData.college?[index].address,
+                            clgDetails: collegeData.college,
+                            policy: collegeData.clgpolicySocialMedia?[index].termsCondition,
+                            eligibility: collegeData.feeStructure?[index].eligibilityCriteria,
+                            feeTerms: collegeData.feeStructure?[index].feeTerms,
+                            // feeStructure: collegeData.feeStructure?.toList(),
+                            safety: collegeData.highlight?[index].safetySecurity,
+                            open: collegeData.college?[index].timings![0].open.toString(),
+                            close: collegeData.college?[index].timings![0].close.toString(),
+                            days: collegeData.college?[index].timings![0].monToSat.toString(),
+                            history: collegeData.college?[index].history_achievements,
+                            more_info: collegeData.college?[index].moreInfo,
+                            description: collegeData.college?[index].description,
+                            location: collegeData.college?[index].location,
+                            webSiteLink: collegeData.clgpolicySocialMedia?[index].website,
+                            staffList: nearbyStaffList,
+                            subjectName: subjectInfoList,
+                            socialMedia: socialMediaInfoList,
+                            clgImageList: clgImageInfoList,
+                            videoList: videoUrlInfoList,
 
-                              // all for College Details.......
-                              clgType: collegeData.college?[index].classType,
-                              academicType: collegeData.college?[index].academicType,
-                              affiliated: collegeData.college?[index].affiliated,
-                              classType: collegeData.college?[index].classType,
-                              classrooms: collegeData.college?[index].classRooms,
-                              totalSeats: collegeData.college?[index].totalSeats,
-                              totalFloors: collegeData.college?[index].noOfFloors,
-                              totalArea: collegeData.college?[index].collegeArea,
-                              clgCode: collegeData.college?[index].collegeCode,
-                            );
-                          } else {
-                            print("not match Data Data Data.. in filter screen");
-                            return  Center(
-                              child:Image.asset("assets/icons/no_data_image.png",height: 300.sp,),
-                              // SvgPicture.asset(
-                              //   'assets/image/noData.svg',
-                              //   height: 250.sp,
-                              //   width: 200.sp,
-                              // ),
-                            );
-                          }
+                            // all for College Details.......
+                            clgType: collegeData.college?[index].classType,
+                            academicType: collegeData.college?[index].academicType,
+                            affiliated: collegeData.college?[index].affiliated,
+                            classType: collegeData.college?[index].classType,
+                            classrooms: collegeData.college?[index].classRooms,
+                            totalSeats: collegeData.college?[index].totalSeats,
+                            totalFloors: collegeData.college?[index].noOfFloors,
+                            totalArea: collegeData.college?[index].collegeArea,
+                            clgCode: collegeData.college?[index].collegeCode,
+                            collegeStatus: collegeData.college?[index].collegeStatus,
+                          );
                         },
                         separatorBuilder: (context, index) => SizedBox(height: 30.0),
                       ),
+
                     );
                     // } else {
                     //   return Center(
@@ -571,15 +630,7 @@ class _NearbyScreenState extends State<NearbyScreen> {
                     // );
                     // }
                   } else {
-                    print("not match any college college..");
-                    return Center(
-                      child:Image.asset("assets/icons/no_data_image.png",height: 300.sp,),
-                      // SvgPicture.asset(
-                      //   'assets/image/noData.svg',
-                      //   height: 250.sp,
-                      //   width: 200.sp,
-                      // ),
-                    );
+                    return buildNoDataWidget();
                   }
                 },
               ),
@@ -620,6 +671,16 @@ class _NearbyScreenState extends State<NearbyScreen> {
             )
           ],
         ),
+      ),
+    );
+  }
+
+  // Widget for the case when no data is found.
+  Widget buildNoDataWidget() {
+    return Center(
+      child: Image.asset(
+        "assets/icons/no_data_image.png",
+        height: 300.sp,
       ),
     );
   }
