@@ -377,7 +377,7 @@ class _NearbyScreenState extends State<NearbyScreen> {
                             ),
                             SizedBox(height: 20.h,),
                             Text(
-                              "No favorites yet",
+                              "Not available any collage ",
                               style: TextStyle(
                                 fontSize: 25.sp,
                               ),

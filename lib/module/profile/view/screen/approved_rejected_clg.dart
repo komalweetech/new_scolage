@@ -63,7 +63,7 @@ class _ApprovedRejectedClgState extends State<ApprovedRejectedClg> {
                       ),
                       SizedBox(height: 20.h,),
                       Text(
-                        "No favorites yet",
+                        "Not accepted any Collage",
                         style: TextStyle(
                           fontSize: 25.sp,
                         ),
@@ -120,7 +120,7 @@ class _ApprovedRejectedClgState extends State<ApprovedRejectedClg> {
                       ),
                       SizedBox(height: 20.h,),
                       Text(
-                        "No favorites yet",
+                        "All collage approved you",
                         style: TextStyle(
                           fontSize: 25.sp,
                         ),

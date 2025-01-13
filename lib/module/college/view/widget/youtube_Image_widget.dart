@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../../utils/constant/asset_icons.dart';
-
 class YoutubeImageWidget extends StatelessWidget {
   const YoutubeImageWidget({super.key});
 
@@ -13,10 +11,9 @@ class YoutubeImageWidget extends StatelessWidget {
       'assets/image/image_3.jpg',
       'assets/image/image_4.jpg',
     ];
-
     return SizedBox(
       width: 170,
-      height: 140,
+      height: 125,
       child: Stack(
           alignment: Alignment.center,
           textDirection: TextDirection.rtl,
@@ -25,25 +22,18 @@ class YoutubeImageWidget extends StatelessWidget {
         children: [
           for (int i = 0; i < images.length; i++)
             Positioned(
-              bottom: i * 8.0,
-              left: i * 8.0,
+              bottom: i * 6.0 - 8.5,
+              left: i * 6.0 ,
               child: Container(
-                width: 200,
-                height: 140,
+                width: 150,
+                height: 115,
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.white, width: 1),
                   borderRadius: BorderRadius.circular(12),
                   image: DecorationImage(
-                    image: AssetImage(images[i]),
+                    image: AssetImage(images[i],),
                     fit: BoxFit.cover,
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      blurRadius: 6,
-                      offset: Offset(-4, 4),
-                    ),
-                  ],
                 ),
               ),
             ),
@@ -61,34 +51,3 @@ class YoutubeImageWidget extends StatelessWidget {
   }
 }
 
-void _showOverlay(BuildContext context) {
-  final overlay = Overlay.of(context);
-  final overlayEntry = OverlayEntry(
-    builder: (context) => Positioned(
-      top: 100,
-      left: 50,
-      child: Material(
-        color: Colors.transparent,
-        child: Container(
-          color: Colors.blueAccent,
-          width: 200,
-          height: 100,
-          child: Center(
-            child: Text(
-              'Hello, Overlay!',
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-          ),
-        ),
-      ),
-    ),
-  );
-
-  // Insert the overlay entry into the Overlay
-  overlay?.insert(overlayEntry);
-
-  // Remove the overlay after 3 seconds
-  Future.delayed(Duration(seconds: 3), () {
-    overlayEntry.remove();
-  });
-}

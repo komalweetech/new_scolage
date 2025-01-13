@@ -114,7 +114,7 @@ class _DrawerReviewScreenState extends State<DrawerReviewScreen> {
                               ),
                               SizedBox(height: 20.h,),
                               Text(
-                                "No favorites yet",
+                                "No review data available",
                                 style: TextStyle(
                                   fontSize: 25.sp,
                                 ),

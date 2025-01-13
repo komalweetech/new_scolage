@@ -64,7 +64,7 @@ class _AppliedCollegesState extends State<AppliedColleges> {
                     ),
                     SizedBox(height: 20.h,),
                     Text(
-                      "No favorites yet",
+                      "Not applied any collages",
                       style: TextStyle(
                         fontSize: 25.sp,
                       ),
@@ -186,7 +186,7 @@ class _AppliedCollegesState extends State<AppliedColleges> {
                   ),
                   SizedBox(height: 20.h,),
                   Text(
-                    "No favorites yet",
+                    "Not applied any colleges",
                     style: TextStyle(
                       fontSize: 25.sp,
                     ),

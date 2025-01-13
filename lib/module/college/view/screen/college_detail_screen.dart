@@ -156,7 +156,7 @@ class _CollegeDetailScreenState extends State<CollegeDetailScreen> {
                   location: widget.location,
                   collegeStatus: widget.collegeStatus,
                 ),
-
+SizedBox(height: 10.h,),
                 // COLLEGE DETAIL
                 Visibility(
                   visible: widget.clgDetails != null &&

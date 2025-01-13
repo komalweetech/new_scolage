@@ -61,7 +61,7 @@ class _PanddingCollegesState extends State<PanddingColleges> {
                       ),
                       SizedBox(height: 20.h,),
                       Text(
-                        "No favorites yet",
+                        "No any padding data available",
                         style: TextStyle(
                           fontSize: 25.sp,
                         ),

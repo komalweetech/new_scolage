@@ -97,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       SizedBox(height: 20.h,),
                       Text(
-                        "No favorites yet",
+                        "No Data available",
                         style: TextStyle(
                           fontSize: 25.sp,
                         ),
