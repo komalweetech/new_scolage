@@ -336,7 +336,9 @@ class _SingUpScreenState extends State<SingUpScreen> {
                               name: "Terms and Condition",
                               isSelected: true,
                               fontSize: 15,
-                              onTap: () => WebViewPage(),
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => WebViewPage()));
+                              },
                             )
                           ],
                         ),

@@ -12,12 +12,12 @@ class WebViewPage extends StatefulWidget {
 }
 
 class _WebViewPageState extends State<WebViewPage> {
-  final String url = 'https://sites.google.com/view/ppsllp-emp-privacy-policy/home';
+  final String url = 'https://sites.google.com/weetechsolution.com/scolage/home';
 
   final controller = WebViewController()
   ..setJavaScriptMode(JavaScriptMode.disabled)
-  ..loadRequest(Uri.parse('https://sites.google.com/view/ppsllp-emp-privacy-policy/home'));
-
+  ..loadRequest(Uri.parse('https://sites.google.com/weetechsolution.com/scolage/home'));
+  // https://sites.google.com/view/ppsllp-emp-privacy-policy/home
 
   @override
   Widget build(BuildContext context) {

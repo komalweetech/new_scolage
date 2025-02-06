@@ -149,7 +149,7 @@ class _ApplicationFormState extends State<ApplicationForm>  {
                            Expanded(
                              child: AdmissionFormScreenTextField(
                                controller: controllers['name']!,
-                               hintText: snapshot.data?["name"],
+                               hintText: (snapshot.data?["name"]?.isEmpty ?? true) ? "Name" : snapshot.data?["name"]!,
                                validator: (value) {
                                  if(value == null || value.isEmpty){
                                    return 'Please enter a name';
@@ -162,7 +162,7 @@ class _ApplicationFormState extends State<ApplicationForm>  {
                            Expanded(
                              child: AdmissionFormScreenTextField(
                                controller: controllers['surname']!,
-                               hintText: snapshot.data?["surname"],
+                               hintText: (snapshot.data?["surname"]?.isEmpty ?? true ) ?  "Surname" : snapshot.data?["surname"]!,
                                validator: (value) {
                                  if (value == null || value.isEmpty) {
                                    return 'Please enter a surname';
@@ -179,14 +179,14 @@ class _ApplicationFormState extends State<ApplicationForm>  {
                            Expanded(
                              child: AdmissionFormScreenTextField(
                                controller: controllers['nationality']!,
-                               hintText:snapshot.data?["nationality"],
+                               hintText:(snapshot.data?["nationality"]?.isEmpty ?? true) ?  "Nationality" : snapshot.data?["nationality"]!,
                              ),
                            ),
                            SizedBox(width: 10.w),
                            Expanded(
                              child: AdmissionFormScreenTextField(
                                controller: controllers['mother_tongue']!,
-                               hintText: snapshot.data?["mother_tongue"],
+                               hintText: (snapshot.data?["mother_tongue"]?.isEmpty ?? true) ?  "Mother tongue" : snapshot.data?["mother_tongue"]!,
                              ),
                            ),
                          ],
@@ -197,19 +197,25 @@ class _ApplicationFormState extends State<ApplicationForm>  {
                            Expanded(
                              child: AdmissionFormScreenTextField(
                                controller: controllers['caste_name']!,
+                               hintText: (snapshot.data?['caste_name']?.isEmpty ?? true) ?  'Caste name' : snapshot.data?['caste_name']!,
                              ),
                            ),
                            SizedBox(width: 10.w),
                            Expanded(
                              child: AdmissionFormScreenTextField(
                                controller: controllers['sub_caste_name']!,
+                               hintText: (snapshot.data?['sub_caste_name']?.isEmpty ?? true ) ? "Sub caste name" : snapshot.data?['sub_caste_name']!,
                              ),
                            ),
                          ],
                        ),
                        // Examination Passed (SSC/OSSC/ specify if any other)
                        AdmissionFormScreenTextField(
+                         // labelText: "Examination passed",
                          controller: controllers['examination_passed']!,
+                         hintText: (snapshot
+                                        .data?['examination_passed']?.isEmpty ??
+                                    true) ?  "Examination passed" : snapshot.data?['examination_passed'],
                        ),
                        // School Last studied as AND Exam Year
                        Row(
@@ -218,6 +224,7 @@ class _ApplicationFormState extends State<ApplicationForm>  {
                              flex: 75,
                              child: AdmissionFormScreenTextField(
                                controller: controllers['school_last_studied']!,
+                               hintText: (snapshot.data?['school_last_studied']?.isEmpty ?? true) ? "School last studied" : snapshot.data?['school_last_studied']!,
                              ),
                            ),
                            SizedBox(width: 10.w),
@@ -226,6 +233,7 @@ class _ApplicationFormState extends State<ApplicationForm>  {
                              child: AdmissionFormScreenTextField(
                                controller: controllers['exam_year']!,
                                keyboardType: TextInputType.number,
+                               hintText: (snapshot.data?['exam_year']?.isEmpty ?? true )?  "Exam year" : snapshot.data?['exam_year']!,
                              ),
                            ),
                          ],
@@ -234,12 +242,14 @@ class _ApplicationFormState extends State<ApplicationForm>  {
                        SizedBox(width: 10.w),
                        AdmissionFormScreenTextField(
                          controller: controllers['hall_ticket_no']!,
+                         hintText: (snapshot.data?['hall_ticket_no']?.isEmpty ?? true ) ?  "Hall ticket no" : snapshot.data?['hall_ticket_no']! ,
                        ),
                        // Aadhar No:
                        SizedBox(width: 10.w),
                        AdmissionFormScreenTextField(
                          controller: controllers['aadhar_no']!,
                          keyboardType: TextInputType.number,
+                         hintText: (snapshot.data?['aadhar_no']?.isEmpty ?? true) ? "Aadhar nomber" : snapshot.data?['aadhar_no']!,
                        ),
                      SizedBox(height: 50.h,),
                      CommonSaveAndSubmitButton(

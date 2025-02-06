@@ -78,21 +78,38 @@ class _NearbyScreenState extends State<NearbyScreen> {
 
   // Function to start/stop listening
   void _listen() async {
-    if (!_isListening && await _speech.initialize()) {
-      setState(() {
-        _isListening = true;
-      });
-
-      _speech.listen(onResult: (result) {
+    try {
+      if (!_isListening && await _speech.initialize()) {
         setState(() {
-          _speechText = result.recognizedWords; // Capture the recognized speech
+          _isListening = true;
         });
-      });
-    } else {
+      
+        _speech.listen(onResult: (result) {
+          setState(() {
+            _speechText = result.recognizedWords;
+            searchController.text = result.recognizedWords;
+          });
+        });
+        // Automatically stop after 5 seconds
+        Future.delayed(Duration(seconds: 5), () {
+          if (_isListening) {
+            setState(() {
+              _isListening = false;
+            });
+            _speech.stop();
+          }
+        });
+      } else {
+        setState(() {
+          _isListening = false;
+        });
+        _speech.stop();
+      }
+    } catch (e) {
+      print("Error initializing speech recognition: $e");
       setState(() {
         _isListening = false;
       });
-      _speech.stop(); // Stop listening
     }
   }
 
@@ -152,6 +169,7 @@ class _NearbyScreenState extends State<NearbyScreen> {
                       contentPadding:
                           EdgeInsets.only(bottom: 11.h, top: 6.5.h, left: 10),
                       border: InputBorder.none,
+                      hintText: _isListening ? "Listening..." : "Search...",
                       hintStyle: TextStyle(fontSize: 16.sp),
                       isDense: true,
                     ),
@@ -160,9 +178,8 @@ class _NearbyScreenState extends State<NearbyScreen> {
                 // MICROPHONE .
                 GestureDetector(
                   onTap: _listen,
-                  child: Image.asset(
-                    AssetIcons.MICROPHONE_ICON,
-                    height: 20,
+                  child: Icon(_isListening ? Icons.mic : Icons.mic_none, size: 20,
+                    color: _isListening ? Colors.red : Colors.black,
                   ),
                 ),
                 SizedBox(width: 17.w),
@@ -366,53 +383,7 @@ class _NearbyScreenState extends State<NearbyScreen> {
                     }).toList();
 
                     if (filteredColleges == null || filteredColleges.isEmpty) {
-                      return  Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding:  EdgeInsets.symmetric(horizontal: 30.w,vertical: 20.h),
-                              child: Image.asset(AssetIcons.NoAnyDataPNG,),
-                            ),
-                            SizedBox(height: 20.h,),
-                            Text(
-                              "Not available any collage ",
-                              style: TextStyle(
-                                fontSize: 25.sp,
-                              ),
-                            ),
-                            Text(
-                              "Start searching for colleges now",
-                              style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: const Color.fromRGBO(
-                                      128, 128, 128, 1)),
-                            ),
-                            SizedBox(height: 20.h),
-                            GestureDetector(
-                              onTap: () {
-                                Get.to(DashboardScreen());
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 25.w, vertical: 10.h),
-                                decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.circular(6.r),
-                                ),
-                                child: Text(
-                                  "Explore junior colleges",
-                                  style: TextStyle(
-                                    fontSize: 13.sp,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
+                      return buildNoDataWidget();
                     }
 
                     // set Intense of collegeData.managementStaff to a List type and fetch a data value...
@@ -677,11 +648,55 @@ class _NearbyScreenState extends State<NearbyScreen> {
 
   // Widget for the case when no data is found.
   Widget buildNoDataWidget() {
-    return Center(
-      child: Image.asset(
-        "assets/icons/no_data_image.png",
-        height: 300.sp,
-      ),
+    return ListView(
+      children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(height: 20,),
+            Padding(
+              padding:  EdgeInsets.symmetric(horizontal: 30.w,vertical: 20.h),
+              child: Image.asset(AssetIcons.NoAnyDataPNG,),
+            ),
+            SizedBox(height: 20.h,),
+            Text(
+              "Not available any collage ",
+              style: TextStyle(
+                fontSize: 25.sp,
+              ),
+            ),
+            Text(
+              "Start searching for colleges now",
+              style: TextStyle(
+                  fontSize: 12.sp,
+                  color: const Color.fromRGBO(
+                      128, 128, 128, 1)),
+            ),
+            SizedBox(height: 20.h),
+            GestureDetector(
+              onTap: () {
+                Get.to(DashboardScreen());
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: 25.w, vertical: 10.h),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(6.r),
+                ),
+                child: Text(
+                  "Explore junior colleges",
+                  style: TextStyle(
+                    fontSize: 13.sp,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ]
     );
   }
 }
