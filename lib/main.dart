@@ -9,11 +9,13 @@ import 'package:new_scolage/utils/size/app_sizing.dart';
 
 import 'core/functions/init_function.dart';
 import 'firebase_options.dart';
+import 'module/auth/controller/AuthController.dart';
 import 'module/auth/services/databaseHelper.dart';
 import 'module/auth/view/screen/login_screen.dart';
 import 'module/dashboard/view/screen/dashboard_screen.dart';
 
 void main() async {
+  Get.put(AuthController());
   WidgetsFlutterBinding.ensureInitialized();
   await DatabaseHelper.instance.database;
 

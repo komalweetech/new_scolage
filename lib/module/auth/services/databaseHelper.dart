@@ -16,7 +16,11 @@ class DatabaseHelper {
   Future<Database> _initDB(String fileName) async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, fileName);
-    return openDatabase(path, version: 2, onCreate: _createDB, onUpgrade: _upgradeDB);
+    return openDatabase(
+        path,
+        version: 2,
+        onCreate: _createDB,
+        onUpgrade: _upgradeDB);
   }
 
   Future _createDB(Database db, int version) async {

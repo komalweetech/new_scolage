@@ -17,7 +17,7 @@ class StudentLoginApi {
           Uri.parse("${ApiBasePort.apiBaseUrl}/v2/login/student"),
           body: body,
           headers: {'Content-Type': 'application/json'});
-      print("attdata == ${attData}");
+      print("attdata == $attData");
       // https://test1.scolage.com/v2/login/student
       var json = jsonDecode(attData.body);
       print("auth data is here");

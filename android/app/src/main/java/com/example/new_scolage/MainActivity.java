@@ -1,4 +1,4 @@
-package com.example.new_scolage;
+package com.scolage.app;
 
 import io.flutter.embedding.android.FlutterActivity;
 

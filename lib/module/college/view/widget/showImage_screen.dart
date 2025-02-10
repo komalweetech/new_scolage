@@ -55,14 +55,8 @@
 //     this.isMyFavourite = false,
 //   });
 // }
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:new_scolage/module/college/view/widget/gallery_view_screen.dart';
-import 'package:new_scolage/utils/theme/common_color.dart';
 import 'package:panorama_viewer/panorama_viewer.dart';
 
 class ShowImageScreen extends StatefulWidget {

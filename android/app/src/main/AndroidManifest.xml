@@ -1,4 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.scolage.app">
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -7,24 +8,30 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-
-
     <queries>
         <intent>
             <action android:name="android.speech.RecognitionService" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.PROCESS_TEXT" />
+            <data android:mimeType="text/plain" />
         </intent>
     </queries>
 
     <application
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
-        android:requestLegacyExternalStorage="true"
         android:enableOnBackInvokedCallback="true"
-        android:label="new_scolage">
+        android:icon="@mipmap/ic_launcher"
+        android:label="new_scolage"
+        android:requestLegacyExternalStorage="true">
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCOyEzskqLr1BKQ7j7t_JfMcY-8yHdymi0" />
+        <meta-data
+            android:name="com.google.android.gms.common.logging.DEBUG_LOGGING"
+            android:value="true" />
+
 
         <activity
             android:name=".MainActivity"
@@ -37,10 +44,6 @@
             android:windowSoftInputMode="adjustResize">
 
 
-            <!-- Specifies an Android theme to apply to this Activity as soon as
-                 the Android process has started. This theme is visible to the user
-                 while the Flutter UI initializes. After that, this theme continues
-                 to determine the Window background behind the Flutter UI. -->
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/NormalTheme"

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -11,6 +12,7 @@ import '../../../../utils/commonWidget/common_save_and_submit_button.dart';
 import '../../../../utils/commonWidget/common_sq_text_button.dart';
 import '../../../../utils/constant/asset_icons.dart';
 import 'package:http/http.dart' as http;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../../utils/theme/common_color.dart';
 import '../../services/databaseHelper.dart';
 import '../widget/webViewPage.dart';
@@ -24,6 +26,8 @@ class SingUpScreen extends StatefulWidget {
 }
 
 class _SingUpScreenState extends State<SingUpScreen> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseFirestore fireStore = FirebaseFirestore.instance;
   final authController  = Get.put(AuthController());
 
   Map<String, TextEditingController> controllers = {
@@ -64,38 +68,46 @@ class _SingUpScreenState extends State<SingUpScreen> {
       return;
     }
 
-    // String apiUrl = 'https://backend.scolage.com/v2/reg/students';
+
     String apiUrl = '${ApiBasePort.apiBaseUrl}/v2/reg/students';
     String? studentId = StudentDetails.studentId;
-
-    Map<String, dynamic> userData = {
-      'role': 'student',
-      'name': controllers['name']?.text,
-      'gender': controllers['gender']?.text,
-      'school_name': controllers['schoolName']?.text,
-      'password': controllers['password']?.text,
-      'confirm_password':controllers['confirmPassword']?.text,
-      'mobile': StudentDetails.mobile,
-      'email': controllers['email']?.text,
-      'isLoggedIn': 0,
-    };
-
     print("student id in sign up screen == ===== $studentId}");
-    print("your details == $userData ");
+
 
     try {
-      var response = await http.post(
-        Uri.parse(apiUrl),
+      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+        email: controllers['email']!.text.trim(),
+        password: controllers['password']!.text.trim(),
+      );
+      String uid = userCredential.user!.uid;
+
+      Map<String, dynamic> userData = {
+        'role': 'student',
+        'name': controllers['name']?.text.trim(),
+        'gender': controllers['gender']?.text.trim(),
+        'school_name': controllers['schoolName']?.text.trim(),
+        'password': controllers['password']?.text.trim(),
+        'confirm_password':controllers['confirmPassword']?.text.trim(),
+        'mobile': StudentDetails.mobile,
+        'email': controllers['email']?.text.trim(),
+        'isLoggedIn': 0,
+      };
+
+      var response = await http.post(Uri.parse(apiUrl),
         body: json.encode(userData ),
         headers: {'Content-Type': 'application/json'},
       );
+      print("your details == $userData ");
       print("Response ====");
       print(response.body);
 
       Map<String, dynamic> map = jsonDecode(response.body);
 
       if (map["status"] == "success") {
-        // Insert data into SQLite database
+        // Save user data in Firestore
+        await fireStore.collection('users').doc(uid).set(userData);
+
+        // Save user data in SQLite
         await DatabaseHelper.instance.insertUser(userData);
 
         Fluttertoast.showToast(
@@ -108,6 +120,7 @@ class _SingUpScreenState extends State<SingUpScreen> {
             fontSize: 16.0);
         Get.to(() =>const LoginScreen());
       } else {
+        print("===================================");
         Fluttertoast.showToast(
           msg: map["error"],
           // msg: "Your are already SingUp please logIn with Phone number",
@@ -120,15 +133,14 @@ class _SingUpScreenState extends State<SingUpScreen> {
         );
       }
     } catch (error) {
+      Fluttertoast.showToast(msg: "Sign-up failed: $error");
       print('Error submitting admission data: $error');
     }
   }
 
   @override
   void dispose() {
-    controllers.forEach((key, controller) {
-      controller.dispose();
-    });
+    controllers.forEach((key, controller) => controller.dispose());
     super.dispose();
   }
 
