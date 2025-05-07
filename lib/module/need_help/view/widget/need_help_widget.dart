@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:new_scolage/utils/theme/common_color.dart';
 
 import '../../../../utils/commonWidget/common_save_and_submit_button.dart';
 import '../../../../utils/commonWidget/keyboard_off.dart';
 import '../../../../utils/constant/asset_icons.dart';
+import '../../controller/help_controller.dart';
+import '../screen/messages_screen.dart';
 
 class NeedHelpWidget extends StatelessWidget {
   const NeedHelpWidget({super.key, this.isOpenFromNavBar});
@@ -12,6 +16,8 @@ class NeedHelpWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final helpController = Get.put(HelpController());
+
     return KeyBoardOff(
       child: ListView(
         children: [
@@ -35,7 +41,7 @@ class NeedHelpWidget extends StatelessWidget {
           SizedBox(height: 2.h),
           Center(
             child: Text(
-              "We’re here for your queries",
+              "We're here for your queries",
               style: TextStyle(
                 fontSize: 14.sp,
                 fontFamily: "Poppins",
@@ -49,11 +55,11 @@ class NeedHelpWidget extends StatelessWidget {
             child: Text(
               "Write to us with the\nhelp you seek.",
               textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 23.sp,
-                    color: Colors.black87,
-                    fontFamily: "Poppins"),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 23.sp,
+                  color: Colors.black87,
+                  fontFamily: "Poppins"),
             ),
           ),
           SizedBox(height: 16.h),
@@ -61,7 +67,7 @@ class NeedHelpWidget extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: TextFormField(
-              controller: TextEditingController(),
+              controller: helpController.messageController,
               maxLines: 5,
               textAlignVertical: TextAlignVertical.center,
               decoration: InputDecoration(
@@ -79,8 +85,23 @@ class NeedHelpWidget extends StatelessWidget {
           // SUBMIT BUTTON
           CommonSaveAndSubmitButton(
             name: "Submit",
-            onTap: () {},
-          )
+            onTap: () => helpController.saveMessage(),
+          ),
+          SizedBox(height: 16.h),
+          // View Messages Button
+          Center(
+            child: TextButton(
+              onPressed: () => Get.to(() => const MessagesScreen()),
+              child: Text(
+                "View Your Messages",
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  color: kPrimaryColor,
+                  fontFamily: "Poppins",
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );

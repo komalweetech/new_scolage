@@ -352,14 +352,17 @@ class _NearbyScreenState extends State<NearbyScreen> {
                 future: kNearbyController.fetchCollegesData(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
+                    print("near error ========${snapshot.hasData}");
                     return Center(
                         child: CupertinoActivityIndicator(
                       radius: 12,
                     ));
                   } else if (snapshot.hasError) {
                     log("${snapshot.error}");
+                    print("STACK TRACE: ${snapshot.stackTrace}");
                     print("college filter throw error :: ${snapshot.error}");
                     return Center(child: Text("Error : ${snapshot.error}"));
+
                   }
                   else if (snapshot.hasData) {
                     CollegeData collegeData = snapshot.data!;
@@ -477,14 +480,11 @@ class _NearbyScreenState extends State<NearbyScreen> {
                           return <String, dynamic>{
                             "collegeid": videoUrl.collegeid,
                             "videourlid": videoUrl.videourlid,
-                            "videoUrl0": videoUrl.videoUrl0,
-                            "videoUrl1": videoUrl.videoUrl1,
-                            "videoUrl2": videoUrl.videoUrl2,
-                            "videoUrl3": videoUrl.videoUrl3,
-                            "videoUrl4": videoUrl.videoUrl4,
-                            "isDeleted" : videoUrl.isDeleted,
+                            "videoUrls": videoUrl.videoUrls, // Now using the list directly
+                            "isDeleted": videoUrl.isDeleted,
                             "createdAt": videoUrl.createdAt,
-                            "__v": 0.toString(),
+                            "updatedAt": videoUrl.updatedAt,
+                            "__v": videoUrl.iV,
                           };
                         }).toList() ??
                         [];
@@ -496,20 +496,6 @@ class _NearbyScreenState extends State<NearbyScreen> {
                         padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0, bottom: 20.0),
                         itemCount: filteredColleges.length,
                         itemBuilder: (context, index) {
-                          // final collegeName = collegeData.college?[index].collegename;
-                          // final collegeAddress = collegeData.college?[index].address;
-                          // final collegeArea = collegeData.college?[index].area;
-                          // final collegeCode = collegeData.college?[index].collegeCode;
-                          //
-                          // final searchTerm = searchController.text.toLowerCase();
-
-                          // final collegeMatchesSearchTerm =
-                          //       collegeName!.toLowerCase().contains(searchTerm)    ||
-                          //       collegeAddress!.toLowerCase().contains(searchTerm) ||
-                          //       collegeArea!.toLowerCase().contains(searchTerm)    ||
-                          //           collegeCode!.toLowerCase().contains(searchTerm);
-
-                          // filter clgImage ;
                           final clgImageForCurrentCollege = clgImageInfoList.where((imageInfo) =>
                           imageInfo["collegeid"] == collegeData.college![index].collegeid).toList();
 
@@ -600,7 +586,8 @@ class _NearbyScreenState extends State<NearbyScreen> {
                     //   ),
                     // );
                     // }
-                  } else {
+                  }
+                  else {
                     return buildNoDataWidget();
                   }
                 },
@@ -648,6 +635,7 @@ class _NearbyScreenState extends State<NearbyScreen> {
 
   // Widget for the case when no data is found.
   Widget buildNoDataWidget() {
+
     return ListView(
       children: [
         Column(

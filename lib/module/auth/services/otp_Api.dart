@@ -7,34 +7,41 @@ import '../../../utils/apiData/api_base_port.dart';
 
 
 class OtpApi {
-  static postApi(String mobile) async  {
+  static Future<Map<String, dynamic>?> postApi(String mobile, String purpose, {String? email}) async {
     try {
       print("user Mobile number is  === $mobile");
+      print("Purpose is === $purpose");
+      if (email != null) {
+        print("Email is === $email");
+      }
 
-      var body = jsonEncode(<String, String>{
+      Map<String, String> requestBody = {
         "mobile": mobile,
-        "purpose": "signUp",
-      });
+        "purpose": purpose,
+      };
+
+      if (purpose == "forgetPass" && email != null && email.isNotEmpty) {
+        requestBody["email"] = email;
+      }
+
+      var body = jsonEncode(requestBody);
 
       print("Request body: $body");
-      // var response = await http.post(Uri.parse("https://backend.scolage.com/v2/Auth/Otp/Reg"),
-          var response = await http.post(Uri.parse("${ApiBasePort.apiBaseUrl}/v2/Auth/Otp/Reg"),
-
+      var response = await http.post(
+        Uri.parse("${ApiBasePort.apiBaseUrl}/v2/Auth/Otp/Reg"),
         body: body,
         headers: {'Content-Type': 'application/json'},
       );
 
       print("Response status code: ${response.statusCode}");
-      print("otp json response === ${response.body}");
+      print("OTP json response === ${response.body}");
 
-      var json = jsonEncode(response.body);
-      print("auth data is here");
-      print(json);
-
-      // print("==================$jsonData");
-      print("--------------------------->>>>>${response.statusCode}");
-
-      return json;
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        print("Error response: ${response.body}");
+        return null;
+      }
     } catch (e) {
       print("Error: $e");
       return null;

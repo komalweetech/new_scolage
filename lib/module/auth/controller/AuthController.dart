@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../core/validator/validator_const.dart';
 import '../../../utils/StudentDetails.dart';
@@ -12,6 +15,9 @@ import '../services/databaseHelper.dart';
 class AuthController extends GetxController {
   var isAuthenticated = false.obs;
   final DatabaseHelper dbHelper = DatabaseHelper.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController passwordController =  TextEditingController();
@@ -108,5 +114,102 @@ class AuthController extends GetxController {
   Future<void> logout(String mobile) async {
     await dbHelper.setLoggedInStatus(mobile, 0); // Set user as logged out
     isAuthenticated.value = false;
+  }
+
+  Future<UserCredential?> signInWithGoogle() async {
+    try {
+      // Trigger the authentication flow
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+
+      if (googleUser == null) return null;
+
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+      // Create a new credential
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Sign in to Firebase with the Google credential
+      final UserCredential userCredential = await _auth.signInWithCredential(credential);
+      final User? user = userCredential.user;
+
+      if (user != null) {
+        // Check if user exists in Firestore
+        final userDoc = await _firestore.collection('users').doc(user.uid).get();
+
+        if (!userDoc.exists) {
+          // Create new user document in Firestore with phone number if available
+          Map<String, dynamic> userData = {
+            'name': user.displayName,
+            'email': user.email,
+            'photoURL': user.photoURL,
+            'role': 'student',
+            'isLoggedIn': 1,
+            'createdAt': FieldValue.serverTimestamp(),
+          };
+
+          // Add phone number if it exists in StudentDetails
+          if (StudentDetails.mobile.isNotEmpty) {
+            userData['mobile'] = StudentDetails.mobile;
+          }
+
+          await _firestore.collection('users').doc(user.uid).set(userData);
+
+          // Save to local database
+          Map<String, dynamic> localUserData = {
+            'studentid': user.uid,
+            'role': 'student',
+            'name': user.displayName,
+            'email': user.email,
+            'isLoggedIn': 1,
+          };
+
+          // Add phone number if it exists
+          if (StudentDetails.mobile.isNotEmpty) {
+            localUserData['mobile'] = StudentDetails.mobile;
+          }
+
+          await dbHelper.insertUser(localUserData);
+        } else {
+          // Update login status in local database
+          await dbHelper.setLoggedInStatus(user.email ?? '', 1);
+        }
+
+        // Update StudentDetails
+        Map<String, dynamic> studentDetails = {
+          'name': user.displayName,
+          'studentid': user.uid,
+          'email': user.email,
+          'role': 'student',
+        };
+
+        // Add phone number if it exists
+        if (StudentDetails.mobile.isNotEmpty) {
+          studentDetails['mobile'] = StudentDetails.mobile;
+        }
+
+        StudentDetails.updateFromMap(studentDetails);
+
+        isAuthenticated.value = true;
+        return userCredential;
+      }
+    } catch (e) {
+      print('Error signing in with Google: $e');
+      rethrow;
+    }
+    return null;
+  }
+
+  Future<void> signOut() async {
+    try {
+      await _googleSignIn.signOut();
+      await _auth.signOut();
+      isAuthenticated.value = false;
+    } catch (e) {
+      print('Error signing out: $e');
+    }
   }
 }

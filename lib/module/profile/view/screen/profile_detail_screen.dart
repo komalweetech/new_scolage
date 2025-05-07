@@ -70,7 +70,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CommonSubScreenAppBar(),
+      appBar: CommonSubScreenAppBar(title: ""),
       body: SingleChildScrollView(
         physics: AlwaysScrollableScrollPhysics(),
         child: Column(

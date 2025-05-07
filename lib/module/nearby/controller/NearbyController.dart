@@ -69,7 +69,7 @@ class NearbyController extends GetxController {
     feesRangeEndValue.value = 30000.0;
   }
 
-final feesList = AllCollegeData.collegeDataList["subject"] ?? [];
+  final feesList = AllCollegeData.collegeDataList["subject"] ?? [];
   // final String baseUrl = 'https://test1.scolage.com/';
 
   Future<CollegeData?> fetchCollegesData() async {
@@ -304,7 +304,7 @@ final feesList = AllCollegeData.collegeDataList["subject"] ?? [];
     return filteredColleges;
   }
 
-   reloadCollegesData() async {
+  reloadCollegesData() async {
     update(); // Trigger a rebuild
   }
 
@@ -412,10 +412,10 @@ final feesList = AllCollegeData.collegeDataList["subject"] ?? [];
     return colleges.where((college) {
       return
         // _sortByFilter(college, sortBy?.toLowerCase() ?? '') ||
-          _filterByFeeRange(college, subjects!, minFee!, maxfee!) ||
-          _filterByFacility(college, infraList!,
-              selectedFacilities?.toLowerCase().trim() ?? '') ||
-          _filterByArea(college, selectedArea ?? '');
+        _filterByFeeRange(college, subjects!, minFee!, maxfee!) ||
+            _filterByFacility(college, infraList!,
+                selectedFacilities?.toLowerCase().trim() ?? '') ||
+            _filterByArea(college, selectedArea ?? '');
     }).toList();
   }
 

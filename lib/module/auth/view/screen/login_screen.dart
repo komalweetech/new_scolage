@@ -263,27 +263,40 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 12.h),
-                  // CONTINUE WITH WHATSAPP
-                  ContinueWithButton(
-                    name: "Continue with Whatsapp",
-                    icon: AssetIcons.LOGIN_WHATSAPP_ICON,
-                    onTap: () {
-                      print("whatsApp number == ${phoneController.text}");
-                      // CommonToast.showComingSoonToast();
-                      openWhatsApp();
-                    },
-                  ),
-                  SizedBox(height: 20.h),
-                  // CONTINUE WITH GOOGLE
-                  ContinueWithButton(
-                    name: "Continue with Google",
-                    icon: AssetIcons.GOOGLE_ICON,
-                    onTap: () {
-                      // CommonToast.showComingSoonToast();
-                      launch('https://google.com');
-                    },
-                  ),
+                  // SizedBox(height: 12.h),
+                  // // CONTINUE WITH WHATSAPP
+                  // ContinueWithButton(
+                  //   name: "Continue with Whatsapp",
+                  //   icon: AssetIcons.LOGIN_WHATSAPP_ICON,
+                  //   onTap: () {
+                  //     print("whatsApp number == ${phoneController.text}");
+                  //     // CommonToast.showComingSoonToast();
+                  //     // openWhatsApp();
+                  //   },
+                  // ),
+                  // SizedBox(height: 20.h),
+                  // // CONTINUE WITH GOOGLE
+                  // ContinueWithButton(
+                  //   name: "Continue with Google",
+                  //   icon: AssetIcons.GOOGLE_ICON,
+                  //   onTap: () async {
+                  //     // try {
+                  //     //   final userCredential = await authController.signInWithGoogle();
+                  //     //   if (userCredential != null) {
+                  //     //     Get.offAll(() => DashboardScreen());
+                  //     //   }
+                  //     // } catch (e) {
+                  //     //   Fluttertoast.showToast(
+                  //     //     msg: "Failed to sign in with Google",
+                  //     //     toastLength: Toast.LENGTH_LONG,
+                  //     //     gravity: ToastGravity.BOTTOM,
+                  //     //     backgroundColor: Colors.red,
+                  //     //     textColor: Colors.white,
+                  //     //     fontSize: 16.0,
+                  //     //   );
+                  //     // }
+                  //   },
+                  // ),
                   SizedBox(height: 40.h),
                   // SIGN IN WITH CODE BUTTON
                   Padding(

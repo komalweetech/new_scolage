@@ -42,7 +42,8 @@ class CollegeCard extends StatefulWidget {
       this.description,
       this.more_info,
       this.history,
-      this.collegeStatus});
+      this.collegeStatus,
+      this.useDefaultImage = false});
 
   final int index;
   final double? height;
@@ -82,6 +83,7 @@ class CollegeCard extends StatefulWidget {
   final String? clgCode;
   final String? location;
   final String? collegeStatus;
+  final bool useDefaultImage;
 
   @override
   State<CollegeCard> createState() => _CollegeCardState();
@@ -109,41 +111,42 @@ class _CollegeCardState extends State<CollegeCard> {
             CommonFunction.kNavigatorPush(
                 context,
                 CollegeDetailScreen(
-                  clgDetails: widget.clgDetails,
-                  policy: widget.policy!,
-                  eligibility: widget.eligibility!,
-                  feeTerms: widget.feeTerms,
-                  clgImage: widget.clgImage!,
-                  clgName: widget.clgName!,
-                  clgId: widget.clgId!,
-                  clgAdd: widget.clgAdd,
-                  safety: widget.safety!,
-                  courseDetails: widget.subjectName,
-                  staffList: widget.staffList!,
-                  socialDetails: widget.socialMedia,
-                  open: widget.open,
-                  close: widget.close,
-                  days: widget.days,
-                  description: widget.description,
-                  history: widget.history,
-                  more_info: widget.more_info,
-                  clgImageList: widget.clgImageList!,
-                  videoList: widget.videoList,
-                  webSiteLink: widget.webSiteLink,
-                  location: widget.location,
+                  clgDetails: widget.clgDetails ?? [],
+                  policy: widget.policy ?? "N/A",
+                  eligibility: widget.eligibility ?? "N/A",
+                  feeTerms: widget.feeTerms ?? "N/A",
+                  clgImage: widget.clgImage ?? "",
+                  clgName: widget.clgName ?? "College",
+                  clgId: widget.clgId ?? "",
+                  clgAdd: widget.clgAdd ?? "N/A",
+                  safety: widget.safety ?? "N/A",
+                  courseDetails: widget.subjectName ?? [],
+                  staffList: widget.staffList ?? [],
+                  socialDetails: widget.socialMedia ?? [],
+                  open: widget.open ?? "N/A",
+                  close: widget.close ?? "N/A",
+                  days: widget.days ?? "N/A",
+                  description: widget.description ?? "N/A",
+                  history: widget.history ?? "N/A",
+                  more_info: widget.more_info ?? "N/A",
+                  clgImageList: widget.clgImageList ?? [],
+                  videoList: widget.videoList ?? [],
+                  webSiteLink: widget.webSiteLink ?? "N/A",
+                  location: widget.location ?? "N/A",
 
                   // all for College Details.......
-                  clgType: widget.clgType,
-                  systemType: widget.systemType,
-                  academicType: widget.academicType,
-                  affiliated: widget.affiliated,
-                  classType: widget.classType,
-                  classrooms: widget.classrooms,
-                  totalSeats: widget.totalSeats,
-                  totalFloors: widget.totalFloors,
-                  totalArea: widget.totalArea,
-                  clgCode: widget.clgCode,
-                  collegeStatus: widget.collegeStatus,
+                  clgType: widget.clgType ?? "N/A",
+                  systemType: widget.systemType ?? "N/A",
+                  academicType: widget.academicType ?? "N/A",
+                  affiliated: widget.affiliated ?? "N/A",
+                  classType: widget.classType ?? "N/A",
+                  classrooms: widget.classrooms ?? "N/A",
+                  totalSeats: widget.totalSeats ?? "N/A",
+                  totalFloors: widget.totalFloors ?? "N/A",
+                  totalArea: widget.totalArea ?? "N/A",
+                  clgCode: widget.clgCode ?? "N/A",
+                  collegeStatus: widget.collegeStatus ?? "N/A",
+                  useDefaultImage: widget.useDefaultImage,
                 ));
           },
           child: Stack(
@@ -153,13 +156,7 @@ class _CollegeCardState extends State<CollegeCard> {
                 child: SizedBox(
                   height: widget.height,
                   width: widget.width,
-                  // child: Image.network(widget.clgImage!,fit: BoxFit.cover,errorBuilder: (context,error,stackTrace) {
-                  //   return Image.network('https://images.unsplash.com/flagged/photo-1554473675-d0904f3cbf38?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGNvbGxlZ2V8ZW58MHx8MHx8fDA%3D',fit: BoxFit.cover);
-                  // },)
-                  child: Image.network(
-                    widget.clgImage!,
-                    fit: BoxFit.cover,
-                  ),
+                  child: _buildImage(widget.clgImage!, widget.useDefaultImage),
                 ),
               ),
               // Positioned(
@@ -193,5 +190,30 @@ class _CollegeCardState extends State<CollegeCard> {
         ),
       ),
     );
+  }
+
+  Widget _buildImage(String imageUrl, bool useDefaultImage) {
+    if (useDefaultImage) {
+      return Image.asset(
+        'assets/image/clg_image.jpg',
+        fit: BoxFit.cover,
+      );
+    } else if (imageUrl.isNotEmpty) {
+      return Image.network(
+        imageUrl,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return Image.asset(
+            'assets/image/clg_image.jpg',
+            fit: BoxFit.cover,
+          );
+        },
+      );
+    } else {
+      return Image.asset(
+        'assets/image/clg_image.jpg',
+        fit: BoxFit.cover,
+      );
+    }
   }
 }

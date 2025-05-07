@@ -13,56 +13,25 @@ import 'module/auth/controller/AuthController.dart';
 import 'module/auth/services/databaseHelper.dart';
 import 'module/auth/view/screen/login_screen.dart';
 import 'module/dashboard/view/screen/dashboard_screen.dart';
+import 'myApp.dart';
 
 void main() async {
-  Get.put(AuthController());
   WidgetsFlutterBinding.ensureInitialized();
-  await DatabaseHelper.instance.database;
 
-  await InitFunction.initBasicConfiguration();
-  // await EasyLocalization.ensureInitialized();
 
+  // Initialize Firebase first
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // Initialize other dependencies
+  await DatabaseHelper.instance.database;
+  await InitFunction.initBasicConfiguration();
+
+  // Create AuthController after Firebase is initialized
+  Get.put(AuthController());
+
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((value) => runApp(const MyApp(),));
+      .then((value) => runApp(const MyApp()));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      //? CHANGE THIS AS PER FIGMA
-        designSize: const Size(kFigmaWidth, kFigmaHeight),
-        minTextAdapt: true,
-        splitScreenMode: true,
-        builder: (BuildContext context, Widget? child) {
-          return GetMaterialApp(
-            builder: (context, child) {
-              final MediaQueryData data = MediaQuery.of(context);
-
-              // BELOW STATEMENT MUST BE EXECUTE EXACTLY ONE TIME ONLY ( connect firebase )
-              // FirebaseCrashlytics.instance.crash();
-              return MediaQuery(
-                data: data.copyWith(textScaleFactor: .92),
-                child: child!,
-              );
-            },
-            debugShowCheckedModeBanner: false,
-            title: 'Flutter Demo',
-            theme: ThemeData(
-              scaffoldBackgroundColor: Colors.white,
-              useMaterial3: true,
-              fontFamily: "SegoeUI",
-              primarySwatch: Colors.blue,
-            ),
-            home: SplashScreen(),
-          );
-        }
-    );
-  }
-}

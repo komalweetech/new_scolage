@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,13 +6,19 @@ import '../../../../utils/commonWidget/common_sq_text_button.dart';
 import '../../../../utils/constant/asset_icons.dart';
 import '../../../../utils/theme/common_color.dart';
 import '../../dependencies/auth_dependencies.dart';
+import '../../services/otp_Api.dart';
 import '../widget/otp_field.dart';
 
 class OtpBottom extends StatefulWidget {
-  const OtpBottom(
-      {super.key, required this.verificationId, required this.mobileNumber});
+  const OtpBottom({
+    super.key, 
+    required this.verificationId, 
+    required this.mobileNumber,
+    this.isFromForgotPasscode = false,
+  });
   final String verificationId;
   final String mobileNumber;
+  final bool isFromForgotPasscode;
 
   @override
   State<OtpBottom> createState() => _OtpBottomState();
@@ -142,7 +146,23 @@ class _OtpBottomState extends State<OtpBottom> {
             () => Material(
               color: Colors.transparent,
               child: CommonSqTextButton(
-                onTap: kAuthController.isLoading.value ? null : () {},
+                onTap: kAuthController.isLoading.value ? null : () async {
+                  // Resend OTP with the same purpose
+                  final success = await OtpApi.postApi(
+                    widget.mobileNumber,
+                    widget.isFromForgotPasscode ? "forgetPass" : "signUp"
+                  );
+                  if (success != null) {
+                    kAuthController.startTimer();
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Failed to resend OTP. Please try again.'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                },
                 name: "Resend OTP",
                 isSelected: false,
                 color: kAuthController.isLoading.value

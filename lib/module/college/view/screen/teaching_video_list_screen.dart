@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:new_scolage/module/home/model/college_data.dart';
 import '../../../../utils/commonWidget/common_vertical_divider.dart';
 import '../../../../utils/constant/asset_icons.dart';
 import '../../../../utils/size/app_sizing.dart';
@@ -19,50 +20,61 @@ class TeachingVideoListScreen extends StatefulWidget {
 }
 
 class _TeachingVideoListScreenState extends State<TeachingVideoListScreen> {
-
-  final List<dynamic> subVideoList = [];
-
   late YoutubePlayerController _controller;
+  List<String> videoUrls = [];
+  int _currentVideoIndex = 0;
+
 
   @override
   void initState() {
     super.initState();
-    fetchCollegeImages();
+    _initializeVideoData();
+    print("video screen == ${widget.clgId}");
+    print("video screen == ${widget.videoList}");
 
-    print("clg all videos = = = ${widget.videoList}");
-    _controller = YoutubePlayerController(
-      initialVideoId: YoutubePlayer.convertUrlToId(subVideoList.first) ?? '',
-      flags: const YoutubePlayerFlags(
-        autoPlay: true,
-        mute: false,
-      ),
-    );
   }
-  void fetchCollegeImages() {
-    List<dynamic> subList = widget.videoList;
+  void _initializeVideoData() {
 
+    // Extract all video URLs
+    if (widget.videoList.isNotEmpty) {
+      videoUrls = widget.videoList
+          .where((item) => item is Map<String, dynamic> && item.containsKey('videoUrls'))
+          .expand<String>((item) => (item['videoUrls'] as List).map((url) => url.toString()))
+          .toList();
+    }
 
-    print("show video List ==== $subList}");
-
-    for (var i = 0; i < subList.length; i++) {
-      if (subList[i]["collegeid"] == widget.clgId) {
-        subVideoList.add(subList[i]["videoUrl0"]);
-        subVideoList.add(subList[i]["videoUrl1"]);
-        subVideoList.add(subList[i]["videoUrl2"]);
-        subVideoList.add(subList[i]["videoUrl3"]);
-        subVideoList.add(subList[i]["videoUrl4"]);
-
-        print("show only video list == $subVideoList");
-        print("show clg id = ${widget.clgId}");
-        print("show clg id = ${subList[i]["collegeid"]}");
-      }
+    // Initialize controller with first video if available
+    if (videoUrls.isNotEmpty) {
+      final firstVideoId = YoutubePlayer.convertUrlToId(videoUrls.first) ?? '';
+      _controller = YoutubePlayerController(
+        initialVideoId: firstVideoId,
+        flags: const YoutubePlayerFlags(
+          autoPlay: true,
+          mute: false,
+        ),
+      );
+    } else {
+      // Handle case where no videos exist
+      _controller = YoutubePlayerController(
+        initialVideoId: '',
+        flags: const YoutubePlayerFlags(
+          autoPlay: false,
+          mute: false,
+        ),
+      );
     }
   }
- void _playVideo(String videoLink) {
-   final String videoId = YoutubePlayer.convertUrlToId(videoLink) ?? '';
-   _controller.load(videoId);
-   _controller.play();
- }
+
+  void _playVideo(int index) {
+    if (index >= 0 && index < videoUrls.length) {
+      final videoId = YoutubePlayer.convertUrlToId(videoUrls[index]) ?? '';
+      _controller.load(videoId);
+      _controller.play();
+      setState(() {
+        _currentVideoIndex = index;
+      });
+    }
+  }
 
 
   @override
@@ -89,9 +101,7 @@ class _TeachingVideoListScreenState extends State<TeachingVideoListScreen> {
                 ),
               ),
               child: IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
+                onPressed: () => Navigator.pop(context),
                 icon: Image.asset(
                   AssetIcons.COLLEGE_DETAIL_SCREEN_BACK_ARROW_ICON,
                 ),
@@ -102,42 +112,102 @@ class _TeachingVideoListScreenState extends State<TeachingVideoListScreen> {
         ),
       ),
       body: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 20.h),
-          Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 0.w),
-                  child: Center(
-                    child: SizedBox(
-                      height: 180.h,
-                      width: kScreenWidth(context) - 40.w,
-                      child:YoutubePlayer(
-                        controller: _controller,
-                      )
-                    ),
-                  ),
-                ),
+          // **Video Player**
+          Container(
+            height: 220.h,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+            child: YoutubePlayer(controller: _controller),
+          ),
+          SizedBox(height: 10.h),
 
-          const SizedBox(height: 10),
+          // **Video Title & Description**
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Video ${_currentVideoIndex + 1}",
+                  style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold, color: Colors.white),
+                ),
+                SizedBox(height: 5.h),
+                Text(
+                  "This is a demo video for teaching purposes. Watch and learn!",
+                  style: TextStyle(fontSize: 14.sp, color: Colors.grey[400]),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 10.h),
+
+          // **Video List**
           Expanded(
             child: ListView.separated(
-              padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 20.h),
-              itemCount: subVideoList.length,
-              itemBuilder: (context, index)  => GestureDetector(
-                onTap: (){
-                    _playVideo(subVideoList[index]);
-                },
-                child:  VideoListTile(videoLink: subVideoList[index]),
-              ),
-              separatorBuilder: (context, index) => Padding(
-                padding: EdgeInsets.symmetric(vertical: 10.h),
-                child: const CommonDivider(
-                  thickness: .8,
-                ),
-              ),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+              itemCount: videoUrls.length,
+              itemBuilder: (context, index) {
+                final videoId = YoutubePlayer.convertUrlToId(videoUrls[index]) ?? '';
+
+                return GestureDetector(
+                  onTap: () => _playVideo(index),
+                  child: Container(
+                    padding: EdgeInsets.all(10.w),
+                    decoration: BoxDecoration(
+                      color: _currentVideoIndex == index ? Colors.grey[850] : Colors.grey[900],
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                    child: Row(
+                      children: [
+                        // **Video Thumbnail**
+                        Container(
+                          height: 70.h,
+                          width: 120.w,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.r),
+                            image: DecorationImage(
+                              image: NetworkImage("https://img.youtube.com/vi/$videoId/0.jpg"),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10.w),
+
+                        // **Video Title**
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Video ${index + 1}",
+                                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.white),
+                              ),
+                              SizedBox(height: 5.h),
+                              Text(
+                                "Click to play this video.",
+                                style: TextStyle(fontSize: 12.sp, color: Colors.grey[400]),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        // **Play Button Icon**
+                        Icon(
+                          Icons.play_circle_fill,
+                          color: _currentVideoIndex == index ? Colors.redAccent : Colors.white,
+                          size: 30.w,
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+              separatorBuilder: (context, index) => Divider(color: Colors.grey[700]),
             ),
-          )
+          ),
         ],
       ),
     );

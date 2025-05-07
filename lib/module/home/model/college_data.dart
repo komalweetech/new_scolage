@@ -1,6 +1,3 @@
-
-
-
 import 'college_model.dart';
 
 class CollegeData {
@@ -872,55 +869,47 @@ class VideoUrl {
   String? sId;
   String? collegeid;
   String? videourlid;
-  String? videoUrl0;
-  String? videoUrl1;
-  String? videoUrl2;
-  String? videoUrl3;
-  String? videoUrl4;
-  String? isDeleted;
-  int? createdAt;
+  List<String>? videoUrls;
+  bool? isDeleted;
+  String? createdAt;
+  String? updatedAt;
   int? iV;
 
-  VideoUrl(
-      {this.sId,
+  VideoUrl({ this.sId,
         this.collegeid,
         this.videourlid,
-        this.videoUrl0,
-        this.videoUrl1,
-        this.videoUrl2,
-        this.videoUrl3,
-        this.videoUrl4,
+        this.videoUrls,
         this.isDeleted,
         this.createdAt,
-        this.iV});
+        this.updatedAt,
+        this.iV,});
 
-  VideoUrl.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    collegeid = json['collegeid'];
-    videourlid = json['videourlid'];
-    videoUrl0 = json['videoUrl0'];
-    videoUrl1 = json['videoUrl1'];
-    videoUrl2 = json['videoUrl2'];
-    videoUrl3 = json['videoUrl3'];
-      videoUrl4 = json['videoUrl4'];
-      isDeleted = json['isDeleted'];
-    createdAt = json['createdAt'];
-    iV = json['__v'];
+  factory VideoUrl.fromJson(Map<String, dynamic> json) {
+    return VideoUrl(
+      sId: json['_id'],
+      collegeid: json['collegeid'],
+      videourlid: json['videourlid'],
+      videoUrls: json['videoUrls'] != null
+          ? List<String>.from(json['videoUrls'])
+          : null,
+      isDeleted: json['isDeleted'],
+      createdAt: json['createdAt'],
+      updatedAt: json['updatedAt'],
+      iV: json['__v'],
+    );
   }
 
+
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['collegeid'] = this.collegeid;
-    data['videourlid'] = this.videourlid;
-    data['videoUrl0'] = this.videoUrl0;
-    data['videoUrl1'] = this.videoUrl1;
-    data['videoUrl2'] = this.videoUrl2;
-    data['videoUrl3'] = this.videoUrl3;
-    data['videoUrl4'] = this.videoUrl4;
-    data['isDeleted'] = this.isDeleted;
-    data['createdAt'] = this.createdAt;
-    data['__v'] = this.iV;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['collegeid'] = collegeid;
+    data['videourlid'] = videourlid;
+    data['videoUrls'] = videoUrls;
+    data['isDeleted'] = isDeleted;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['__v'] = iV;
     return data;
   }
 }

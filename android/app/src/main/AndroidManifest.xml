@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.scolage.app">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.catchcollage.name">
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -22,7 +23,7 @@
         android:name="${applicationName}"
         android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="new_scolage"
+        android:label="Scolage"
         android:requestLegacyExternalStorage="true">
 
         <meta-data
@@ -31,7 +32,6 @@
         <meta-data
             android:name="com.google.android.gms.common.logging.DEBUG_LOGGING"
             android:value="true" />
-
 
         <activity
             android:name=".MainActivity"
@@ -43,7 +43,6 @@
             android:theme="@style/LaunchTheme"
             android:windowSoftInputMode="adjustResize">
 
-
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/NormalTheme"
@@ -52,6 +51,21 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter android:autoVerify="true"
+                tools:targetApi="m">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="https"
+                    android:host="catchcollage.page.link" />
+            </intent-filter>
+
+
+            <meta-data
+                android:name="flutter_deeplinking_enabled"
+                android:value="true" />
         </activity>
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"

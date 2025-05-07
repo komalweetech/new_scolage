@@ -1,16 +1,17 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+// Remove import for the old controller from the parent controllers directory
+// import '../../../../controllers/college_controller.dart';
 import '../../../../utils/collegedatalist.dart';
 import '../../../../utils/theme/common_color.dart';
+// Keep import for the renamed controller file (contains definition)
 import '../../controller/CollegeController.dart';
+// Keep import for the dependency file (provides kCollegeController)
 import '../../dependencies/college_dependencies.dart';
 import '../../model/college_detail_model.dart';
 import 'college_detail_screen_title_and_description_widget.dart';
 import 'detail_on_off_button.dart';
-
-
 
 class CollageDetailWidget extends StatefulWidget {
   const CollageDetailWidget({super.key,this.clgDetails,required this.clgId,this.open,this.close,this.days,
@@ -43,13 +44,11 @@ class CollageDetailWidget extends StatefulWidget {
 }
 
 class _CollageDetailWidgetState extends State<CollageDetailWidget> {
-  var  value = Get.find<CollegeController>().collegeBasicDetailList.toString();
+  // Remove the incorrect Get.find line
+  // var  value = Get.find<CollegeController>().collegeBasicDetailList.toString();
   RxBool showCollegeDetails = false.obs;
 
-
   final Map<String,dynamic> clgDetailsList = AllCollegeData.collegeBaseDataList;
-
-
 
   @override
   void initState() {
@@ -60,12 +59,14 @@ class _CollageDetailWidgetState extends State<CollageDetailWidget> {
     print("description === ${widget.more_info}");
     print("description === ${widget.history}");
 
+    // Optional: Trigger fetch if needed, though CollegeDetailController fetches onInit
+    // kCollegeController.fetchCollegeDetails();
   }
-
 
   @override
   Widget build(BuildContext context) {
-
+    // Remove the local recreation of the list
+    /*
     List<CollegeDetailModel> collegeBasicDetailList = [
       CollegeDetailModel(type: "College Type", value: widget.clgType),
       CollegeDetailModel(type: "Academic Type", value:widget.academicType),
@@ -77,6 +78,7 @@ class _CollageDetailWidgetState extends State<CollageDetailWidget> {
       CollegeDetailModel(type: "Total Area", value: widget.totalArea),
       CollegeDetailModel(type: "College Code", value: widget.clgCode),
     ];
+    */
 
     return Column(
       children: [
@@ -84,31 +86,27 @@ class _CollageDetailWidgetState extends State<CollageDetailWidget> {
           () => DetailOnOffButton(
             name: "College Details",
             isDetailDisplayed: kCollegeController.sectionVisibility[widget.index].value,
-            // isDetailDisplayed: showCollegeDetails.value,
             onTap: () {
               kCollegeController.expandDetailWhenTapOnTab(widget.index);
-              // setState(() {
-              //   showCollegeDetails.value = !showCollegeDetails.value;
-              // });
-              },
+            },
           ),
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 30.w),
           child: Obx(
             () => Visibility(
-              // visible: showCollegeDetails.value,
               visible: kCollegeController.sectionVisibility[widget.index].value,
               child: Column(
                 crossAxisAlignment:CrossAxisAlignment.start,
                 children: [
                   // COLLEGE CATEGORIES LIST
-                  GridView.builder(
+                  // Use Obx here to react to changes in the controller's list
+                  Obx(() => GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     padding: EdgeInsets.symmetric(vertical: 14.h),
-                    itemCount: collegeBasicDetailList.length,
-                    // itemCount:  kCollegeController.collegeBasicDetailList.length,
+                    // Use the list directly from the kCollegeController
+                    itemCount: kCollegeController.collegeBasicDetailList.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       mainAxisExtent: 35,
@@ -117,7 +115,8 @@ class _CollageDetailWidgetState extends State<CollageDetailWidget> {
                       mainAxisSpacing: 10,
                     ),
                     itemBuilder: (BuildContext context, int index) {
-                      // CollegeDetailModel data = collegeBasicDetailList[index];
+                      // Access the item from the controller's list
+                      CollegeDetailModel data = kCollegeController.collegeBasicDetailList[index];
 
                       return Container(
                         padding: EdgeInsets.symmetric(
@@ -131,7 +130,7 @@ class _CollageDetailWidgetState extends State<CollageDetailWidget> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                             collegeBasicDetailList[index].type,
+                              data.type, // Use data from the controller list item
                               style: TextStyle(
                                   fontSize: 10.sp,
                                   color: const Color.fromRGBO(102, 102, 102, 1),
@@ -141,10 +140,7 @@ class _CollageDetailWidgetState extends State<CollageDetailWidget> {
                             ),
                             SizedBox(height: 2.h),
                             Text(
-                              // Get.put(CollegeController().collegeBasicDetailList[index].value),
-                              // (widget.clgType!= value).toString(),
-                              // value = widget.clgDetails["college_type"]!,
-                            collegeBasicDetailList[index].value.toString(),
+                              data.value.toString(), // Use data from the controller list item
                               maxLines: 2,
                               textAlign: TextAlign.center,
                               overflow: TextOverflow.ellipsis,
@@ -152,14 +148,13 @@ class _CollageDetailWidgetState extends State<CollageDetailWidget> {
                                 fontSize: 10.sp,
                                 color: const Color.fromRGBO(166, 168, 171, 1),
                                   fontFamily: "Poppins",
-
                               ),
                             ),
                           ],
                         ),
                       );
                     },
-                  ),
+                  )),
                   SizedBox(height: 16.h),
                   Text(
                     "College Timings",
@@ -172,21 +167,17 @@ class _CollageDetailWidgetState extends State<CollageDetailWidget> {
                   ),
                   SizedBox(height: 5.h),
                   Text(widget.more_info ?? " ",
-                    // "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna",
                     style: TextStyle(color: grey88Color, fontSize: 11.sp,fontFamily: "Poppins",),
                   ),
                   SizedBox(height: 20.h),
                    CollegeDetailScreenTitleAndDescriptionWidget(
                     title: "Description",
                     description: widget.description!,
-                        // "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper ",
-
                   ),
                   SizedBox(height: 20.h),
                    CollegeDetailScreenTitleAndDescriptionWidget(
                     title: "History & Achievements",
                     description: widget.history!,
-                        // "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper ",
                   )
                 ],
               ),

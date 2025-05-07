@@ -17,8 +17,42 @@ import '../widget/bottom_nav_bar.dart';
 import '../widget/dashboard_app_bar.dart';
 import '../widget/dashboard_drawer.dart';
 
-class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({super.key});
+class DashboardScreen extends StatefulWidget {
+  final String? scannedCollegeId;
+  final bool isFromQrScan;
+  const DashboardScreen({
+    super.key, 
+    this.scannedCollegeId,
+    this.isFromQrScan = false,
+  });
+
+  @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    // Set initial tab to home
+    kDashboardController.selectedBottomNavBarButton.value = BottomNavBarMenuEnum.home;
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      // Reset focus when app is resumed
+      SystemChannels.textInput.invokeMethod('TextInput.hide');
+      FocusScope.of(context).unfocus();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,41 +62,77 @@ class DashboardScreen extends StatelessWidget {
     print("Email: ${StudentDetails.email}");
     print("School: ${StudentDetails.schoolName}");
     print("Role: ${StudentDetails.role}");
-    print("number login screen == ${kAuthController.phoneNumberController.text}");
+    print("Scanned College ID: ${widget.scannedCollegeId}");
+    print("Is from QR scan: ${widget.isFromQrScan}");
 
     return StatusBarTheme(
       value: SystemUiOverlayStyle.light,
       child: PopScope(
         canPop: false,
+        onPopInvoked: (didPop) {
+          if (didPop) return;
+          if (Get.currentRoute == '/dashboard') {
+            // If we're at the dashboard and back is pressed, show exit dialog
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text('Exit App?'),
+                content: Text('Are you sure you want to exit?'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () => SystemNavigator.pop(),
+                    child: Text('Exit'),
+                  ),
+                ],
+              ),
+            );
+          } else {
+            // If we're in any other screen, just go back
+            Get.back();
+          }
+        },
         child: Scaffold(
           backgroundColor: Color.fromRGBO(244, 245, 247, 1),
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(100 + MediaQuery.of(context).padding.top),
             child: DashboardAppBar(),
           ),
-          body: Obx(() {
-            switch (kDashboardController.selectedBottomNavBarButton.value) {
-              case BottomNavBarMenuEnum.home:
-                return HomeScreen();
+          body: GestureDetector(
+            onTap: () {
+              // Unfocus when tapping outside
+              FocusScope.of(context).unfocus();
+            },
+            child: Obx(() {
+              switch (kDashboardController.selectedBottomNavBarButton.value) {
+                case BottomNavBarMenuEnum.home:
+                  return HomeScreen(
+                    collageId: widget.scannedCollegeId,
+                    isFromQrScan: widget.isFromQrScan,
+                  );
 
-              case BottomNavBarMenuEnum.pretest:
-                return PretestScreen();
+                case BottomNavBarMenuEnum.pretest:
+                  return PretestScreen();
 
-              case BottomNavBarMenuEnum.favorite:
-                return FavCollageScreen();
+                case BottomNavBarMenuEnum.favorite:
+                  return FavCollageScreen();
 
-              case BottomNavBarMenuEnum.offers:
-                return  OffersScreen();
+                case BottomNavBarMenuEnum.offers:
+                  return OffersScreen();
 
-              case BottomNavBarMenuEnum.needHelp:
-                return NeedHelpWidget(
-                  isOpenFromNavBar: true,
-                );
+                case BottomNavBarMenuEnum.needHelp:
+                  return NeedHelpWidget(
+                    isOpenFromNavBar: true,
+                  );
 
-              default:
-                return HomeScreen();
-            }
-          }),
+                default:
+                  return HomeScreen();
+              }
+            }),
+          ),
           drawer: DashboardDrawer(),
           bottomNavigationBar: BottomNavBarWidget(),
         ),

@@ -1,5 +1,3 @@
-
-
 import 'package:file_picker/file_picker.dart';
 
 import 'package:get/get.dart';
@@ -12,28 +10,41 @@ import '../../home/services/ClgListApi.dart';
 import '../../nearby/model/infrastructure_model.dart';
 import '../model/college_detail_model.dart';
 
-class CollegeController extends GetxController {
+// Rename the class
+class CollegeDetailController extends GetxController {
   var expandCollegeDetail = true.obs;
+  var collegeData = {}.obs;
+  void setCollegeData(Map<String, dynamic> data) {
+    collegeData.value = data;
+  }
   var sectionVisibility = List.generate(9, (index) => false.obs).obs;
-
+  RxList<CollegeDetailModel> collegeBasicDetailList = <CollegeDetailModel>[].obs;
 
   void fetchCollegeDetails() async {
+    if (collegeBasicDetailList.isNotEmpty) return;
     try {
-      var jsonData = await ClgListApi.getAttApi(); // Fetching data from API
-      List<CollegeDetailModel> newList = []; // Create a new list to hold CollegeDetailModel objects
-
-      // Transform JSON data to CollegeDetailModel objects
-      if (jsonData is List) {
-        newList = jsonData.map((data) {
+      var jsonData = await ClgListApi.getAttApi();
+      if (jsonData is List && jsonData.isNotEmpty) {
+        collegeBasicDetailList.value = jsonData.map((data) {
           return CollegeDetailModel(
             type: data['type'] ?? '',
             value: data['value'] ?? '',
           );
         }).toList();
       }
-
-      // Update the value of collegeBasicDetailList in the controller
-      collegeBasicDetailList = newList;
+      if (collegeBasicDetailList.isEmpty) {
+        collegeBasicDetailList.value = [
+          CollegeDetailModel(type: "College Type", value: safeCollegeValue("college_type")),
+          CollegeDetailModel(type: "Academic Type", value: safeCollegeValue("academic_type")),
+          CollegeDetailModel(type: "Affiliated", value: safeCollegeValue("affiliated")),
+          CollegeDetailModel(type: "Type", value: safeCollegeValue("class_type")),
+          CollegeDetailModel(type: "Class Rooms", value: "15"),
+          CollegeDetailModel(type: "No. of Seats", value: "12,000"),
+          CollegeDetailModel(type: "No. of Floors", value: "5"),
+          CollegeDetailModel(type: "Total Area", value: "5,000 sft"),
+          CollegeDetailModel(type: "College Code", value: "Private"),
+        ];
+      }
 
 
       // Update the UI using GetX reactive updates if needed
@@ -44,19 +55,11 @@ class CollegeController extends GetxController {
   }
 
 
-  List<CollegeDetailModel> collegeBasicDetailList = [
-
-    CollegeDetailModel(type: "College Type", value:"${AllCollegeData.collegeDataList["college"][0]["college_type"]}"),
-    CollegeDetailModel(type: "Academic Type", value: "${AllCollegeData.collegeDataList["college"][0]["academic_type"]}"),
-    CollegeDetailModel(type: "Affiliated", value:"${AllCollegeData.collegeDataList["college"][0]["affiliated"]}"),
-    CollegeDetailModel(type: "Type", value:"${ AllCollegeData.collegeDataList["college"][0]["class_type"]}"),
-    CollegeDetailModel(type: "Class Rooms", value: "15"),
-    CollegeDetailModel(type: "No. of Seats", value: "12,000"),
-    CollegeDetailModel(type: "No. of Floors", value: "5"),
-    CollegeDetailModel(type: "Total Area", value: "5,000 sft"),
-    CollegeDetailModel(type: "College Code", value: "Private"),
-  ];
-
+  @override
+  void onInit() {
+    super.onInit();
+    fetchCollegeDetails(); // Ensure API is called only once when the controller initializes
+  }
 
   List<String> tabViewList = [
     "College Detail",
@@ -64,11 +67,46 @@ class CollegeController extends GetxController {
     "Highlights",
     "Safty & Security",
     "Management & Staff",
-    "Subject’s",
+    "Subject's",
     "Social Media",
     "Policy",
     "Review"
   ];
+
+  String safeCollegeValue(String key) {
+    final list = AllCollegeData.collegeDataList["college"];
+    if (list != null && list.isNotEmpty && list[0][key] != null) {
+      return list[0][key].toString();
+    }
+    return "N/A";
+  }
+
+
+  // List<CollegeDetailModel> collegeBasicDetailList = [
+  //
+  //   CollegeDetailModel(type: "College Type", value:"${AllCollegeData.collegeDataList["college"][0]["college_type"]}"),
+  //   CollegeDetailModel(type: "Academic Type", value: "${AllCollegeData.collegeDataList["college"][0]["academic_type"]}"),
+  //   CollegeDetailModel(type: "Affiliated", value:"${AllCollegeData.collegeDataList["college"][0]["affiliated"]}"),
+  //   CollegeDetailModel(type: "Type", value:"${ AllCollegeData.collegeDataList["college"][0]["class_type"]}"),
+  //   CollegeDetailModel(type: "Class Rooms", value: "15"),
+  //   CollegeDetailModel(type: "No. of Seats", value: "12,000"),
+  //   CollegeDetailModel(type: "No. of Floors", value: "5"),
+  //   CollegeDetailModel(type: "Total Area", value: "5,000 sft"),
+  //   CollegeDetailModel(type: "College Code", value: "Private"),
+  // ];
+
+
+  // List<String> tabViewList = [
+  //   "College Detail",
+  //   "Infrastructure",
+  //   "Highlights",
+  //   "Safty & Security",
+  //   "Management & Staff",
+  //   "Subject's",
+  //   "Social Media",
+  //   "Policy",
+  //   "Review"
+  // ];
 // when tab open this tab's details also open .....
   void expandDetailWhenTapOnTab(int index) {
     sectionVisibility[index].value = !sectionVisibility[index].value;
@@ -117,7 +155,7 @@ class CollegeController extends GetxController {
   ];
 
   // ADMISSION FOR DATA
-    Rx<DateTime?> dateOfBirth = Rx(null);
+  Rx<DateTime?> dateOfBirth = Rx(null);
 
   // PICKED FILE
   Rx<PlatformFile?> studentPhotoDocument = Rx(null);

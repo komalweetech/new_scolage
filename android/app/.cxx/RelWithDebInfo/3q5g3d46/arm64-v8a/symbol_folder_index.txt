@@ -1,0 +1,1 @@
+C:\Flutter Project\new_scolage\build\app\intermediates\cxx\RelWithDebInfo\3q5g3d46\obj\arm64-v8a

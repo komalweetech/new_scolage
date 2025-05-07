@@ -19,29 +19,92 @@ import 'package:url_launcher/url_launcher.dart';
 import 'gallery_view_screen.dart';
 
 class CollegeImageAndShortDetailWidget extends StatelessWidget {
-  const CollegeImageAndShortDetailWidget(
-      {super.key,
-      required this.clgImage,
-      required this.clgName,
-      this.clgImageList,
-      required this.clgId,
-      required this.videoList,
-      this.clgAdd,
-      this.clgType,
-      this.clgCode,
-      this.location,
-      this.collegeStatus,});
+  const CollegeImageAndShortDetailWidget({
+    super.key,
+    required this.clgImage,
+    required this.clgName,
+    required this.clgImageList,
+    required this.clgId,
+    required this.videoList,
+    this.clgType = "N/A",
+    this.clgAdd = "N/A",
+    this.clgCode = "N/A",
+    this.location = "N/A",
+    this.collegeStatus = "N/A",
+    this.useDefaultImage = false,
+  });
 
   final String clgImage;
   final String clgName;
-  final List<dynamic>? clgImageList;
+  final List<dynamic> clgImageList;
   final String clgId;
-  final String? clgAdd;
-  final String? clgType;
-  final String? clgCode;
   final List<dynamic> videoList;
-  final String? location;
-  final String? collegeStatus;
+  final String clgType;
+  final String clgAdd;
+  final String clgCode;
+  final String location;
+  final String collegeStatus;
+  final bool useDefaultImage;
+
+  Widget _buildImage(String imageUrl, bool useDefaultImage) {
+    if (useDefaultImage) {
+      return Image.asset(
+        'assets/image/clg_image.jpg',
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          print("Error loading default image: $error");
+          return Container(
+            color: Colors.grey[300],
+            child: Center(
+              child: Text(
+                'No Image',
+                style: TextStyle(color: Colors.black54),
+              ),
+            ),
+          );
+        },
+      );
+    } else if (imageUrl.isNotEmpty) {
+      return Image.network(
+        imageUrl,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          print("Error loading network image: $error");
+          return Image.asset(
+            'assets/image/clg_image.jpg',
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              return Container(
+                color: Colors.grey[300],
+                child: Center(
+                  child: Text(
+                    'No Image',
+                    style: TextStyle(color: Colors.black54),
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      );
+    } else {
+      return Image.asset(
+        'assets/image/clg_image.jpg',
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return Container(
+            color: Colors.grey[300],
+            child: Center(
+              child: Text(
+                'No Image',
+                style: TextStyle(color: Colors.black54),
+              ),
+            ),
+          );
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,15 +113,20 @@ class CollegeImageAndShortDetailWidget extends StatelessWidget {
     return Column(
       children: [
         CollegeImageWidget(
-            clgImage: clgImage, clgImageList: clgImageList!, clgId: clgId),
+          clgImage: clgImage,
+          clgImageList: clgImageList,
+          clgId: clgId,
+          useDefaultImage: useDefaultImage,
+        ),
         CollegeBasicDetailWidget(
-            clgName: clgName,
-            clgId: clgId,
-            clgAdd: clgAdd!,
-            clgType: clgType!,
-            clgCode: clgCode!,
-            location: location!,
-        collegeStatus: collegeStatus!,),
+          clgName: clgName,
+          clgId: clgId,
+          clgAdd: clgAdd,
+          clgType: clgType,
+          clgCode: clgCode,
+          location: location,
+          collegeStatus: collegeStatus,
+        ),
         PlayListWidget(clgId: clgId, videoList: videoList),
       ],
     );
@@ -71,33 +139,88 @@ class CollegeImageWidget extends StatefulWidget {
     required this.clgImage,
     required this.clgImageList,
     required this.clgId,
+    this.useDefaultImage = false,
   });
 
   final String clgImage;
   final List<dynamic> clgImageList;
   final String clgId;
+  final bool useDefaultImage;
 
   @override
   State<CollegeImageWidget> createState() => _CollegeImageWidgetState();
 }
 
 class _CollegeImageWidgetState extends State<CollegeImageWidget> {
+  int currentIndex = 0;
+
+  Widget _buildImage(String imageUrl, bool useDefaultImage) {
+    if (useDefaultImage) {
+      return Image.asset(
+        'assets/image/clg_image.jpg',
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return Container(
+            color: Colors.grey[300],
+            child: Center(
+              child: Text(
+                'No Image',
+                style: TextStyle(color: Colors.black54),
+              ),
+            ),
+          );
+        },
+      );
+    } else if (imageUrl.isNotEmpty) {
+      return Image.network(
+        imageUrl,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return Image.asset(
+            'assets/image/clg_image.jpg',
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              return Container(
+                color: Colors.grey[300],
+                child: Center(
+                  child: Text(
+                    'No Image',
+                    style: TextStyle(color: Colors.black54),
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      );
+    } else {
+      return Image.asset(
+        'assets/image/clg_image.jpg',
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return Container(
+            color: Colors.grey[300],
+            child: Center(
+              child: Text(
+                'No Image',
+                style: TextStyle(color: Colors.black54),
+              ),
+            ),
+          );
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         SizedBox(
-            height: 330,
-            width: kScreenWidth(context),
-            child: Image.network(
-              widget.clgImage,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Image.network(
-                    'https://images.unsplash.com/flagged/photo-1554473675-d0904f3cbf38?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGNvbGxlZ2V8ZW58MHx8MHx8fDA%3D',
-                    fit: BoxFit.cover);
-              },
-            )),
+          height: 330,
+          width: MediaQuery.of(context).size.width,
+          child: _buildImage(widget.clgImage, widget.useDefaultImage),
+        ),
         Positioned(
             bottom: 13.h,
             left: 30.w,
@@ -111,8 +234,8 @@ class _CollegeImageWidgetState extends State<CollegeImageWidget> {
                 height: 45,
                 width: 45,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -184,15 +307,16 @@ class _CollegeImageWidgetState extends State<CollegeImageWidget> {
 }
 
 class CollegeBasicDetailWidget extends StatefulWidget {
-  const CollegeBasicDetailWidget(
-      {super.key,
-      required this.clgName,
-      required this.clgId,
-      required this.clgType,
-      required this.clgAdd,
-      required this.clgCode,
-      required this.location,
-      required this.collegeStatus});
+  const CollegeBasicDetailWidget({
+    super.key,
+    required this.clgName,
+    required this.clgId,
+    this.clgType = "N/A",
+    this.clgAdd = "N/A",
+    this.clgCode = "N/A",
+    this.location = "N/A",
+    this.collegeStatus = "N/A",
+  });
 
   final String clgName;
   final String clgId;
@@ -203,8 +327,7 @@ class CollegeBasicDetailWidget extends StatefulWidget {
   final String collegeStatus;
 
   @override
-  State<CollegeBasicDetailWidget> createState() =>
-      _CollegeBasicDetailWidgetState();
+  State<CollegeBasicDetailWidget> createState() => _CollegeBasicDetailWidgetState();
 }
 
 class _CollegeBasicDetailWidgetState extends State<CollegeBasicDetailWidget> {
@@ -275,7 +398,7 @@ class _CollegeBasicDetailWidgetState extends State<CollegeBasicDetailWidget> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Image.asset(widget.collegeStatus ==  "Verified" ?
-                            AssetIcons.PROTECT_GREEN_ICON  : AssetIcons.PROTECT_RED_ICON,
+                        AssetIcons.PROTECT_GREEN_ICON  : AssetIcons.PROTECT_RED_ICON,
                             height: 10.h),
                         SizedBox(width: 3.h),
                         Text(
@@ -473,7 +596,7 @@ class PlayListWidget extends StatelessWidget {
             ),
             SizedBox(width: 30.w),
             // Image.asset(AssetIcons.VIDEO_IMAGE, height: 100.h),
-            YoutubeImageWidget(),
+            YoutubeImageWidget(videoList: videoList),
             SizedBox(width: 30.w),
           ],
         ),

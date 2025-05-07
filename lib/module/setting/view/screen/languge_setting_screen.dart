@@ -87,7 +87,7 @@ class LanguageSettingScreen extends StatelessWidget {
                 Fluttertoast.showToast(
                   msg: "Logged out successfully!",
                   toastLength: Toast.LENGTH_LONG,
-                  gravity: ToastGravity.BOTTOM,
+                  gravity: ToastGravity.TOP,
                   timeInSecForIosWeb: 2,
                   backgroundColor: kPrimaryColor,
                   textColor: Colors.white,
@@ -129,7 +129,7 @@ class LanguageSettingScreen extends StatelessWidget {
                 String studentId = StudentDetails.studentId;
                 print("delete api = $studentId");
                 var response = await http.delete(
-                  Uri.parse("http://192.168.29.127:7000/v2/delete/student/$studentId"),
+                  Uri.parse("${ApiBasePort.apiBaseUrl}/v2/delete/student/$studentId"),
                   headers: {
                     "Content-Type": "application/json",
                   },

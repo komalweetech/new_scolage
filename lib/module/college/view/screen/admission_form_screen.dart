@@ -30,7 +30,7 @@ class AdmissionForm extends StatefulWidget {
       {super.key,
       required this.collegeName,
       required this.collegeId,
-      this.subjectName,
+      this.subjectList,
       required this.collegeImage,
         required this.clgCode,
       });
@@ -39,7 +39,7 @@ class AdmissionForm extends StatefulWidget {
   final String collegeName;
   final String collegeId;
   final String clgCode;
-  final List<dynamic>? subjectName;
+  final List<dynamic>? subjectList;
 
   @override
   State<AdmissionForm> createState() => _AdmissionFormState();
@@ -51,7 +51,7 @@ class _AdmissionFormState extends State<AdmissionForm> {
   Map<String, TextEditingController> controllers = {};
 
   List<Map<String, dynamic>> perSubOfCollegeList = [];
-  List<String> subNamesList = [];
+  List<String> subNamesList = [" "];
   String selectedCourseId = "";
   // int currentStep = 0;
 
@@ -64,8 +64,8 @@ class _AdmissionFormState extends State<AdmissionForm> {
     // TODO: implement initState
     super.initState();
 
-    List subList = widget.subjectName as List<dynamic>;
-
+    List subList = widget.subjectList as List<dynamic>;
+print("subject list in addmision form == ${ widget.subjectList as List<dynamic>}");
     for (var i = 0; i < subList.length; i++) {
       if (subList[i]["collegeid"] == widget.collegeId) {
         print("your i === $i");
@@ -177,7 +177,6 @@ class _AdmissionFormState extends State<AdmissionForm> {
     }
     print("your student id ===== ${StudentDetails.studentId}");
     print("your subject id ===== ${subjectID}");
-    print("your student = ${StudentDetails.studentId}");
     print("current college id === ${widget.collegeId}");
 
 
@@ -377,6 +376,7 @@ class _AdmissionFormState extends State<AdmissionForm> {
           ),
           iconTheme: const IconThemeData(color: Colors.white),
           backgroundColor: kPrimaryColor,
+          centerTitle: true,
           title: const Text(
             "Admission Form",
             style: TextStyle(color: Colors.white),
@@ -1001,78 +1001,78 @@ class _AdmissionFormState extends State<AdmissionForm> {
                       ],
                     ),
 
-                    const AdmissionFormContentTitle(
-                      title: "Upload Documents",
-                    ),
-                    SizedBox(height: 30.h),
-                    // file for student,,
-                    Row(
-                      children: [
-                        SizedBox(width: 30.w),
-                        Expanded(
-                          child: Obx(
-                            () => FilePickerBox(
-                              documentName: 'Student Photo',
-                              pickedFileName: kCollegeController
-                                  .studentPhotoDocument.value?.name,
-                              onTap: () async {
-                                await _pickFile(kCollegeController.studentPhotoDocument);
-                                // kCollegeController.studentPhotoDocument.value = await commonFilePicker(context);
-                              },
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 20),
-                        Expanded(
-                          child: Obx(
-                            () => FilePickerBox(
-                              documentName: 'Hall Ticket',
-                              pickedFileName: kCollegeController.hallTicketDocument.value?.name,
-                              onTap: () async {
-                                await _pickFile(kCollegeController.hallTicketDocument);
-                                // kCollegeController.hallTicketDocument.value = await commonFilePicker(context);
-                              },
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 30.w),
-                      ],
-                    ),
-                    const SizedBox(height: 30),
-                    Row(
-                      children: [
-                        SizedBox(width: 30.w),
-                        Expanded(
-                          child: Obx(
-                            () => FilePickerBox(
-                              documentName: 'Aadhar Card',
-                              pickedFileName: kCollegeController
-                                  .adharCardDocument.value?.name,
-                              onTap: () async {
-                                await _pickFile(kCollegeController.adharCardDocument);
-                                // kCollegeController.adharCardDocument.value = await commonFilePicker(context);
-                              },
-                            ),
-                          ),
-                        ),
-                          const SizedBox(width: 20),
-                        Expanded(
-                          child: Obx(
-                            () => FilePickerBox(
-                              documentName: 'Caste Certificate',
-                              pickedFileName: kCollegeController
-                                  .casteCertificateDocument.value?.name,
-                              onTap: () async {
-                                await _pickFile(kCollegeController.casteCertificateDocument);
-                                // kCollegeController.casteCertificateDocument.value = await commonFilePicker(context);
-                              },
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 30.w),
-                      ],
-                    ),
-                    SizedBox(height: 20.h),
+                    // const AdmissionFormContentTitle(
+                    //   title: "Upload Documents",
+                    // ),
+                    // SizedBox(height: 30.h),
+                    // // file for student,,
+                    // Row(
+                    //   children: [
+                    //     SizedBox(width: 30.w),
+                    //     Expanded(
+                    //       child: Obx(
+                    //         () => FilePickerBox(
+                    //           documentName: 'Student Photo',
+                    //           pickedFileName: kCollegeController
+                    //               .studentPhotoDocument.value?.name,
+                    //           onTap: () async {
+                    //             await _pickFile(kCollegeController.studentPhotoDocument);
+                    //             // kCollegeController.studentPhotoDocument.value = await commonFilePicker(context);
+                    //           },
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     const SizedBox(width: 20),
+                    //     Expanded(
+                    //       child: Obx(
+                    //         () => FilePickerBox(
+                    //           documentName: 'Hall Ticket',
+                    //           pickedFileName: kCollegeController.hallTicketDocument.value?.name,
+                    //           onTap: () async {
+                    //             await _pickFile(kCollegeController.hallTicketDocument);
+                    //             // kCollegeController.hallTicketDocument.value = await commonFilePicker(context);
+                    //           },
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     SizedBox(width: 30.w),
+                    //   ],
+                    // ),
+                    // const SizedBox(height: 30),
+                    // Row(
+                    //   children: [
+                    //     SizedBox(width: 30.w),
+                    //     Expanded(
+                    //       child: Obx(
+                    //         () => FilePickerBox(
+                    //           documentName: 'Aadhar Card',
+                    //           pickedFileName: kCollegeController
+                    //               .adharCardDocument.value?.name,
+                    //           onTap: () async {
+                    //             await _pickFile(kCollegeController.adharCardDocument);
+                    //             // kCollegeController.adharCardDocument.value = await commonFilePicker(context);
+                    //           },
+                    //         ),
+                    //       ),
+                    //     ),
+                    //       const SizedBox(width: 20),
+                    //     Expanded(
+                    //       child: Obx(
+                    //         () => FilePickerBox(
+                    //           documentName: 'Caste Certificate',
+                    //           pickedFileName: kCollegeController
+                    //               .casteCertificateDocument.value?.name,
+                    //           onTap: () async {
+                    //             await _pickFile(kCollegeController.casteCertificateDocument);
+                    //             // kCollegeController.casteCertificateDocument.value = await commonFilePicker(context);
+                    //           },
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     SizedBox(width: 30.w),
+                    //   ],
+                    // ),
+                    // SizedBox(height: 20.h),
                   ],
                 ),
               ),

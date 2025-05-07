@@ -48,7 +48,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyALxAxfCQSwo78fD-OsKCymhxzRPMw2fl0',
-    appId: '1:64953881087:android:4b996f14d8bbacf2f317ca',
+    appId: '1:64953881087:android:c6ebfbab9c6d31aef317ca',
     messagingSenderId: '64953881087',
     projectId: 'new-scolage',
     storageBucket: 'new-scolage.firebasestorage.app',
@@ -56,11 +56,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyB8LCuMFfwL2mAL_2Zequo-RNa0yL_w2Kw',
-    appId: '1:64953881087:ios:2d7a68f5831826ccf317ca',
+    appId: '1:64953881087:ios:3ac2b56ae451743ef317ca',
     messagingSenderId: '64953881087',
     projectId: 'new-scolage',
     storageBucket: 'new-scolage.firebasestorage.app',
-    iosBundleId: 'com.scolage.app',
+    iosBundleId: 'com.catchcollage.name',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(

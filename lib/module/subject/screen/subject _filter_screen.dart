@@ -224,6 +224,33 @@ class _SubjectFilterScreenState extends State<SubjectFilterScreen> {
                       var imageIndex = clgImage.indexWhere((image) => image["collegeid"] == collegeId);
                       // Use a default image URL if the image is not found
                       var imageUrl = imageIndex != -1 ? clgImage[imageIndex]["imageUrl"] : "N/A";
+                      // Determine if default image should be used
+                      bool useDefaultImage = imageUrl == "N/A" || imageUrl.isEmpty;
+
+                      // --- Find matching related data using collegeId ---
+                      final matchingPolicy = policy.firstWhere(
+                              (p) => p["collegeid"] == collegeId,
+                          orElse: () => {"terms_condition": "N/A"}
+                      );
+
+                      final matchingEligibility = eligibility.firstWhere(
+                              (e) => e["collegeid"] == collegeId,
+                          orElse: () => {"eligibility_criteria": "N/A", "fee_terms": "N/A"}
+                      );
+
+                      final matchingSafety = safety.firstWhere(
+                              (s) => s["collegeid"] == collegeId,
+                          orElse: () => {"safety_security": "N/A"}
+                      );
+
+                      final matchingSocialMedia = socialMedia.firstWhere(
+                              (s) => s["collegeid"] == collegeId,
+                          orElse: () => {"website": "N/A"}
+                      );
+
+                      // Safely get timings
+                      final timings = college["timings"] as List?;
+                      final firstTiming = timings != null && timings.isNotEmpty ? timings[0] : null;
 
                       return CollegeCard(
                         index: index,
@@ -232,39 +259,39 @@ class _SubjectFilterScreenState extends State<SubjectFilterScreen> {
                         clgName: college["collegename"] ?? "N/A",
                         clgId: college["collegeid"] ?? "N/A",
                         clgAdd: college["address"] ?? "N/A",
-                        clgDetails: [college],
-                        clgImage:imageUrl,
-                        clgImageList: clgImage,
-                        policy: policy[index]?["terms_condition"] ?? "N/A",
-                        eligibility: eligibility[index]?["eligibility_criteria"] ??  "N/A",
-                        feeTerms: eligibility[index]?["fee_terms"] ?? "N/A",
-                        // feeStructure: eligibility,
-                        staffList: staff,
-                        safety: safety[index]?["safety_security"] ?? "N/A",
-                        subjectName: subjects,
-                        socialMedia: socialMedia,
-                        open: college["timings"][0]["open"]?? "N/A",
-                        close: college["timings"][0]["close"]?? "N/A",
-                        days: college["timings"][0]["Mon_to_Sat"]?? "N/A",
+                        clgDetails: [college], // Pass the specific college details
+                        clgImage: imageUrl,
+                        useDefaultImage: useDefaultImage, // Pass the flag
+                        clgImageList: clgImage.where((img) => img["collegeid"] == collegeId).toList(), // Pass filtered images
+                        policy: matchingPolicy["terms_condition"] ?? "N/A",
+                        eligibility: matchingEligibility["eligibility_criteria"] ??  "N/A",
+                        feeTerms: matchingEligibility["fee_terms"] ?? "N/A",
+                        staffList: staff.where((s) => s["collegeid"] == collegeId).toList(), // Pass filtered staff
+                        safety: matchingSafety["safety_security"] ?? "N/A",
+                        subjectName: subjects.where((sub) => sub["collegeid"] == collegeId).toList(), // Pass filtered subjects
+                        socialMedia: socialMedia.where((sm) => sm["collegeid"] == collegeId).toList(), // Pass filtered social media
+                        open: firstTiming?["open"] ?? "N/A",
+                        close: firstTiming?["close"] ?? "N/A",
+                        days: firstTiming?["Mon_to_Sat"] ?? "N/A",
                         description: college["Description"] ?? "N/A",
                         more_info: college["more_info"] ?? "N/A",
                         history: college["History_Achievements"] ?? "N/A",
-                        videoList: videos,
-                        webSiteLink: socialMedia[index]["website"]  ?? "N/A",
+                        videoList: videos.where((vid) => vid["collegeid"] == collegeId).toList(), // Pass filtered videos
+                        webSiteLink: matchingSocialMedia["website"] ?? "N/A",
 
-                        // college Details Screen Data...
-                        clgType: college["college_type"]?? "N/A",
-                        academicType: college["academic_type"]?? "N/A",
-                        affiliated:college["affiliated"]?? "N/A",
-                        classType: college["class_type"]?? "N/A",
-                        classrooms: college["class_rooms"].toString(),
-                        totalSeats: college["total_seats"].toString(),
-                        totalFloors: college["no_of_floors"].toString(),
-                        totalArea: college["college_area"].toString(),
-                        clgCode: college["college_code"].toString(),
-                        location: college["location"].toString(),
-                        collegeStatus: college["collegeStatus"].toString(),
-
+                        // college Details Screen Data... ensure safe access and null checks
+                        clgType: college["college_type"] ?? "N/A",
+                        systemType: college["system_type"] ?? "N/A", // Added systemType
+                        academicType: college["academic_type"] ?? "N/A",
+                        affiliated: college["affiliated"] ?? "N/A",
+                        classType: college["class_type"] ?? "N/A",
+                        classrooms: college["class_rooms"]?.toString() ?? "N/A",
+                        totalSeats: college["total_seats"]?.toString() ?? "N/A",
+                        totalFloors: college["no_of_floors"]?.toString() ?? "N/A",
+                        totalArea: college["college_area"]?.toString() ?? "N/A",
+                        clgCode: college["college_code"]?.toString() ?? "N/A",
+                        location: college["location"]?.toString() ?? "N/A",
+                        collegeStatus: college["collegeStatus"]?.toString() ?? "N/A", // Use ?.toString() for safety
                       );
 
                     },

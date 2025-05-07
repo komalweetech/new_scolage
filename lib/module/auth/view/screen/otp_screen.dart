@@ -2,6 +2,7 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import '../../../../utils/StudentDetails.dart';
 import '../../../../utils/commonFunction/common_toast.dart';
 import '../../../../utils/commonWidget/common_save_and_submit_button.dart';
@@ -13,6 +14,8 @@ import '../../services/databaseHelper.dart';
 import '../../services/otp_Api.dart';
 import '../widget/continue_with_button.dart';
 import 'otp_ButtomSheet.dart';
+import '../../../dashboard/view/screen/dashboard_screen.dart';
+import '../../controller/AuthController.dart';
 
 class OtpScreen extends StatefulWidget {
   const OtpScreen({super.key});
@@ -23,6 +26,7 @@ class OtpScreen extends StatefulWidget {
 
 class _OtpScreenState extends State<OtpScreen> {
   final TextEditingController phoneNumberController = TextEditingController();
+  final authController = Get.find<AuthController>();
   List<Map<String, dynamic>> allUsers = [];
 
   @override
@@ -57,7 +61,7 @@ class _OtpScreenState extends State<OtpScreen> {
       return;
     }
 
-// Check if the number exists and is already logged in
+    // Check if the number exists and is already logged in
     final dbHelper = DatabaseHelper.instance;
     final user = await dbHelper.getUser(mobileNumber);
 
@@ -75,8 +79,7 @@ class _OtpScreenState extends State<OtpScreen> {
     }
 
     // Proceed to send OTP
-    final otpResponse = await OtpApi.postApi(mobileNumber);
-
+    final otpResponse = await OtpApi.postApi(mobileNumber, "signUp");
 
     if (otpResponse != null) {
       setState(() {
@@ -95,6 +98,59 @@ class _OtpScreenState extends State<OtpScreen> {
         backgroundColor: kPrimaryColor,
         textColor: Colors.white,
         timeInSecForIosWeb: 1,
+        fontSize: 16.0,
+      );
+    }
+  }
+
+  Future<void> _handleGoogleSignIn() async {
+    try {
+      // Show loading indicator
+      Get.dialog(
+        const Center(
+          child: CircularProgressIndicator(),
+        ),
+        barrierDismissible: false,
+      );
+
+      final userCredential = await authController.signInWithGoogle();
+      
+      // Close loading indicator
+      Get.back();
+
+      if (userCredential != null) {
+        Fluttertoast.showToast(
+          msg: "Successfully Signed Up with Google",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: kPrimaryColor,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+        Get.offAll(() => const DashboardScreen());
+      } else {
+        Fluttertoast.showToast(
+          msg: "Google Sign-In was cancelled",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.orange,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+      }
+    } catch (e) {
+      // Close loading indicator if it's still showing
+      if (Get.isDialogOpen ?? false) {
+        Get.back();
+      }
+
+      print('Google Sign-In Error: $e');
+      Fluttertoast.showToast(
+        msg: "Failed to sign up with Google: ${e.toString()}",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
         fontSize: 16.0,
       );
     }
@@ -193,9 +249,7 @@ class _OtpScreenState extends State<OtpScreen> {
                     ContinueWithButton(
                       name: "Continue with Google",
                       icon: AssetIcons.GOOGLE_ICON,
-                      onTap: () {
-                        CommonToast.showComingSoonToast();
-                      },
+                      onTap: _handleGoogleSignIn,
                     ),
                     // SizedBox(height: 20.h),
                     // // SIGN IN WITH CODE BUTTON

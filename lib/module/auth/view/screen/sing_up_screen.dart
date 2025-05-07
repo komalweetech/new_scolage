@@ -16,7 +16,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../../utils/theme/common_color.dart';
 import '../../services/databaseHelper.dart';
 import '../widget/webViewPage.dart';
+import '../widget/continue_with_button.dart';
+import 'package:dotted_line/dotted_line.dart';
+import '../../../dashboard/view/screen/dashboard_screen.dart';
 import 'login_screen.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class SingUpScreen extends StatefulWidget {
   const SingUpScreen({super.key});
@@ -28,7 +32,8 @@ class SingUpScreen extends StatefulWidget {
 class _SingUpScreenState extends State<SingUpScreen> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore fireStore = FirebaseFirestore.instance;
-  final authController  = Get.put(AuthController());
+  final authController = Get.find<AuthController>();
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   Map<String, TextEditingController> controllers = {
     'name': TextEditingController(),
@@ -135,6 +140,32 @@ class _SingUpScreenState extends State<SingUpScreen> {
     } catch (error) {
       Fluttertoast.showToast(msg: "Sign-up failed: $error");
       print('Error submitting admission data: $error');
+    }
+  }
+
+  Future<void> _handleGoogleSignIn() async {
+    try {
+      final userCredential = await authController.signInWithGoogle();
+      if (userCredential != null) {
+        Fluttertoast.showToast(
+          msg: "Successfully Signed Up with Google",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: kPrimaryColor,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+        Get.offAll(() => const DashboardScreen());
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: "Failed to sign up with Google",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
     }
   }
 
@@ -355,7 +386,46 @@ class _SingUpScreenState extends State<SingUpScreen> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 30.h),
+                      SizedBox(height: 12.h),
+                      Row(
+                        children: [
+                          const Expanded(
+                            child: DottedLine(
+                              dashColor: grey128Color,
+                              lineThickness: 1,
+                              dashLength: 1,
+                              dashRadius: 2,
+                              dashGapLength: 2,
+                            ),
+                          ),
+                          Text(
+                            " OR ",
+                            style: TextStyle(
+                              fontSize: 18.sp,
+                              color: grey88Color,
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const Expanded(
+                            child: DottedLine(
+                              dashColor: grey128Color,
+                              lineThickness: 1,
+                              dashLength: 1,
+                              dashRadius: 2,
+                              dashGapLength: 2,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 12.h),
+                      // CONTINUE WITH GOOGLE
+                      ContinueWithButton(
+                        name: "Continue with Google",
+                        icon: AssetIcons.GOOGLE_ICON,
+                        onTap: _handleGoogleSignIn,
+                      ),
+                      SizedBox(height: 20.h),
                       CommonSaveAndSubmitButton(
                         name: "Submit",
                         onTap: () async {

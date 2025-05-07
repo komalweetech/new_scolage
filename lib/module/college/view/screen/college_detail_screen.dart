@@ -25,76 +25,78 @@ import 'fee_deatil_screen.dart';
 class CollegeDetailScreen extends StatefulWidget {
   const CollegeDetailScreen({
     super.key,
-    this.clgDetails,
-    this.policy,
-    this.eligibility,
+    this.clgDetails = const [],
+    this.policy = "N/A",
+    this.eligibility = "N/A",
     required this.clgImage,
     required this.clgName,
     required this.clgId,
-    this.safety,
-    this.courseDetails,
-    this.staffList,
-    this.socialDetails,
-    this.open,
-    this.close,
-    this.days,
-    this.clgType,
-    this.systemType,
-    this.academicType,
-    this.affiliated,
-    this.classType,
-    this.classrooms,
-    this.totalSeats,
-    this.totalFloors,
-    this.totalArea,
-    this.clgCode,
-    this.clgImageList,
-    this.videoList,
-    this.webSiteLink,
-    this.clgAdd,
-    this.location,
-    this.description,
-    this.more_info,
-    this.history,
-    this.feeTerms,
-    this.collegeStatus,
+    this.safety = "N/A",
+    this.courseDetails = const [],
+    this.staffList = const [],
+    this.socialDetails = const [],
+    this.open = "N/A",
+    this.close = "N/A",
+    this.days = "N/A",
+    this.clgType = "N/A",
+    this.systemType = "N/A",
+    this.academicType = "N/A",
+    this.affiliated = "N/A",
+    this.classType = "N/A",
+    this.classrooms = "N/A",
+    this.totalSeats = "N/A",
+    this.totalFloors = "N/A",
+    this.totalArea = "N/A",
+    this.clgCode = "N/A",
+    this.clgImageList = const [],
+    this.videoList = const [],
+    this.webSiteLink = "N/A",
+    this.clgAdd = "N/A",
+    this.location = "N/A",
+    this.description = "N/A",
+    this.more_info = "N/A",
+    this.history = "N/A",
+    this.feeTerms = "N/A",
+    this.collegeStatus = "N/A",
+    this.useDefaultImage = false,
   });
 
-  final List<dynamic>? clgDetails;
-  final String? policy;
-  final String? eligibility;
+  final List<dynamic> clgDetails;
+  final String policy;
+  final String eligibility;
   final String clgImage;
-  final List<dynamic>? clgImageList;
+  final bool useDefaultImage;
+  final List<dynamic> clgImageList;
   final String clgName;
   final String clgId;
-  final String? clgAdd;
-  final List<dynamic>? socialDetails;
-  final List<dynamic>? staffList;
-  final String? safety;
-  final List<dynamic>? courseDetails;
-  final String? open;
-  final String? close;
-  final String? days;
-  final String? description;
-  final String? more_info;
-  final String? history;
-  final List<dynamic>? videoList;
-  final String? webSiteLink;
-  final String? feeTerms;
+  final String clgAdd;
+  final List<dynamic> socialDetails;
+  final List<dynamic> staffList;
+  final String safety;
+  final List<dynamic> courseDetails;
+  final String open;
+  final String close;
+  final String days;
+  final String description;
+  final String more_info;
+  final String history;
+  final List<dynamic> videoList;
+  final String webSiteLink;
+  final String feeTerms;
 
   // College Details
-  final String? clgType;
-  final String? systemType;
-  final String? academicType;
-  final String? affiliated;
-  final String? classType;
-  final String? classrooms;
-  final String? totalSeats;
-  final String? totalFloors;
-  final String? totalArea;
-  final String? clgCode;
-  final String? location;
-  final String? collegeStatus;
+  final String clgType;
+  final String systemType;
+  final String academicType;
+  final String affiliated;
+  final String classType;
+  final String classrooms;
+  final String totalSeats;
+  final String totalFloors;
+  final String totalArea;
+  final String clgCode;
+  final String location;
+  final String collegeStatus;
 
   @override
   State<CollegeDetailScreen> createState() => _CollegeDetailScreenState();
@@ -147,20 +149,20 @@ class _CollegeDetailScreenState extends State<CollegeDetailScreen> {
                 CollegeImageAndShortDetailWidget(
                   clgImage: widget.clgImage,
                   clgName: widget.clgName,
-                  clgImageList: widget.clgImageList!,
+                  clgImageList: widget.clgImageList,
                   clgId: widget.clgId,
-                  videoList: widget.videoList!,
+                  videoList: widget.videoList,
                   clgType: widget.clgType,
                   clgAdd: widget.clgAdd,
                   clgCode: widget.clgCode,
                   location: widget.location,
                   collegeStatus: widget.collegeStatus,
+                  useDefaultImage: widget.useDefaultImage,
                 ),
-SizedBox(height: 10.h,),
+                SizedBox(height: 10.h,),
                 // COLLEGE DETAIL
                 Visibility(
-                  visible: widget.clgDetails != null &&
-                      widget.clgDetails!.isNotEmpty,
+                  visible: widget.clgDetails.isNotEmpty,
                   child: AutoScrollTag(
                     key: const ValueKey(0),
                     controller: controller,
@@ -193,14 +195,19 @@ SizedBox(height: 10.h,),
                   controller: controller,
                   index: 1,
                   child: InfrastructureListWidget(
-                      CollegeId: widget.clgId, index: 1),
+                    CollegeId: widget.clgId,
+                    index: 1,
+                  ),
                 ),
                 // HIGHLIGHTS DETAIL
                 AutoScrollTag(
                   key: const ValueKey(2),
                   controller: controller,
                   index: 2,
-                  child: CollegeHighlightWidget(clgId: widget.clgId, index: 2),
+                  child: CollegeHighlightWidget(
+                    clgId: widget.clgId,
+                    index: 2,
+                  ),
                 ),
                 // SAFETY AND SECURITY DETAIL
                 AutoScrollTag(
@@ -208,57 +215,61 @@ SizedBox(height: 10.h,),
                   controller: controller,
                   index: 3,
                   child: CollegeSafetyAndSecurityWidget(
-                    safety: widget.safety!,
+                    safety: widget.safety,
                     index: 3,
                   ),
                 ),
                 // MANAGEMENT & STAFF
-                AutoScrollTag(
+                if (widget.staffList.isNotEmpty) AutoScrollTag(
                   key: const ValueKey(4),
                   controller: controller,
                   index: 4,
                   child: CollegeManagementAndStaffWidget(
-                      collegeId: widget.clgId,
-                      staffList: widget.staffList!,
-                      index: 4),
+                    collegeId: widget.clgId,
+                    staffList: widget.staffList,
+                    index: 4,
+                  ),
                 ),
-                // SUBJECT .
-                AutoScrollTag(
+                // SUBJECT
+                if (widget.courseDetails.isNotEmpty) AutoScrollTag(
                   key: const ValueKey(5),
                   controller: controller,
                   index: 5,
                   child: CollegeSubjectsWidget(
-                      eligibility: widget.eligibility!,
-                      subjectList: widget.courseDetails,
-                      collegeId: widget.clgId,
-                      index: 5),
+                    eligibility: widget.eligibility,
+                    subjectList: widget.courseDetails,
+                    collegeId: widget.clgId,
+                    index: 5,
+                  ),
                 ),
                 // SOCIAL MEDIA
-                AutoScrollTag(
+                if (widget.socialDetails.isNotEmpty) AutoScrollTag(
                   key: const ValueKey(6),
                   controller: controller,
                   index: 6,
                   child: CollegeSocialMediaWidget(
-                      socialDetails: widget.socialDetails,
-                      collegeId: widget.clgId,
-                      index: 6),
+                    socialDetails: widget.socialDetails,
+                    collegeId: widget.clgId,
+                    index: 6,
+                  ),
                 ),
-                // POLICY .
+                // POLICY
                 AutoScrollTag(
                   key: const ValueKey(7),
                   controller: controller,
                   index: 7,
                   child: CollegePolicyWidget(
-                      policy: widget.policy!,
-                      collegeId: widget.clgId,
-                      index: 7),
+                    policy: widget.policy,
+                    collegeId: widget.clgId,
+                    index: 7,
+                  ),
                 ),
               ],
             ),
             // APPBAR .
             CollegeDetailScreenAppBar(
               controller: controller,
-              clgList: widget.clgDetails!,
+              clgList: widget.clgDetails,
               clgId: widget.clgId,
               webSiteLink: widget.webSiteLink,
             ),
@@ -280,7 +291,7 @@ SizedBox(height: 10.h,),
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Fee’s",
+                            "Fee's",
                             style: TextStyle(
                               fontSize: 12.sp,
                               fontFamily: "Poppins",
@@ -289,12 +300,13 @@ SizedBox(height: 10.h,),
                           InkWell(
                             onTap: () {
                               CommonFunction.kNavigatorPush(
-                                  context,
-                                  FeeDetailScreen(
-                                    eligibility: widget.eligibility,
-                                    feeTerms: widget.feeTerms,
-                                    clgId: widget.clgId,
-                                  ));
+                                context,
+                                FeeDetailScreen(
+                                  eligibility: widget.eligibility,
+                                  feeTerms: widget.feeTerms,
+                                  clgId: widget.clgId,
+                                ),
+                              );
                             },
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -302,18 +314,20 @@ SizedBox(height: 10.h,),
                                 Text(
                                   "10,000 to 35,000 INRv",
                                   style: TextStyle(
-                                      fontSize: 14.sp,
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.w600),
+                                    fontSize: 14.sp,
+                                    fontFamily: "Poppins",
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                                 Text(
                                   "For More Details ",
                                   style: TextStyle(
-                                      color: kPrimaryColor,
-                                      fontSize: 10.sp,
-                                      fontFamily: "Poppins",
-                                      decoration: TextDecoration.underline,
-                                      decorationColor: kPrimaryColor),
+                                    color: kPrimaryColor,
+                                    fontSize: 10.sp,
+                                    fontFamily: "Poppins",
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: kPrimaryColor,
+                                  ),
                                 ),
                               ],
                             ),
@@ -325,39 +339,33 @@ SizedBox(height: 10.h,),
                       borderRadius: BorderRadius.circular(8.r),
                       onTap: () {
                         CommonFunction.kNavigatorPush(
-                            context,
-                            AdmissionForm(
-                              collegeName: widget.clgName,
-                              subjectName: widget.courseDetails!,
-                              collegeId: widget.clgId,
-                              collegeImage: widget.clgImage,
-                              clgCode: widget.clgCode!,
-                            ));
+                          context,
+                          AdmissionForm(
+                            collegeName: widget.clgName,
+                            subjectList: widget.courseDetails,
+                            collegeId: widget.clgId,
+                            collegeImage: widget.clgImage,
+                            clgCode: widget.clgCode,
+                          ),
+                        );
                       },
                       child: Container(
                         padding: EdgeInsets.fromLTRB(10.w, 8.h, 10.w, 10.h),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8.r),
-                          // boxShadow: [
-                          //   BoxShadow(
-                          //     color: Colors.grey.withOpacity(.7),
-                          //     offset: Offset(2, 3),
-                          //     spreadRadius: 1,
-                          //     blurRadius: 6,
-                          //   )
-                          // ],
                           color: kPrimaryColor,
                         ),
                         child: Text(
                           "APPLY NOW",
                           style: TextStyle(
-                              color: commonYellowColor,
-                              fontSize: 14.sp,
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w700),
+                            color: commonYellowColor,
+                            fontSize: 14.sp,
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -366,5 +374,31 @@ SizedBox(height: 10.h,),
         ),
       ),
     );
+  }
+
+  // Helper method to get the appropriate image widget
+  Widget _buildImage(String imageUrl, bool useDefaultImage) {
+    if (useDefaultImage) {
+      return Image.asset(
+        'assets/image/default.jpg',
+        fit: BoxFit.cover,
+      );
+    } else if (imageUrl.isNotEmpty) {
+      return Image.network(
+        imageUrl,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return Image.asset(
+            'assets/image/default.jpg',
+            fit: BoxFit.cover,
+          );
+        },
+      );
+    } else {
+      return Image.asset(
+        'assets/image/default.jpg',
+        fit: BoxFit.cover,
+      );
+    }
   }
 }

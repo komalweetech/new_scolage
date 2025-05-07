@@ -32,76 +32,83 @@ class _InfrastructureListWidgetState extends State<InfrastructureListWidget> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
-    infrastructureList.add(AllCollegeData.collegeDataList["infra"]);
-    print("your infra data is = $infrastructureList}");
-
-    infraList = infrastructureList[0];
-    print("infra data ==== $infraList");
-    // ClgInfraData.fetchData() ;
-    print("data ==== $infraList");
-
-
-    for(int i = 0; i < infraList.length; i++ ) {
-      print("college ids == ${infraList[i]["collegeid"]} and wid id == ${widget.CollegeId}");
-      if(widget.CollegeId == infraList[i]["collegeid"]) {
-        print("college ids in inner if == ${infraList[i]["collegeid"]}");
-       clgInfraList.add(infraList[i]);
+    // Attempt to get infra data, handle potential errors
+    try {
+      var allInfra = AllCollegeData.collegeDataList["infra"];
+      if (allInfra is List<dynamic>) {
+        infraList = allInfra;
+      } else {
+        print("Warning: 'infra' data is not a List.");
+        infraList = []; // Initialize as empty list if data is wrong type
       }
+    } catch (e) {
+      print("Error accessing infra data: $e");
+      infraList = []; // Initialize as empty list on error
     }
-    infrastructureList[0] = clgInfraList[0];
-    print("infra data filtered  ==== ${clgInfraList}");
 
+    print("All infra data count: ${infraList.length}");
+
+    // Filter for the current college ID
+    clgInfraList = infraList.where((infra) => infra["collegeid"] == widget.CollegeId).toList();
+    print("Filtered infra data for college ${widget.CollegeId}: ${clgInfraList.length}");
+
+    // No need to modify infrastructureList here, we'll use clgInfraList in build
   }
 
   @override
   Widget build(BuildContext context) {
-    List<InfraModel> infrastructureList = [
-      InfraModel(name: "Smart Class", icon: AssetIcons.INFRA_SMART_CLASS_ICON,value: clgInfraList[0]["smartclass"]),
-      InfraModel(name: "Library", icon: AssetIcons.INFRA_LIBRARY_ICON,value: clgInfraList[0]["library"]),
-      InfraModel(name: "Parking", icon: AssetIcons.INFRA_PARKING_ICON,value: clgInfraList[0]["parking"]),
-      InfraModel(name: "Hostel", icon: AssetIcons.INFRA_PARKING_ICON,value: clgInfraList[0]["hostel"]),
-      InfraModel(name: "Elevator", icon: AssetIcons.INFRA_ELEVATOR_ICON,value: clgInfraList[0]["elevator"]),
-      InfraModel(name: "Auditorium", icon: AssetIcons.INFRA_AUDITORIUM_ICON,value: clgInfraList[0]["auditorium"]),
-      InfraModel(name: "Power Backup", icon: AssetIcons.INFRA_POWER_BACKUP_ICON,value: clgInfraList[0]["powerbackup"]),
-      InfraModel(name: "CCTV", icon: AssetIcons.INFRA_CCTV_ICON,value: clgInfraList[0]["cctv"]),
-      InfraModel(name: "Computer lab", icon: AssetIcons.INFRA_COMPUTER_LAB_ICON,value: clgInfraList[0]["computerlab"]),
-      InfraModel(name: "Canteen", icon: AssetIcons.INFRA_CANTEEN_ICON,value: clgInfraList[0]["canteen"]),
-      InfraModel(name: "Fire Safety", icon: AssetIcons.INFRA_FIRE_SAFETY_ICON,value: clgInfraList[0]["firesafety"]),
-      InfraModel(name: "Play Ground", icon: AssetIcons.INFRA_PLAY_GROUND_ICON,value: clgInfraList[0]["playground"]),
-      InfraModel(name: "Medical Support", icon: AssetIcons.INFRA_MEDICAL_SUPPORT_ICON,value: clgInfraList[0]["medicalsupport"]),
-      InfraModel(name: "Bus Transport", icon: AssetIcons.INFRA_BUS_TRANSPORT_ICON,value: clgInfraList[0]["bustransport"]),
-      InfraModel(name: "Emergency Exit", icon: AssetIcons.INFRA_EMERGENCY_EXIT_ICON,value: clgInfraList[0]["emergencyexit"]),
-    ];
+    // Check if clgInfraList has data
+    final hasInfraData = clgInfraList.isNotEmpty;
+    Map<String, dynamic>? currentInfraData = hasInfraData ? clgInfraList[0] : null;
 
+    // Create the list of InfraModel only if data exists
+    List<InfraModel> infrastructureDisplayList = [];
+    if (hasInfraData && currentInfraData != null) {
+      infrastructureDisplayList = [
+        InfraModel(name: "Smart Class", icon: AssetIcons.INFRA_SMART_CLASS_ICON, value: currentInfraData["smartclass"] ?? false),
+        InfraModel(name: "Library", icon: AssetIcons.INFRA_LIBRARY_ICON, value: currentInfraData["library"] ?? false),
+        InfraModel(name: "Parking", icon: AssetIcons.INFRA_PARKING_ICON, value: currentInfraData["parking"] ?? false),
+        InfraModel(name: "Hostel", icon: AssetIcons.INFRA_PARKING_ICON, value: currentInfraData["hostel"] ?? false),
+        InfraModel(name: "Elevator", icon: AssetIcons.INFRA_ELEVATOR_ICON, value: currentInfraData["elevator"] ?? false),
+        InfraModel(name: "Auditorium", icon: AssetIcons.INFRA_AUDITORIUM_ICON, value: currentInfraData["auditorium"] ?? false),
+        InfraModel(name: "Power Backup", icon: AssetIcons.INFRA_POWER_BACKUP_ICON, value: currentInfraData["powerbackup"] ?? false),
+        InfraModel(name: "CCTV", icon: AssetIcons.INFRA_CCTV_ICON, value: currentInfraData["cctv"] ?? false),
+        InfraModel(name: "Computer lab", icon: AssetIcons.INFRA_COMPUTER_LAB_ICON, value: currentInfraData["computerlab"] ?? false),
+        InfraModel(name: "Canteen", icon: AssetIcons.INFRA_CANTEEN_ICON, value: currentInfraData["canteen"] ?? false),
+        InfraModel(name: "Fire Safety", icon: AssetIcons.INFRA_FIRE_SAFETY_ICON, value: currentInfraData["firesafety"] ?? false),
+        InfraModel(name: "Play Ground", icon: AssetIcons.INFRA_PLAY_GROUND_ICON, value: currentInfraData["playground"] ?? false),
+        InfraModel(name: "Medical Support", icon: AssetIcons.INFRA_MEDICAL_SUPPORT_ICON, value: currentInfraData["medicalsupport"] ?? false),
+        InfraModel(name: "Bus Transport", icon: AssetIcons.INFRA_BUS_TRANSPORT_ICON, value: currentInfraData["bustransport"] ?? false),
+        InfraModel(name: "Emergency Exit", icon: AssetIcons.INFRA_EMERGENCY_EXIT_ICON, value: currentInfraData["emergencyexit"] ?? false),
+      ];
+    }
+
+    // Filter the list to only include items where value is true
+    final filteredDisplayList = infrastructureDisplayList.where((item) => item.value == true).toList();
 
     return Column(
       children: [
         Obx( () => DetailOnOffButton(
             name: "Infrastructure",
             isDetailDisplayed: kCollegeController.sectionVisibility[widget.index].value,
-            // isDetailDisplayed: showInfrastructureDetails.value,
             onTap: () {
               kCollegeController.expandDetailWhenTapOnTab(widget.index);
-             //  setState(() {
-             // showInfrastructureDetails.value = !showInfrastructureDetails.value;
-             //  });
-              },
+            },
           ),
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 35.w),
           child: Obx(
                 () => Visibility(
-                  visible:kCollegeController.sectionVisibility[widget.index].value,
-              child: infrastructureList != null && infraList.isNotEmpty ?
-              GridView.builder(
+              visible: kCollegeController.sectionVisibility[widget.index].value,
+              child: hasInfraData && filteredDisplayList.isNotEmpty
+                  ? GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.symmetric(vertical: 14.h),
-                itemCount: infrastructureList.where((item) => item.value == true).length,
+                itemCount: filteredDisplayList.length, // Use filtered list length
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   mainAxisExtent: 35,
                   crossAxisCount: 3,
@@ -109,13 +116,12 @@ class _InfrastructureListWidgetState extends State<InfrastructureListWidget> {
                   mainAxisSpacing: 10,
                 ),
                 itemBuilder: (BuildContext context, int index) {
-                  final filteredList = infrastructureList.where((item) => item.value == true).toList();
                   return Container(
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Image.asset(
-                          filteredList[index].icon,
+                          filteredDisplayList[index].icon,
                           color: const Color.fromRGBO(237, 50, 50, 1),
                           height: 16.h,
                           width: 20.h,
@@ -123,21 +129,21 @@ class _InfrastructureListWidgetState extends State<InfrastructureListWidget> {
                         SizedBox(width: 5.w),
                         Expanded(
                             child: Text(
-                              filteredList[index].name,
+                              filteredDisplayList[index].name,
                               style: TextStyle(fontSize: 13.sp,fontFamily: "Poppins",
                               ),
                             )),
                       ],
                     ),
                   );
-
                 },
-              ) :
-              Padding(padding: EdgeInsets.symmetric(vertical: 15.h),
+              )
+                  : Padding(
+                padding: EdgeInsets.symmetric(vertical: 15.h),
                 child: Column(
                   children: [
                     Text(
-                      "Infrastructure  details are not available.",
+                      "Infrastructure details are not available.",
                       style: TextStyle(fontSize: 16.sp, color: Colors.black),
                     ),
                     SizedBox(height: 10.h),
@@ -147,12 +153,12 @@ class _InfrastructureListWidgetState extends State<InfrastructureListWidget> {
                     ),
                   ],
                 ),
-              ),
-            ),
-          ),
-        ),
+              ), // End of Padding (else case)
+            ), // End of Visibility
+          ), // End of Obx
+        ), // End of Padding
         SizedBox(height: 20.h),
-      ],
-    );
-  }
-}
+      ], // End of Outer Column
+    ); // End of build method Column
+  } // End of build method
+} // End of State class

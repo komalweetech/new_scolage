@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../utils/StudentDetails.dart';
 import '../../../../utils/commonWidget/keyboard_off.dart';
 import '../../../../utils/commonWidget/status_bar_theme.dart';
 import '../../../../utils/constant/asset_icons.dart';
+import '../../../dashboard/view/screen/dashboard_screen.dart';
 import '../../../home/view/widget/college_card.dart';
 import '../../services/favorites_Api.dart';
 
@@ -252,7 +255,9 @@ class _FavCollageScreenState extends State<FavCollageScreen> {
                                            horizontal: 25.sp, vertical: 05.sp),
                                        elevation: 0
                                    ),
-                                   onPressed: () {},
+                                   onPressed: () {
+                                     Get.to(DashboardScreen());
+                                   },
                                    child: Text("Explore junior colleges",
                                      style: TextStyle(
                                        fontFamily: 'Poppins', // Use your font

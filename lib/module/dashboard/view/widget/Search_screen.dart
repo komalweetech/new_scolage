@@ -219,9 +219,9 @@ class _SearchScreenState extends State<SearchScreen> {
                 ? const Center(child: CircularProgressIndicator())
                 : RefreshIndicator(
               onRefresh: _refreshData,
-                  child: FutureBuilder(
-                    future: ClgListApi.getAttApi(),
-                    builder: (context, snapshot) {
+              child: FutureBuilder(
+                future: ClgListApi.getAttApi(),
+                builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     if (snapshot.hasError) {
                       return const Center(
@@ -313,9 +313,9 @@ class _SearchScreenState extends State<SearchScreen> {
                     }
                   }
                   return const Center(child: CircularProgressIndicator());
-                                },
-                              ),
-                );
+                },
+              ),
+            );
           },
         ),
 

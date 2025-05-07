@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:64953881087:android:4b996f14d8bbacf2f317ca",
+        "mobilesdk_app_id": "1:64953881087:android:c6ebfbab9c6d31aef317ca",
         "android_client_info": {
-          "package_name": "com.scolage.app"
+          "package_name": "com.catchcollage.name"
         }
       },
       "oauth_client": [],

@@ -54,10 +54,11 @@ class _OtpBottomSheetState extends State<OtpBottomSheet> {
     _timer.cancel();
     super.dispose();
   }
+
   void otpApi() async {
     final mobileNumber = kAuthController.phoneNumberController.text;
 
-    var response = await OtpApi.postApi(mobileNumber);
+    var response = await OtpApi.postApi(mobileNumber, widget.isFromForgotPasscode ? "forgetPass" : "signUp");
     print("response of login ==== $response");
   }
 

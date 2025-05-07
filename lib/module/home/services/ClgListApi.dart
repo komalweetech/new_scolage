@@ -25,7 +25,29 @@ class ClgListApi {
       return ["error"];
     }
   }
+
+  static Future<Map<String, dynamic>?> getSingleCollegeData(String collegeId) async {
+    try {
+      final response = await http.get(
+        Uri.parse("https://api.scolage.com/v2/singlecglist/get/$collegeId"),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        print("College Data: $data");
+        return data;
+      } else {
+        print("Failed to fetch data: ${response.statusCode}");
+        return null;
+      }
+    } catch (e) {
+      print("API error: $e");
+      return null;
+    }
+  }
 }
+
+
 
 
 
